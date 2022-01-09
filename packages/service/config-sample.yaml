@@ -1,0 +1,13 @@
+base:
+  PROJECT_ID: ""
+  GITHUB_OWNER: ""
+  GITHUB_REPO: ""
+  JIRA_URL: ""
+  SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS: ""
+  SENDGRID_SENDER: ""
+
+development:
+  ~compose: [base]
+ 
+production:
+  ~compose: [base]

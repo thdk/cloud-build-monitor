@@ -1,0 +1,17 @@
+{
+  "name": "cloud-build-monitor",
+  "version": "1.0.0",
+  "description": "A tool to monitor your CI/CD workflows running on Google Cloud Build.",
+  "main": "index.js",
+  "scripts": {
+    "build": "yarn workspaces foreach -ptiv run build"
+  },
+  "keywords": [],
+  "author": "Thomas Dekiere",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@3.1.1"
+}
