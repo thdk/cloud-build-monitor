@@ -21,6 +21,12 @@ npm run build
 The service is run as a cloud function. To deploy it run:
 
 ```sh
+npm run deploy
+```
+
+or to have more control over the deployment configuration you can run:
+
+```sh
 gcloud functions deploy \
     --runtime nodejs14 \
     --trigger-topic cloud-builds \
