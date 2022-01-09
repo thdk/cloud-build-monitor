@@ -1,5 +1,5 @@
-FROM node:alpine
-
-RUN yarn --immutable
-
-RUN yarn build
+steps:
+- name: alpine:node
+  args: ["yarn", "--immutable"]
+- name: alpine:node
+  args: ["yarn", "build"]
