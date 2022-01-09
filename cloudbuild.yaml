@@ -1,0 +1,5 @@
+FROM node:alpine
+
+RUN yarn --immutable
+
+RUN yarn build
