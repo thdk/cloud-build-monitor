@@ -8,11 +8,15 @@ const sendEmail = async (emailData: MailDataRequired) => {
   sgMail.setApiKey(config.SENDGRID_API_KEY);
 
   return sgMail
-    .send(emailData)
+    .sendMultiple(emailData)
     .then(() => {
-      console.log('Email sent');
+      console.log('Emails sent');
     })
     .catch(error => {
+      console.log({
+        emailData,
+        dynamicData: emailData.personalizations
+      });
       console.error(error);
     });
 };
@@ -39,15 +43,7 @@ export const sendBuildReportEmail = async ({
     templateId,
     personalizations: [
       {
-        to: [
-          {
-            // todo: temporary
-            email: 't.dekiere@gmail.com',
-          },
-          {
-            email: commit.author.email,
-          },
-        ],
+        to: [ 't.dekiere@gmail.com', commit.author.email ],
         dynamicTemplateData: {
           subject: `Build ${status}: ${build.source.branchName} (${build.trigger?.name})`,
           trigger: build.trigger?.name,
