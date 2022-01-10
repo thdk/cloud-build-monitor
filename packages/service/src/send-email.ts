@@ -40,7 +40,7 @@ export const sendBuildReportEmail = async ({
 
   const icon = status === "SUCCESS"
     ? "✅"
-    : "‼";
+    : "❌";
 
   await sendEmail({
     templateId,
