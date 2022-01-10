@@ -7,6 +7,9 @@ import {sendBuildReportEmail} from './send-email';
 export const cloudBuildEvents: EventFunction = async ({
   attributes,
 }: PubsubMessage) => {
+  console.log({
+    attributes
+  })
   const {buildId, status} = attributes || {};
 
   console.log({

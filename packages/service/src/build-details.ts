@@ -1,4 +1,4 @@
-import {CloudBuildClient} from '@google-cloud/cloudbuild';
+import { CloudBuildClient } from '@google-cloud/cloudbuild';
 import { config } from './config';
 
 // Creates a client
@@ -14,7 +14,11 @@ export const getBuild = async (id: string) => {
       console.error(`Failed to get build: ${id} in project ${config.GCP_PROJECT}`);
       throw error;
     });
-    
+
+  console.log({
+    build
+  })
+
   const [trigger] =
     (build.buildTriggerId &&
       (await cb
