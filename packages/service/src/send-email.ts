@@ -38,12 +38,16 @@ export const sendBuildReportEmail = async ({
 
   const templateId = config.SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS;
 
+  const icon = status === "SUCCESS"
+    ? "✅"
+    : "‼";
+
   await sendEmail({
     templateId,
     from: config.SENDGRID_SENDER,
     to: [ commit.author.email],
     dynamicTemplateData: {
-      subject: `Build ${build.source.branchName}: ${status.toLowerCase()} (${build.trigger?.name})`,
+      subject: `${icon} Build ${build.source.branchName}: ${status.toLowerCase()} (${build.trigger?.name})`,
       trigger: build.trigger?.name,
       branch: build.source.branchName,
       sha: build.source.commitSha,
