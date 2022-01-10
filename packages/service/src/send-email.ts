@@ -42,7 +42,7 @@ export const sendBuildReportEmail = async ({
       {
         to: [
           {
-            // temporary
+            // todo: temporary
             email: 't.dekiere@gmail.com',
           },
           {
