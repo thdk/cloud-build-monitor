@@ -48,8 +48,8 @@ export const sendBuildReportEmail = async ({
             email: commit.author.email,
           },
         ],
-        subject: `Build ${status}: ${build.source.branchName} (${build.trigger?.name})`,
         dynamicTemplateData: {
+          subject: `Build ${status}: ${build.source.branchName} (${build.trigger?.name})`,
           trigger: build.trigger?.name,
           branch: build.source.branchName,
           sha: build.source.commitSha,
