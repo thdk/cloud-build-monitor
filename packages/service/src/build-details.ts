@@ -32,14 +32,26 @@ export const getBuild = async (id: string) => {
         }))) ||
     [];
 
-  const source = build.source?.repoSource;
-  if (!source) {
-    console.log('build not triggered from a repo');
-    console.log({
-      source: build.source,
-    })
-    return undefined;
-  }
+  // ---- Github push to branch substitutions ----
+  // BRANCH_NAME: 'feat/email-notifications',
+  // REF_NAME: 'feat/email-notifications',
+  // TRIGGER_NAME: 'gcb-monitor',
+  // TRIGGER_BUILD_CONFIG_PATH: 'cloudbuild.yaml',
+  // REPO_NAME: 'cloud-build-monitor',
+  // REVISION_ID: '8ddba877d8d80dbbd26b18ad464e0ee2a9c76775',
+  // COMMIT_SHA: '8ddba877d8d80dbbd26b18ad464e0ee2a9c76775',
+  // SHORT_SHA: '8ddba87'
+  let source = build.source?.repoSource ?? {
+    ...build.source,
+    commitSha: build.substitutions?.COMMIT_SHA,
+    commitShaShort: build.substitutions?.SHORT_SHA,
+    branchName: build.substitutions?.BRANCH_NAME,
+    repo: build.substitutions?.REPO_NAME,
+  };
+
+  console.log({
+    source
+  })
 
   return {
     source,
