@@ -37,6 +37,7 @@ export const sendBuildReportEmail = async ({
   await sendEmail({
     from: config.SENDGRID_SENDER,
     templateId,
+    subject: "{{{subject}}}",
     personalizations: [
       {
         to: [
