@@ -30,7 +30,10 @@ export const getBuild = async (id: string) => {
 
   const source = build.source?.repoSource;
   if (!source) {
-    // build not triggered from a repo
+    console.log('build not triggered from a repo');
+    console.log({
+      source: build.source,
+    })
     return undefined;
   }
 
