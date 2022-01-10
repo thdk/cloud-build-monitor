@@ -3,6 +3,7 @@ import {getBuild} from './build-details';
 import {config} from './config';
 import {getCommitInfo} from './git';
 
+
 const sendEmail = async (emailData: MailDataRequired) => {
   sgMail.setApiKey(config.SENDGRID_API_KEY);
 
@@ -35,13 +36,19 @@ export const sendBuildReportEmail = async ({
 
   await sendEmail({
     from: config.SENDGRID_SENDER,
-    subject: `Build ${status}: ${build.source.branchName}`,
     templateId,
     personalizations: [
       {
-        to: {
-          email: 't.dekiere@gmail.com', // author.email
-        },
+        to: [
+          {
+            // temporary
+            email: 't.dekiere@gmail.com',
+          },
+          {
+            email: commit.author.email,
+          },
+        ],
+        subject: `Build ${status}: ${build.source.branchName} (${build.trigger?.name})`,
         dynamicTemplateData: {
           trigger: build.trigger?.name,
           branch: build.source.branchName,

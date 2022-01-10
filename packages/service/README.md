@@ -15,13 +15,13 @@ Once the required data is collected, it notifies the people who might be interes
 Make sure to build the source code before deploying to guarantee you are deploying the latest version.
 
 ```sh
-npm run build
+yarn build
 ```
 
 The service is run as a cloud function. To deploy it run:
 
 ```sh
-npm run deploy
+yarn deploy
 ```
 
 or to have more control over the deployment configuration you can run:
