@@ -15,9 +15,9 @@ export const getBuild = async (id: string) => {
       throw error;
     });
 
-  console.log({
-    build
-  })
+  // console.log({
+  //   build
+  // })
 
   const [trigger] =
     (build.buildTriggerId &&
@@ -41,20 +41,26 @@ export const getBuild = async (id: string) => {
   // REVISION_ID: '8ddba877d8d80dbbd26b18ad464e0ee2a9c76775',
   // COMMIT_SHA: '8ddba877d8d80dbbd26b18ad464e0ee2a9c76775',
   // SHORT_SHA: '8ddba87'
-  let source = build.source?.repoSource ?? {
-    ...build.source,
-    commitSha: build.substitutions?.COMMIT_SHA,
-    commitShaShort: build.substitutions?.SHORT_SHA,
-    branchName: build.substitutions?.BRANCH_NAME,
-    repo: build.substitutions?.REPO_NAME,
-  };
-
   console.log({
-    source
-  })
+    source: build.source,
+    substitutions: build.substitutions,
+    repoSource: build.source?.repoSource,
+  });
+
+  const {
+    COMMIT_SHA: commitSha,
+    BRANCH_NAME: branchName,
+    REPO_NAME: repo,
+    SHORT_SHA: commitShaShort,
+  } = build.substitutions || {};
 
   return {
-    source,
+    source: {
+      commitSha,
+      branchName,
+      repo,
+      commitShaShort,
+    },
     trigger,
     build,
   };
