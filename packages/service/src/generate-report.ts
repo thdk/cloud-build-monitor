@@ -14,6 +14,7 @@ export const generateReport = async ({
   });
 
   if (!build) {
+    console.error(`No build found for ${buildId}`)
     return;
   }
 

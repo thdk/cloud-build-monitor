@@ -1,7 +1,8 @@
-import sgMail, {MailDataRequired} from '@sendgrid/mail';
-import {getBuild} from './build-details';
-import {config} from './config';
-import {getCommitInfo} from './git';
+import sgMail, { MailDataRequired } from '@sendgrid/mail';
+import { getBuild } from './build-details';
+import { config } from './config';
+import { getCommitInfo } from './git';
+
 
 const sendEmail = async (emailData: MailDataRequired) => {
   sgMail.setApiKey(config.SENDGRID_API_KEY);
@@ -12,6 +13,10 @@ const sendEmail = async (emailData: MailDataRequired) => {
       console.log('Email sent');
     })
     .catch(error => {
+      console.error("Failed to send email");
+      console.log({
+        emailData,
+      });
       console.error(error);
     });
 };
@@ -33,24 +38,22 @@ export const sendBuildReportEmail = async ({
 
   const templateId = config.SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS;
 
+  const icon = status === "SUCCESS"
+    ? "✅"
+    : "❌";
+
   await sendEmail({
-    from: config.SENDGRID_SENDER,
-    subject: `Build ${status}: ${build.source.branchName}`,
     templateId,
-    personalizations: [
-      {
-        to: {
-          email: 't.dekiere@gmail.com', // author.email
-        },
-        dynamicTemplateData: {
-          trigger: build.trigger?.name,
-          branch: build.source.branchName,
-          sha: build.source.commitSha,
-          status: status.toLowerCase(),
-          issueNr: issue,
-          commitAuthor: commit.author.name,
-        },
-      },
-    ],
+    from: config.SENDGRID_SENDER,
+    to: [ commit.author.email],
+    dynamicTemplateData: {
+      subject: `${icon} Build ${build.source.branchName}: ${status.toLowerCase()} (${build.trigger?.name})`,
+      trigger: build.trigger?.name,
+      branch: build.source.branchName,
+      sha: build.source.commitSha,
+      status: status.toLowerCase(),
+      issueNr: issue,
+      commitAuthor: commit.author.name,
+    },
   });
 };

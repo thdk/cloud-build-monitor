@@ -7,7 +7,15 @@ import {sendBuildReportEmail} from './send-email';
 export const cloudBuildEvents: EventFunction = async ({
   attributes,
 }: PubsubMessage) => {
+  console.log({
+    attributes
+  })
   const {buildId, status} = attributes || {};
+
+  console.log({
+    buildId,
+    status,
+  });
 
   if (!buildId) {
     return;
@@ -32,7 +40,10 @@ export const cloudBuildEvents: EventFunction = async ({
 
         // TODO
         // - update issue status in jira
+      } else {
+        console.error("Failed to generate a build report");
       }
+
       break;
     }
     case 'QUEUED':

@@ -1,0 +1,3 @@
+steps:
+- name: alpine
+  args: ["echo", "build ok"]

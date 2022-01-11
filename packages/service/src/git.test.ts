@@ -3,9 +3,9 @@ import {getCommitInfo} from './git';
 describe('git: getCommitInfo', () => {
   it('to return the authors email', async () => {
     const info = await getCommitInfo(
-      '269a947ca561992265d824080ae53cdf3fd8ad96'
+      '5c05fd1d646feaead10d07ca5d1a67668b0d7897'
     );
 
-    expect(info.author.email).toBe('wouter.commandeur@smartphoto.com');
+    expect(info.author.email).toBe('t.dekiere@gmail.com');
   });
 });
