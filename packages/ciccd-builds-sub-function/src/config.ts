@@ -1,16 +1,15 @@
 const yenv = require('yenv');
 
-const env = yenv('.env.yaml');
+const env = yenv('config.yaml');
 
 export const config = {
   GITHUB_TOKEN: env.GITHUB_TOKEN,
   GITHUB_REPO: env.GITHUB_REPO,
   GITHUB_OWNER: env.GITHUB_OWNER,
-  JIRA_USER: env.JIRA_USER,
-  JIRA_PASSWORD: env.JIRA_PASSWORD,
   ISSUE_REGEX: env.ISSUE_REGEX,
   SENDGRID_API_KEY: env.SENDGRID_API_KEY,
   SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS:
     env.SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS,
   SENDGRID_SENDER: env.SENDGRID_SENDER,
+  GCP_PROJECT: env.GCP_PROJECT,
 } as const;

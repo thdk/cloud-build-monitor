@@ -4,7 +4,9 @@
   "description": "A tool to monitor your CI/CD workflows running on Google Cloud Build.",
   "main": "index.js",
   "scripts": {
-    "build": "yarn workspaces foreach -ptiv run build"
+    "build": "yarn workspaces foreach -piv run build",
+    "deploy": "yarn workspaces foreach -piv run deploy",
+    "print-config": "yarn workspaces foreach -piv run print-config"
   },
   "keywords": [],
   "author": "Thomas Dekiere",

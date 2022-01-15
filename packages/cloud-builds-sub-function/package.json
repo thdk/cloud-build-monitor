@@ -1,0 +1,18 @@
+{
+  "name": "cloud-builds-sub-function",
+  "packageManager": "yarn@3.1.1",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "deploy": "gcloud functions deploy gcb-monitor-proxy --runtime nodejs16 --trigger-topic cloud-builds --entry-point cloudBuildEvents",
+    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee ./config.yaml"    
+  },
+  "dependencies": {
+    "@google-cloud/cloudbuild": "^2.6.0",
+    "@google-cloud/pubsub": "^2.18.4",
+    "yenv": "^3.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}

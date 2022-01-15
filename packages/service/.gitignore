@@ -1,5 +1,0 @@
-dist/
-node_modules/
-*.tsbuildinfo
-.env-test.yaml
-config.yaml
