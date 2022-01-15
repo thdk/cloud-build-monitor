@@ -9,22 +9,15 @@ export const ciccdBuildEvents: EventFunction = async ({
     attributes,
 }: PubsubMessage) => {
     const {
-        origin,
         name,
         status,
         commitSha,
         branchName,
-        repo,
     } = attributes || {};
 
-    console.log({
-        origin,
-        name,
-        status,
-        commitSha,
-        branchName,
-        repo,
-    });
+    if (status !== "success" && status != "failure") {
+        return;
+    }
 
     const commit = await getCommitInfo(commitSha);
 

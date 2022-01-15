@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "deploy": "gcloud functions deploy gcb-monitor-service --runtime nodejs16 --trigger-topic ciccd-builds --entry-point ciccdBuildEvents",
-    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee ./config.yaml"
+    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee config.yaml"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^2.1.0",
