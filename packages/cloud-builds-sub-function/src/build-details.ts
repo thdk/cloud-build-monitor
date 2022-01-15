@@ -41,15 +41,13 @@ export const getBuild = async (id: string) => {
     COMMIT_SHA: commitSha,
     BRANCH_NAME: branchName,
     REPO_NAME: repo,
-    SHORT_SHA: commitShaShort,
   } = build.substitutions || {};
 
   return {
     source: {
-      commitSha,
-      branchName,
+      commitSha: commitSha || build.source?.repoSource?.commitSha || "",
+      branchName: branchName || build.source?.repoSource?.branchName || "",
       repo,
-      commitShaShort,
     },
     trigger,
     build,

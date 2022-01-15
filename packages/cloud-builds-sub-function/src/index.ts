@@ -28,6 +28,7 @@ export const cloudBuildEvents: EventFunction = async ({
       status: status.toLowerCase(),
       commitSha: build.source.commitSha,
       repo: build.source.repo,
+      branchName: build.source.branchName,
     },
   })
 };

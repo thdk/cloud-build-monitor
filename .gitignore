@@ -12,4 +12,4 @@ config*.yaml
 
 dist/
 
-.tsbuildinfo
+*.tsbuildinfo
