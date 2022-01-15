@@ -10,7 +10,7 @@ A tool to monitor your CI/CD workflows running on Google Cloud Build.
 
 ## The service
 
-Read [here](packages/service/README.md) how to configure and deploy the service to run for your builds.
+Read [here](packages/service/README.md) how to configure and deploy the service the run for your builds.
 
 ## The app
 
