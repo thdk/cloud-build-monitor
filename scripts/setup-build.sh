@@ -18,6 +18,10 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:$serviceAccount" \
     --role="roles/logging.bucketWriter"
 
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member="serviceAccount:$serviceAccount" \
+    --role="roles/storage.objectAdmin"   
+
 # NOTE: this step requires you have forked the original repo
 # Your github repo must be connected with Google Source Repositories: https://console.cloud.google.com/cloud-build/repos
 echo -e "create cloud build triggers"
