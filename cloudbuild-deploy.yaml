@@ -12,5 +12,3 @@ steps:
   args: ['--quiet', 'app', 'deploy']
   dir: "packages/app"
   waitFor: ['build']
-options:
-  logging: CLOUD_LOGGING_ONLY
