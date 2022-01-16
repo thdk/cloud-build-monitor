@@ -1765,6 +1765,7 @@ __metadata:
     "@google-cloud/pubsub": ^2.18.4
     "@octokit/rest": ^18.12.0
     "@sendgrid/mail": ^7.6.0
+    firebase-admin: ^10.0.1
     typescript: ^4.5.4
     yenv: ^3.0.1
   languageName: unknown
