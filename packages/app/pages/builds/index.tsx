@@ -7,4 +7,6 @@ const BuildsPage: NextPage = () => {
     );
 };
 
+export async function getServerSideProps() {}
+
 export default BuildsPage;
