@@ -21,5 +21,6 @@ echo -e "${ICON} enable required gcp api's"
 gcloud services enable --project "${PROJECT_ID}" \
   secretmanager.googleapis.com \
   appengine.googleapis.com \
-  cloudbuild.googleapis.com
+  cloudbuild.googleapis.com \
+  iam.googleapis.com
 

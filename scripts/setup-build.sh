@@ -10,6 +10,12 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:$serviceAccount" \
     --role="roles/secretmanager.secretAccessor"
 
+echo -e "${ICON} create build log bucket"
+gcloud logging buckets create ciccd-build-logs --location=${REGION}
+
+echo -e "${ICON} allow service account to write to log bucket"
+gsutil iam ch serviceAccount:$serviceAccount:roles/storage.objectCreator gs://ciccd-build-logs 
+
 # NOTE: this step requires you have forked the original repo
 # Your github repo must be connected with Google Source Repositories: https://console.cloud.google.com/cloud-build/repos
 echo -e "create cloud build triggers"

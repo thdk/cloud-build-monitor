@@ -8,6 +8,6 @@ steps:
   args: ['scripts/print-config.sh']
   waitFor: ['-']
   id: config
-logsBucket: 'gs://ciccd-logs'
+logsBucket: 'gs://ciccd-build-logs'
 options:
   logging: GCS_ONLY
