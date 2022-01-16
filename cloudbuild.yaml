@@ -8,3 +8,5 @@ steps:
   args: ['scripts/print-config.sh']
   waitFor: ['-']
   id: config
+options:
+  logging: CLOUD_LOGGING_ONLY
