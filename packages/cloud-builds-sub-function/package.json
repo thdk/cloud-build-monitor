@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "deploy": "gcloud functions deploy gcb-monitor-proxy --runtime nodejs16 --trigger-topic cloud-builds --entry-point cloudBuildEvents",
-    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee ./config.yaml"    
+    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee ./config.yaml"
   },
   "dependencies": {
     "@google-cloud/cloudbuild": "^2.6.0",

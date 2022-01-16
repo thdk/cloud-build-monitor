@@ -6,7 +6,9 @@
   "scripts": {
     "build": "yarn workspaces foreach -piv run build",
     "deploy": "yarn workspaces foreach -piv run deploy",
-    "print-config": "./scripts/print-config.sh"
+    "print-config": "./scripts/print-config.sh",
+    "dev": "yarn workspace app dev",
+    "start": "yarn workspace app start"
   },
   "keywords": [],
   "author": "Thomas Dekiere",
