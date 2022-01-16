@@ -8,3 +8,7 @@ steps:
   args: ['scripts/print-config.sh']
   waitFor: ['-']
   id: config
+- name: gcr.io/cloud-builders/gcloud
+  args: ['--quiet', 'app', 'deploy']
+  dir: "packages/app"
+  waitFor: ['build']
