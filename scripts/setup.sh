@@ -14,14 +14,12 @@ PROJECT_NUMBER=$(gcloud projects list \
 
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
-  --role "roles/storage.objectViewer" \
-  > /dev/null 2> /dev/null
+  --role "roles/storage.objectViewer"
 
 echo -e "${ICON} grant appengine admin role to default cloudbuild service account"
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
-  --role "roles/appengine.admin" \
-  > /dev/null 2> /dev/null
+  --role "roles/appengine.appAdmin"
 
 echo -e "${ICON} allow the default cloud build service account to act as the default app engine service account"
 gcloud iam service-accounts add-iam-policy-binding \
@@ -32,8 +30,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 echo -e "${ICON} grant roles/secretmanager.secretAccessor to default app engine service account"
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@appspot.gserviceaccount.com" \
-  --role "roles/secretmanager.secretAccessor" \
-  > /dev/null 2> /dev/null
+  --role "roles/secretmanager.secretAccessor"
 
 echo -e "${ICON} set region globally to be used by cloud functions"
 gcloud config set functions/region ${REGION} >/dev/null 2>/dev/null
