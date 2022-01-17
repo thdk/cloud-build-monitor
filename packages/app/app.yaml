@@ -1,6 +1,7 @@
 env: standard
 runtime: nodejs16
 service: default
+entrypoint: yarn start
 handlers:
   - url: /.*
     secure: always

@@ -1,27 +1,20 @@
-import { collection } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { firestore } from '../../firebase/init-firebase';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 
 export function BuildList() {
   const [value, loading, error] = useCollection<CICCDBuild>(
-
-    collection(firestore, 'builds')
-      .withConverter(CICCDBuildConverter),
+    query(
+      collection(firestore, 'builds')
+        .withConverter(CICCDBuildConverter),
+      orderBy("created", "desc")
+    ),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
     },
   );
 
-  const rowStyle = {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  } as const;
-
-  const columnStyle = {
-    width: "calc(100vw/6)"
-  }
   return (
     <>
       {error && <strong>Error: {JSON.stringify(error)}</strong>}
@@ -30,23 +23,23 @@ export function BuildList() {
         <table className="table-auto w-full">
           <thead>
             <tr>
-              <th style={columnStyle}>
+              <th>
                 Trigger
               </th>
 
-              <th style={columnStyle}>
+              <th>
                 Branch
               </th>
 
-              <th style={columnStyle}>
+              <th>
                 Build origin
               </th>
 
-              <th style={columnStyle}>
+              <th>
                 Commit sha
               </th>
 
-              <th style={columnStyle}>
+              <th>
                 Build status
               </th>
 
@@ -59,23 +52,23 @@ export function BuildList() {
                 key={doc.id}
                 className='odd:bg-white even:bg-gray-200'
               >
-                <td style={columnStyle}>
+                <td>
                   {doc.data().name}
                 </td>
 
-                <td style={columnStyle}>
+                <td>
                   {doc.data().branchName}
                 </td>
 
-                <td style={columnStyle}>
+                <td>
                   {doc.data().origin}
                 </td>
 
-                <td style={columnStyle}>
+                <td>
                   {doc.data().commitSha.substring(0, 7)}...
                 </td>
 
-                <td style={columnStyle}>
+                <td>
                   {doc.data().status}
                 </td>
               </tr>
