@@ -7,4 +7,10 @@ const BuildsPage: NextPage = () => {
     );
 };
 
+export async function getServerSideProps() {
+    return {
+        props: {},
+    };
+}
+
 export default BuildsPage;

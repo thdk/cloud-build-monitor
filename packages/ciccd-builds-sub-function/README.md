@@ -10,7 +10,8 @@ Handles CICCD pub sub messages to add build statuses to the dashboard database a
     gcloud pubsub subscriptions create ciccd-builds-sub --topic ciccd-builds
     ```
 - create a `config.yaml` file containing the following keys:
-  - SENDGRID_API_KEY: [sendgrid](https://sendgrid.com/)
-  - SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS: the id of the sendgrid dynamic template you wish to send with build updates
     - TODO: add example templates to the repo
-- make the `config.yaml` file available in a mounted volume using Cloud Secret Manager
+    - make the `config.yaml` file available as 'ciccd-config' secret in Cloud Secret Manager
+- provide the following environment variables using Google Cloud Secret Manager:
+    - GITHUB_TOKEN
+    - SENDGRID_API_KEY
