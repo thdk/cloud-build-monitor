@@ -3,6 +3,7 @@ steps:
   args: ['yarn']
 - name: node:16-alpine
   args: ['yarn', 'build']
+  id: build
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args: ['scripts/print-config.sh']
@@ -11,4 +12,4 @@ steps:
 - name: gcr.io/cloud-builders/gcloud
   args: ['--quiet', 'app', 'deploy']
   dir: "packages/app"
-  waitFor: ['build']
+  waitFor: ['config', 'build']
