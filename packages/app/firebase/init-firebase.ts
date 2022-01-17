@@ -21,4 +21,6 @@ function createFirebaseApp(config: FirebaseOptions) {
 
 const firebaseApp = createFirebaseApp(config);
 export const firebaseAuth = getAuth(firebaseApp);
-export const firebaseFirestore = getFirestore(firebaseApp);
+const firestore = getFirestore(firebaseApp);
+
+export { firestore };

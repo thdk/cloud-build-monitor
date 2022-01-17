@@ -1,12 +1,12 @@
-import { collection, CollectionReference } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { firebaseFirestore } from '../../firebase/init-firebase';
+import { firestore } from '../../firebase/init-firebase';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 
 export function BuildList() {
   const [value, loading, error] = useCollection<CICCDBuild>(
 
-    collection(firebaseFirestore, 'builds')
+    collection(firestore, 'builds')
       .withConverter(CICCDBuildConverter),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
@@ -23,75 +23,66 @@ export function BuildList() {
     width: "calc(100vw/6)"
   }
   return (
-    <div>
-      <p>
-        {error && <strong>Error: {JSON.stringify(error)}</strong>}
-        {loading && <span>Collection: Loading...</span>}
-        {value && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
-            <div
-              style={rowStyle}
-            >
-              <div style={columnStyle}>
+    <>
+      {error && <strong>Error: {JSON.stringify(error)}</strong>}
+      {loading && <span>Loading...</span>}
+      {value && (
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th style={columnStyle}>
                 Trigger
-              </div>
+              </th>
 
-              <div style={columnStyle}>
+              <th style={columnStyle}>
                 Branch
-              </div>
+              </th>
 
-              <div style={columnStyle}>
+              <th style={columnStyle}>
                 Build origin
-              </div>
+              </th>
 
-              <div style={columnStyle}>
+              <th style={columnStyle}>
                 Commit sha
-              </div>
+              </th>
 
-              <div style={columnStyle}>
+              <th style={columnStyle}>
                 Build status
-              </div>
-            </div>
+              </th>
 
-            <hr
-              style={{
-                width: "100vw"
-              }}
-            />
+            </tr>
+          </thead>
+
+          <tbody>
             {value.docs.map((doc) => (
-              <div
+              <tr
                 key={doc.id}
-                style={rowStyle}
+                className='odd:bg-white even:bg-gray-200'
               >
-                <div style={columnStyle}>
+                <td style={columnStyle}>
                   {doc.data().name}
-                </div>
+                </td>
 
-                <div style={columnStyle}>
+                <td style={columnStyle}>
                   {doc.data().branchName}
-                </div>
+                </td>
 
-                <div style={columnStyle}>
+                <td style={columnStyle}>
                   {doc.data().origin}
-                </div>
+                </td>
 
-                <div style={columnStyle}>
+                <td style={columnStyle}>
                   {doc.data().commitSha.substring(0, 7)}...
-                </div>
+                </td>
 
-                <div style={columnStyle}>
+                <td style={columnStyle}>
                   {doc.data().status}
-                </div>
-              </div>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
-      </p>
-    </div>
+          </tbody>
+        </table>
+      )}
+    </>
   );
 }
