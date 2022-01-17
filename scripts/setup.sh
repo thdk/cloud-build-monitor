@@ -17,10 +17,10 @@ gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --role "roles/storage.objectViewer" \
   > /dev/null 2> /dev/null
 
-echo -e "${ICON} grant appengine deployer role to default cloudbuild service account"
+echo -e "${ICON} grant appengine admin role to default cloudbuild service account"
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
-  --role "roles/appengine.deployer" \
+  --role "roles/appengine.admin" \
   > /dev/null 2> /dev/null
 
 echo -e "${ICON} allow the default cloud build service account to act as the default app engine service account"
