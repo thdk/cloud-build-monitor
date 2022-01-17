@@ -8,12 +8,26 @@ export NOK="  \U274C"
 
 
 echo -e "${ICON} grant storage object viewer role to default cloudbuild service account"
-export PROJECT_NUMBER=$(gcloud projects list --filter="$(gcloud config get-value project)" --format="value(PROJECT_NUMBER)" | tail -1)
+PROJECT_NUMBER=$(gcloud projects list \
+  --format="value(projectNumber)" \
+  --filter="projectId=${PROJECT_ID}")
 
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
   --role "roles/storage.objectViewer" \
   > /dev/null 2> /dev/null
+
+echo -e "${ICON} grant appengine deployer role to default cloudbuild service account"
+gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+  --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
+  --role "roles/appengine.deployer" \
+  > /dev/null 2> /dev/null
+
+echo -e "${ICON} allow the default cloud build service account to act as the default app engine service account"
+gcloud iam service-accounts add-iam-policy-binding \
+    ${PROJECT_ID}@appspot.gserviceaccount.com \
+    --member=serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com \
+    --role=roles/iam.serviceAccountUser
 
 echo -e "${ICON} grant roles/secretmanager.secretAccessor to default app engine service account"
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
