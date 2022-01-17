@@ -37,6 +37,6 @@ gcloud beta builds triggers create github \
     --repo-name="cloud-build-monitor" \
     --repo-owner="${REPO_OWNER}" \
     --build-config="cloudbuild-deploy.yaml" \
-    --branch-pattern="master" \
+    --branch-pattern="main" \
     --name="deploy"
     # --service-account="projects/${PROJECT_ID}/serviceAccounts/${serviceAccount}" \
