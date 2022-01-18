@@ -1,9 +1,12 @@
 import { NextPage } from "next";
 import { BuildList } from "../../components/build-list/build-list";
+import { Layout } from "../../components/layout";
 
 const BuildsPage: NextPage = () => {
-    return(
-        <BuildList />
+    return (
+        <Layout>
+            <BuildList />
+        </Layout>
     );
 };
 

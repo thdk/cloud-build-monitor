@@ -7,6 +7,7 @@ export interface CICCDBuild {
     readonly commitSha: string;
     readonly repo: string;
     readonly branchName: string;
+    readonly githubRepoOwner: string;
 }
 
 export const CICCDBuildConverter = {

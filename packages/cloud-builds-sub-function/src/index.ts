@@ -19,17 +19,23 @@ export const cloudBuildEvents: EventFunction = async ({
     return;
   }
 
-  const build = await getBuild(buildId);
+  const {
+    trigger,
+    source,
+    build,
+  } = await getBuild(buildId);
 
   await pubSubClient.topic("ciccd-builds").publishMessage({
     attributes: {
       origin: "cloud-build",
-      name: build.trigger?.name || "n/a",
+      name: trigger?.name || "n/a",
       status: status.toLowerCase(),
-      commitSha: build.source.commitSha,
-      repo: build.source.repo,
-      branchName: build.source.branchName,
+      commitSha: source.commitSha,
+      repo: source.repo,
+      githubRepoOwner: trigger?.github?.owner || "",
+      branchName: source.branchName,
       id: buildId,
+      logUrl: build.logUrl || "",
     },
   })
 };

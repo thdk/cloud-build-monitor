@@ -6,4 +6,6 @@ export interface CICCDBuild {
     readonly repo: string;
     readonly branchName: string;
     readonly id: string;
+    readonly githubRepoOwner: string;
+    readonly logUrl: string;
 }

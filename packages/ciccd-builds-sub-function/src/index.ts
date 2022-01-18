@@ -2,7 +2,7 @@ import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 import type { EventFunction } from '@google-cloud/functions-framework';
 import { sendBuildReportEmail } from './send-email';
 import { getCommitInfo } from './git';
-import {config} from './config';
+import { config } from './config';
 import { addOrUpdateCICCDBuild } from './firestore';
 
 
@@ -17,16 +17,25 @@ export const ciccdBuildEvents: EventFunction = async ({
         branchName,
         origin,
         repo,
+        githubRepoOwner,
+        logUrl,
     } = attributes || {};
 
     if (!id) {
         throw new Error("'id' is missing in message attributes");
     }
-    
-    const commit = await getCommitInfo(commitSha);
-    
+
+    const commit = await getCommitInfo({
+        sha: commitSha,
+        repo,
+        owner: githubRepoOwner,
+    });
+
     const issue = commit.message.match(new RegExp(config.ISSUE_REGEX));
-    
+
+    console.log({
+        commit,
+    })
     await Promise.all([
         addOrUpdateCICCDBuild({
             branchName,
@@ -36,10 +45,12 @@ export const ciccdBuildEvents: EventFunction = async ({
             repo,
             status,
             id,
+            githubRepoOwner,
+            logUrl,
         }),
-        status !== "success" && status != "failure" 
+        status !== "success" && status != "failure"
             ? undefined
-            :  sendBuildReportEmail({
+            : sendBuildReportEmail({
                 branch: branchName,
                 author: commit.author.email,
                 issueNr: issue ? issue[0] : null,

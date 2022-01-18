@@ -1,16 +1,24 @@
-import {Octokit} from '@octokit/rest';
-import {config} from './config';
+import { Octokit } from '@octokit/rest';
+import { config } from './config';
 
-const gitConfig = {
-  owner: config.GITHUB_OWNER,
-  repo: config.GITHUB_REPO,
-  auth: config.GITHUB_TOKEN,
-};
-export const getCommitInfo = async (sha: string) => {
-  const octokit = new Octokit(gitConfig);
+export const getCommitInfo = async ({
+  sha,
+  repo,
+  owner
+}: {
+  sha: string;
+  repo: string;
+  owner: string;
+}) => {
+  const octokit = new Octokit({
+    auth: config.GITHUB_TOKEN,
+    repo,
+    owner,
+  });
 
   const commit = await octokit.git.getCommit({
-    ...gitConfig,
+    repo,
+    owner,
     commit_sha: sha,
   });
 
