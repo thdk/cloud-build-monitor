@@ -1,5 +1,4 @@
 import { collection, limit, orderBy, query } from 'firebase/firestore';
-import { useContext } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useAppContext } from '../../contexts/app-context';
 import { firestore } from '../../firebase/init-firebase';
@@ -38,61 +37,61 @@ export function BuildList() {
           >
             <tr>
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-24'
               >
                 Status
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-64'
               >
                 Branch
               </th>      
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-48'
               >
                 Author
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 min-w-96'
               >
                 Commit subject
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-32'
               >
                 Trigger
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-24'
               >
-                Build origin
+                Origin
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-32'
               >
                 Commit
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-64'
               >
                 Started
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-40'
               >
                 Duration
               </th>
 
               <th
-                className='px-8 py-2'
+                className='px-8 py-2 max-w-32'
               >
                 Details
               </th>
