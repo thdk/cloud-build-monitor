@@ -4,7 +4,13 @@ import { sendBuildReportEmail } from './send-email';
 import { getCommitInfo } from './git';
 import { config } from './config';
 import { addOrUpdateCICCDBuild } from './firestore';
+import { FieldValue } from 'firebase-admin/firestore';
 
+function toDateTime(secs: number) {
+    var t = new Date(1970, 0, 1);
+    t.setSeconds(secs);
+    return t;
+}
 
 export const ciccdBuildEvents: EventFunction = async ({
     attributes,
@@ -19,6 +25,8 @@ export const ciccdBuildEvents: EventFunction = async ({
         repo,
         githubRepoOwner,
         logUrl,
+        startTime,
+        finishTime,
     } = attributes || {};
 
     if (!id) {
@@ -32,14 +40,14 @@ export const ciccdBuildEvents: EventFunction = async ({
     });
 
     const issue = commit.message.match(new RegExp(config.ISSUE_REGEX));
+    const issueNr = issue ? issue[0] : null;
 
-    console.log({
-        commit,
-    })
-    await Promise.all([
+     await Promise.all([
         addOrUpdateCICCDBuild({
             branchName,
             commitSha,
+            commitAuthor: commit.author.name,
+            commitSubject: commit.message.split('\n')[0],
             name,
             origin,
             repo,
@@ -47,13 +55,20 @@ export const ciccdBuildEvents: EventFunction = async ({
             id,
             githubRepoOwner,
             logUrl,
+            issueNr,
+            startTime: startTime
+                ? toDateTime(+startTime)
+                : null,
+            finishTime: finishTime
+                ? toDateTime(+finishTime)
+                : null,
         }),
         status !== "success" && status != "failure"
             ? undefined
             : sendBuildReportEmail({
                 branch: branchName,
                 author: commit.author.email,
-                issueNr: issue ? issue[0] : null,
+                issueNr,
                 sha: commitSha,
                 status,
                 trigger: name,

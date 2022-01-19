@@ -6,6 +6,17 @@ export ICON="\U1F4E2"
 export OK="  \U2705"
 export NOK="  \U274C"
 
+echo -e "${ICON} set region globally to be used by cloud functions"
+gcloud config set functions/region ${REGION} >/dev/null 2>/dev/null
+
+echo -e "${ICON} enable required gcp api's"
+gcloud services enable --project "${PROJECT_ID}" \
+  secretmanager.googleapis.com \
+  appengine.googleapis.com \
+  cloudbuild.googleapis.com \
+  iam.googleapis.com \
+  cloudresourcemanager.googleapis.com
+
 
 echo -e "${ICON} grant storage object viewer role to default cloudbuild service account"
 PROJECT_NUMBER=$(gcloud projects list \
@@ -29,17 +40,13 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 echo -e "${ICON} grant roles/secretmanager.secretAccessor to default app engine service account"
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
-  --member "serviceAccount:${PROJECT_NUMBER}@appspot.gserviceaccount.com" \
+  --member "serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com" \
   --role "roles/secretmanager.secretAccessor"
 
-echo -e "${ICON} set region globally to be used by cloud functions"
-gcloud config set functions/region ${REGION} >/dev/null 2>/dev/null
+echo -e "${ICON} create topic 'cloud-builds' so we can respond to build events"
+gcloud pubsub topics create cloud-builds
+gcloud pubsub subscriptions create cloud-builds-sub --topic=cloud-builds
 
-echo -e "${ICON} enable required gcp api's"
-gcloud services enable --project "${PROJECT_ID}" \
-  secretmanager.googleapis.com \
-  appengine.googleapis.com \
-  cloudbuild.googleapis.com \
-  iam.googleapis.com \
-  cloudresourcemanager.googleapis.com
-
+echo -e "${ICON} create topic 'ciccd-builds' so we can respond to custom build events"
+gcloud pubsub topics create ciccd-builds
+gcloud pubsub subscriptions create ciccd-builds-sub --topic=ciccd-builds

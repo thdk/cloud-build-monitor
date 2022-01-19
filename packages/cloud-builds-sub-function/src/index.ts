@@ -3,6 +3,7 @@ import type { EventFunction } from '@google-cloud/functions-framework';
 
 import { PubSub } from '@google-cloud/pubsub';
 import { getBuild } from './build-details';
+import { config } from './config';
 
 const pubSubClient = new PubSub();
 
@@ -31,11 +32,13 @@ export const cloudBuildEvents: EventFunction = async ({
       name: trigger?.name || "n/a",
       status: status.toLowerCase(),
       commitSha: source.commitSha,
-      repo: source.repo,
-      githubRepoOwner: trigger?.github?.owner || "",
+      repo: trigger?.github ? source.repo : config.GITHUB_REPO || "",
+      githubRepoOwner: trigger?.github?.owner || config.GITHUB_OWNER || "",
       branchName: source.branchName,
       id: buildId,
       logUrl: build.logUrl || "",
+      startTime: build.startTime?.seconds?.toString() || "",
+      finishTime: build.finishTime?.seconds?.toString() || "",
     },
-  })
+  });
 };

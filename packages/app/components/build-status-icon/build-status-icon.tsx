@@ -11,6 +11,10 @@ export function BuildStatusIcon({
             return <>❌</>;
         case "queued":
             return <>🔜</>;
+        case "working":
+            return <>⚙️</>;
+        case "cancelled":
+            return <>🛑</>;
         default:
             return <>❔</>;
     }

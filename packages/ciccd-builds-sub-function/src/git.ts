@@ -20,7 +20,11 @@ export const getCommitInfo = async ({
     repo,
     owner,
     commit_sha: sha,
-  });
+  }).catch((e) => {
+    console.error(`Couldnt find commit for ${JSON.stringify({repo, owner, sha})}`)
+    throw e;
+
+});
 
   return commit.data;
 };

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "yarn workspaces foreach -piv run build",
-    "deploy": "yarn print-config && yarn workspaces foreach -piv run deploy",
-    "deploy:functions": "yarn print-config && yarn workspaces foreach -pRiv --exclude app run deploy",
+    "deploy": "yarn workspaces foreach -piv run deploy",
+    "deploy:functions": "yarn workspaces foreach -pRiv --exclude app run deploy",
     "print-config": "./scripts/print-config.sh",
     "dev": "yarn workspace app dev",
     "start": "yarn workspace app start"
@@ -18,9 +18,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@3.1.1",
-  "dependencies": {
-    "firebase-admin": "^10.0.1",
-    "react-firebase-hooks": "^4.0.2"
-  }
+  "packageManager": "yarn@3.1.1"
 }

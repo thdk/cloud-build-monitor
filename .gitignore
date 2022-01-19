@@ -15,3 +15,6 @@ dist/
 *.tsbuildinfo
 
 .next
+config
+
+topic_policy.json
