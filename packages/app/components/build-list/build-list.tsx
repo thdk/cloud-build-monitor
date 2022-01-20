@@ -4,6 +4,7 @@ import { useAppContext } from '../../contexts/app-context';
 import { firestore } from '../../firebase/init-firebase';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
+import { Timer } from '../timer';
 
 export function BuildList() {
   const [value, loading, error] = useCollection<CICCDBuild>(
@@ -119,15 +120,6 @@ export function BuildList() {
                 finishTime,
               } = doc.data();
 
-              let duration = "";
-
-              if (finishTime && startTime) {
-                const durationTotal = (finishTime.getTime() - startTime.getTime()) / 1000;
-                const minutes = Math.floor(durationTotal / 60);
-                const seconds = durationTotal - minutes * 60;
-                duration = `${minutes} min ${seconds} sec`;
-              }
-
               return (
                 <tr
                   key={doc.id}
@@ -200,7 +192,10 @@ export function BuildList() {
                   <td
                     className='px-8 py-2 text-slate-500'
                   >
-                    {duration}
+                    <Timer
+                     finishTime={finishTime}
+                     startTime={startTime}
+                    />
                   </td>
 
                   <td
