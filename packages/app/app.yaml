@@ -1,6 +1,6 @@
 env: standard
 runtime: nodejs16
-service: default
+service: ciccd
 entrypoint: npm run start
 handlers:
   - url: /.*

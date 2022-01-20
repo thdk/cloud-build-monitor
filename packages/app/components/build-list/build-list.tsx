@@ -214,7 +214,7 @@ export function BuildList() {
                     </a>
 
                     {
-                      issueNr && <a href={config.issueTrackerUrl
+                      config.issueTrackerUrl && issueNr && <a href={config.issueTrackerUrl
                         .replace("{0}", issueNr)
                         .replace("{1}", githubRepoOwner)
                         .replace("{2}", repo)

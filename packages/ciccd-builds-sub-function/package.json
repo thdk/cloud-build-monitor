@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "deploy": "gcloud beta functions deploy gcb-monitor-service --runtime nodejs16 --trigger-topic ciccd-builds --entry-point ciccdBuildEvents --set-secrets 'GITHUB_TOKEN=GITHUB_TOKEN:1,SENDGRID_API_KEY=SENDGRID_API_KEY:1'",
-    "print-config": "gcloud secrets versions access 1 --secret=ciccd-config | tee config.yaml"
+    "deploy": "./deploy.sh",
+    "print-config": "gcloud secrets versions access latest --secret=ciccd-config | tee config.yaml"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^2.1.0",
