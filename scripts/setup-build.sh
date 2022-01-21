@@ -30,7 +30,7 @@ gcloud beta builds triggers create github \
     --repo-owner="${REPO_OWNER}" \
     --build-config="cloudbuild.yaml" \
     --branch-pattern=".*" \
-    --name="ci-build"
+    --name="ciccd-build"
     # --service-account="projects/${PROJECT_ID}/serviceAccounts/${serviceAccount}" \
 
 gcloud beta builds triggers create github \
@@ -38,5 +38,5 @@ gcloud beta builds triggers create github \
     --repo-owner="${REPO_OWNER}" \
     --build-config="cloudbuild-deploy.yaml" \
     --branch-pattern="main" \
-    --name="deploy"
+    --name="ciccd-deploy"
     # --service-account="projects/${PROJECT_ID}/serviceAccounts/${serviceAccount}" \
