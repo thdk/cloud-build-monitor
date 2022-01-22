@@ -32,11 +32,3 @@ gcloud beta builds triggers create github \
     --branch-pattern=".*" \
     --name="ciccd-build"
     # --service-account="projects/${PROJECT_ID}/serviceAccounts/${serviceAccount}" \
-
-gcloud beta builds triggers create github \
-    --repo-name="cloud-build-monitor" \
-    --repo-owner="${REPO_OWNER}" \
-    --build-config="cloudbuild-deploy.yaml" \
-    --branch-pattern="main" \
-    --name="ciccd-deploy"
-    # --service-account="projects/${PROJECT_ID}/serviceAccounts/${serviceAccount}" \

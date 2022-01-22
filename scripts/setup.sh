@@ -6,6 +6,8 @@ export ICON="\U1F4E2"
 export OK="  \U2705"
 export NOK="  \U274C"
 
+echo -e "${}"
+
 echo -e "${ICON} set region globally to be used by cloud functions"
 gcloud config set functions/region ${REGION} >/dev/null 2>/dev/null
 
@@ -16,7 +18,6 @@ gcloud services enable --project "${PROJECT_ID}" \
   cloudbuild.googleapis.com \
   iam.googleapis.com \
   cloudresourcemanager.googleapis.com
-
 
 echo -e "${ICON} grant storage object viewer role to default cloudbuild service account"
 PROJECT_NUMBER=$(gcloud projects list \
@@ -31,6 +32,11 @@ echo -e "${ICON} grant appengine admin role to default cloudbuild service accoun
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
   --role "roles/appengine.appAdmin"
+
+echo -e "${ICON} grant roles/secretmanager.secretAccessor to default cloud build service account"
+gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+  --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
+  --role "roles/secretmanager.secretAccessor"
 
 echo -e "${ICON} allow the default cloud build service account to act as the default app engine service account"
 gcloud iam service-accounts add-iam-policy-binding \

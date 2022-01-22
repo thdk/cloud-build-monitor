@@ -29,8 +29,6 @@ status           |     x      | [success, failure, cancelled, queued]
     ```
 - create a `config.yaml` file containing the following keys:
   
-    GCP_PROJECT: ""
-
     SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS: ""
 
     SENDGRID_SENDER: ""
