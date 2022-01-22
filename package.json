@@ -6,6 +6,12 @@
   "scripts": {
     "build": "yarn workspaces foreach -piv run build",
     "deploy": "yarn workspaces foreach -piv run deploy",
+    "build:app": "yarn workspace app build",
+    "deploy:app": "yarn workspace app deploy",
+    "build:service": "yarn workspace ciccd-builds-sub-function build",
+    "deploy:service": "yarn workspace ciccd-builds-sub-function deploy",
+    "build:proxy": "yarn workspace cloud-builds-sub-function build",
+    "deploy:proxy": "yarn workspace cloud-builds-sub-function deploy",
     "print-config": "./scripts/print-config.sh",
     "dev": "yarn workspace app dev",
     "start": "yarn workspace app start"
