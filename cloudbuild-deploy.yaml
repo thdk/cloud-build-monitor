@@ -1,15 +1,47 @@
 steps:
-- name: node:16-alpine
-  args: ['yarn']
-- name: node:16-alpine
-  args: ['yarn', 'build']
-  id: build
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args: ['scripts/print-config.sh']
   waitFor: ['-']
   id: config
+
+- name: node:16-alpine
+  args: ['yarn']
+  waitFor: ['-']
+  id: install
+
+- name: node:16-alpine
+  args: ['yarn', 'build:app']
+  waitFor: install
+  id: build-app
+
+- name: node:16-alpine
+  args: ['yarn', 'build:service']
+  waitFor: install
+  id: build-service
+
+- name: node:16-alpine
+  args: ['yarn', 'build:proxy']
+  waitFor: install
+  id: build-proxy
+
 - name: gcr.io/cloud-builders/gcloud
-  args: ['--quiet', 'app', 'deploy']
-  dir: "packages/app"
-  waitFor: ['config', 'build']
+  entrypoint: bash
+  args: ['deploy.sh']
+  dir: packages/app
+  waitFor: ['config', 'build-app']
+  id: deploy-app
+
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: bash
+  args: ['deploy.sh']
+  dir: packages/cloud-builds-sub-function
+  waitFor: ['config', 'build-proxy']
+  id: deploy-proxy
+
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: bash
+  args: ['deploy.sh']
+  dir: packages/ciccd-builds-sub-function
+  waitFor: ['config', 'build-service']
+  id: deploy-service

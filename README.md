@@ -56,7 +56,7 @@ Please review `scripts/setup.sh` before running this script so you are aware of 
 and what extra roles they will be assigned.
 
 ```
-./scripts/setup.sh
+PROJECT_ID=[gcp-project-id] ./scripts/setup.sh
 ```
 
 ### Add your projects secrets in Google Secret Manager

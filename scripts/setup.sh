@@ -38,6 +38,11 @@ gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
   --role "roles/secretmanager.secretAccessor"
 
+echo -e "${ICON} grant roles/cloudfunctions.developer to default cloud build service account"
+gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+  --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
+  --role "roles/cloudfunctions.developer"
+
 echo -e "${ICON} allow the default cloud build service account to act as the default app engine service account"
 gcloud iam service-accounts add-iam-policy-binding \
     ${PROJECT_ID}@appspot.gserviceaccount.com \

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+gcloud config set functions/region europe-west1
+
 gcloud beta functions deploy ciccd-service \
     --runtime nodejs16 \
     --trigger-topic ciccd-builds \
