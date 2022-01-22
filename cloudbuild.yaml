@@ -5,15 +5,15 @@ steps:
 
 - name: node:16-alpine
   args: ['yarn', 'build:app']
-  waitFor: install
+  waitFor: ['install']
   id: build-app
 
 - name: node:16-alpine
   args: ['yarn', 'build:service']
-  waitFor: install
+  waitFor: ['install']
   id: build-service
 
 - name: node:16-alpine
   args: ['yarn', 'build:proxy']
-  waitFor: install
+  waitFor: ['install']
   id: build-proxy
