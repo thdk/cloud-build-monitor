@@ -91,7 +91,9 @@ export function BuildListItem({
       <td
         className='px-8 py-2'
       >
-        <a href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`}>
+        <a
+          target="_blank"
+          href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer">
           {commitSha.substring(0, 7)} <span>🔗</span>
         </a>
       </td>
@@ -117,16 +119,17 @@ export function BuildListItem({
         <a
           href={logUrl}
           title='logs'
+          target="_blank" rel="noreferrer"
         >
           📄
         </a>
 
         {
-          config.issueTrackerUrl && issueNr && <a href={config.issueTrackerUrl
+          config.issueTrackerUrl && issueNr && <a target="_blank" href={config.issueTrackerUrl
             .replace("{0}", issueNr)
             .replace("{1}", githubRepoOwner)
             .replace("{2}", repo)
-          }>
+          } rel="noreferrer">
             🐛
           </a>
         }
