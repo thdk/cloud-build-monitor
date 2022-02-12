@@ -38,7 +38,7 @@ export function BuildListHeader() {
             </th>
 
             <th
-                className='px-8 py-2 max-w-32'
+                className='px-8 py-2'
             >
                 Commit
             </th>

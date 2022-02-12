@@ -1,29 +1,24 @@
-import { getDocs, collection } from "firebase/firestore";
 import { PropsWithChildren } from "react";
-import { useQuery } from "react-query";
-import { IAppContext, AppContext } from "../../contexts/app-context";
-import { firestore } from "../../firebase/init-firebase";
+import { Navigation } from "../navigation";
 
 export function Layout({
     children,
 }: PropsWithChildren<unknown>) {
-    const configQuery = useQuery(
-        ['config'],
-        async () => {
-            const snapshot = await getDocs(collection(firestore, "config"));
+    return (
+        <div
+            className="flex"
+        >
+            <div
+                className="w-32"
+            >
+                <Navigation />
+            </div>
 
-            return snapshot.docs.reduce((p, c) => {
-                p[c.id as keyof IAppContext] = c.data().value;
-                return p;
-            }, {} as IAppContext);
-        },
-        {},
-    );
-
-    return configQuery.isSuccess
-        ? (
-            <AppContext.Provider value={configQuery.data}>
+            <div
+                className="w-full flex pb-20 ml-32"
+            >
                 {children}
-            </AppContext.Provider>
-        ) : null;
+            </div>
+        </div>
+    );
 }

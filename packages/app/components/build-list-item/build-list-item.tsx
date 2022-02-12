@@ -1,8 +1,6 @@
-import { collection, limit, orderBy, query } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { useAppContext } from '../../contexts/app-context';
-import { firestore } from '../../firebase/init-firebase';
-import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
+import Link from 'next/link';
+import { useIssueTracker } from '../../hooks/use-issue-tracker';
+import { CICCDBuild } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
 import { Timer } from '../timer';
 
@@ -25,7 +23,7 @@ export function BuildListItem({
 }: CICCDBuild & { id: string }) {
 
 
-  const config = useAppContext();
+  const { url } = useIssueTracker() || {};
 
   const options = {
     year: 'numeric', month: 'numeric', day: 'numeric',
@@ -49,11 +47,15 @@ export function BuildListItem({
       <td
         className='px-8 py-2'
       >
-        {branchName}
+        <Link href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`} >
+          <a className='underline'>
+            {branchName}
+          </a>
+        </Link>
       </td>
 
       <td
-        className='px-8 py-2'
+        className='px-8 py-2 w-64'
       >
         {commitAuthor}
       </td>
@@ -65,7 +67,7 @@ export function BuildListItem({
       </td>
 
       <td
-        className='px-8 py-2'
+        className='px-8 py-2 w-40'
       >
         {name}
       </td>
@@ -89,7 +91,7 @@ export function BuildListItem({
       </td>
 
       <td
-        className='px-8 py-2'
+        className='px-8 py-2  w-40'
       >
         <a
           target="_blank"
@@ -105,7 +107,7 @@ export function BuildListItem({
       </td>
 
       <td
-        className='px-8 py-2 text-slate-500'
+        className='px-8 py-2 text-slate-500 w-40'
       >
         <Timer
           finishTime={finishTime}
@@ -125,7 +127,7 @@ export function BuildListItem({
         </a>
 
         {
-          config.issueTrackerUrl && issueNr && <a target="_blank" href={config.issueTrackerUrl
+          url && issueNr && <a target="_blank" href={url
             .replace("{0}", issueNr)
             .replace("{1}", githubRepoOwner)
             .replace("{2}", repo)
