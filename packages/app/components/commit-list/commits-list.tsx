@@ -1,6 +1,6 @@
 import { CommitListItem } from "../commit-list-item";
 import { useRepoContext } from "../repo-provider";
-import { Commits } from "./types";
+import { Commits } from "../../github/types";
 
 export function CommitsList({
     commits,

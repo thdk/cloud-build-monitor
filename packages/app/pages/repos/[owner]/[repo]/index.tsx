@@ -1,8 +1,9 @@
 import { GetStaticProps } from "next"
-import { Commits } from "../../../../components/commit-list/types";
+import { Commits } from "../../../../github/types";
 import { octokit } from "../../../../github/octocit";
 import { getCommitsWithIssue } from "../../../../utils/get-commits-with-issue";
 import RepoPage from "./[ref]";
+import { getTagsGroupedByCommitSha } from "../../../../github/tags";
 
 type Props = {
     commits: Commits,
@@ -27,8 +28,16 @@ export const getServerSideProps: GetStaticProps<Props> = async (context) => {
         })
         : [];
 
+    const tags = (searchOwner && searchRepo)
+        ? await getTagsGroupedByCommitSha({
+            repo: searchRepo,
+            owner: searchOwner,
+        })
+        : {};
+
     return {
         props: {
+            tags,
             commits: commitsWithIssueInfo,
             repoRef: repoData.data.default_branch,
             repo: searchRepo,

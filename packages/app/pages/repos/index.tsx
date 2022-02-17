@@ -29,15 +29,16 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 
     const repos = await octokit.repos.listForAuthenticatedUser({
-        type: "owner"
+        type: "all"
     });
 
     return {
         props: {
-            repos: repos.data.map((repo) => ({
-                owner: repo.owner.login,
-                name: repo.name,
-            })),
+            repos: repos.data
+                .map((repo) => ({
+                    owner: repo.owner.login,
+                    name: repo.name,
+                })),
         }
     }
 }

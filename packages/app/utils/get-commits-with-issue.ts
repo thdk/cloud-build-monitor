@@ -16,8 +16,10 @@ export async function getCommitsWithIssue({
             owner,
             repo,
             sha: ref,
+            per_page: 100,
         }),
     ]);
+
 
     return Promise.all(
         commits.data.map(async (commit) => {
@@ -27,14 +29,27 @@ export async function getCommitsWithIssue({
             const jiraIssue = jiraIssueNr && await jiraApi?.getIssue(jiraIssueNr[0]);
 
             return ({
-                ...commit,
+                sha: commit.sha,
+                html_url: commit.html_url,
+                author: {
+                    avatar_url: commit.author?.avatar_url || null,
+                },
+                committer: {                    
+                    avatar_url: commit.committer?.avatar_url || null,
+                },
+                commit: {
+                    message: commit.commit.message,
+                    committer: {
+                        date: commit.commit.committer?.date,
+                    },
+                },
                 jiraIssue: jiraIssue
                     ? {
                         summary: jiraIssue.fields.summary || null,
                         key: jiraIssue.key,
                     }
                     : null,
-            });
+            } as any);
         })
     )
 }
