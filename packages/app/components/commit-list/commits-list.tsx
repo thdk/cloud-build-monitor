@@ -4,6 +4,8 @@ import { useQuery } from "react-query";
 import { getCommitsWithIssue } from "../../utils/get-commits-with-issue";
 import { RefInput } from "../ref-input";
 import { useRepo } from "../../github/repo-context";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { useState } from "react";
 
 export function CommitsList() {
 
@@ -40,6 +42,8 @@ export function CommitsList() {
         {},
     );
 
+    const [showCommitSubject, setShowCommitSubject] = useState(false);
+
     return (
         <div
             className="w-full flex -pl-32 flex-col p-10"
@@ -61,9 +65,20 @@ export function CommitsList() {
                     className="flex flex-col"
                 >
                     <div
-                        className="mb-4"
+                        className="mb-4 flex justify-between"
                     >
                         <RefInput />
+                        <FormGroup>
+                            <FormControlLabel
+                                labelPlacement="start"
+                                control={
+                                    <Checkbox
+                                        value={showCommitSubject}
+                                        onChange={() => setShowCommitSubject(!showCommitSubject)}
+                                    />}
+                                label="Show commit subject"
+                            />
+                        </FormGroup>
                     </div>
                     <div>
                         {
@@ -88,6 +103,7 @@ export function CommitsList() {
                                                             <CommitListItem
                                                                 key={commit.sha}
                                                                 commit={commit}
+                                                                showCommitSubject={showCommitSubject}
                                                             />
                                                         );
                                                     })

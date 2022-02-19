@@ -10,8 +10,10 @@ import { Tag } from "../tag";
 
 export function CommitListItem({
   commit,
+  showCommitSubject,
 }: {
-  commit: Commit
+  commit: Commit;
+  showCommitSubject: boolean;
 }) {
   const committer = commit.committer;
   const commitSubject = commit.commit.message.split('\n')[0];
@@ -127,11 +129,12 @@ export function CommitListItem({
                   )
                   : null
               }
-              <div
+              {(showCommitSubject || !issue) && (<div
                 className=""
               >
                 {commitSubject}
               </div>
+              )}
 
             </div>
           </div>
