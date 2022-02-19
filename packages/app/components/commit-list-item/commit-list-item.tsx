@@ -27,10 +27,7 @@ export function CommitListItem({
     }
   } = useRouter();
 
-  const tags = useTags({
-    repo: repo as string,
-    owner: owner as string,
-  });
+  const tags = useTags();
 
 
   const tagDictionary = useMemo<Record<string, string[]>>(
@@ -46,7 +43,7 @@ export function CommitListItem({
 
   return (
     <div
-      className='flex border w-full flex flex-col'
+      className='flex border w-full flex-col'
       style={{
         borderTop: "none",
         borderLeft: "none",
@@ -60,7 +57,7 @@ export function CommitListItem({
           {commitTags.map((tag) => (
             <Link
               key={tag}
-              href={`/repos/${owner}/${repo}/${encodeURIComponent(tag)}`}
+              href={`/repos/${owner}/${repo}/${tag}`}
               passHref
             >
               <Tag
@@ -75,7 +72,7 @@ export function CommitListItem({
       >
         <div
           key={sha}
-          className='flex items-center'
+          className='flex items-center flex-shrink'
         >
           <div
             className='px-4 py-2 max-w-32 w-16'
@@ -101,33 +98,31 @@ export function CommitListItem({
           </div>
 
           <div
-            className='px-8 pl-0 py-2 vw-50'
+            className='px-8 pl-0 py-2'
           >
             <div className="flex flex-col">
               {
                 issue
                   ? (
-                    <div>
-                      <div
-                        className="truncate ...  overflow-hidden no-wrap"
-                      >
-                        {
-                          url
-                            ? <a
-                              href={url
-                                .replace("{0}", commit.jiraIssue?.key)
-                              } rel="noreferrer">
-                              <span
-                                className="underline pr-2">
-                                {issue.key}
-                              </span>
-                            </a>
-                            : <span>
+                    <div
+                      className=""
+                    >
+                      {
+                        url
+                          ? <a
+                            href={url
+                              .replace("{0}", commit.jiraIssue?.key)
+                            } rel="noreferrer">
+                            <span
+                              className="underline pr-2">
                               {issue.key}
                             </span>
-                        }
-                        {issue.summary}
-                      </div>
+                          </a>
+                          : <span>
+                            {issue.key}
+                          </span>
+                      }
+                      {issue.summary}
                     </div>
                   )
                   : null
@@ -144,17 +139,18 @@ export function CommitListItem({
         </div>
 
         <div
-          className="flex  items-center"
+          className="flex items-center"
         >
           <div
-            className='px-8 py-2 w-48 pl-16'
+            className='px-4 py-2'
           >
             <a
               target="_blank"
               href={commit.html_url}
               rel="noreferrer"
+              className="no-wrap flex"
             >
-              {commit.sha.substring(0, 7)} <span>🔗</span>
+              {commit.sha.substring(0, 7)} <span className="pl-2">🔗</span>
             </a>
           </div>
         </div>

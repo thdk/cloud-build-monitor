@@ -19,7 +19,6 @@ export async function getCommitsWithIssue({
             owner,
             repo,
             sha: ref,
-            per_page: 100,
         }),
     ]);
 

@@ -6,12 +6,15 @@ import { getAllTags } from "../../../../github/tags";
 import { getCommitsWithIssue } from "../../../../utils/get-commits-with-issue";
 import { getRepos } from "../../../../github/repos";
 import { dehydrate, QueryClient } from "react-query";
+import { RepoProvider } from "../../../../github/repo-context";
 
 export const RepoPage: NextPage = () => {
     return (
-        <Layout>
-            <CommitsList />
-        </Layout>
+        <RepoProvider>
+            <Layout>
+                <CommitsList />
+            </Layout>
+        </RepoProvider>
     );
 };
 

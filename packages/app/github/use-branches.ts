@@ -1,7 +1,8 @@
 import { useQuery } from "react-query";
+import { getAllBranches } from "./branches";
 import { useRepo } from "./repo-context";
-import { getAllTags } from "./tags";
-export function useTags() {
+
+export function useBranches() {
     const {
         repo,
         owner,
@@ -11,15 +12,15 @@ export function useTags() {
         data,
     } = useQuery(
         [
-            'tags',
+            'branches',
             owner,
             repo,
         ],
-        () => getAllTags({
+        () => getAllBranches({
             owner,
             repo,
         }),
     );
 
-    return data;
+    return data || [];
 }

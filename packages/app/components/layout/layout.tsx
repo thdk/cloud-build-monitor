@@ -15,7 +15,7 @@ export function Layout({
             </div>
 
             <div
-                className="w-full flex pb-20 ml-32"
+                className="w-full flex pb-20 -ml-32 pl-32"
             >
                 {children}
             </div>
