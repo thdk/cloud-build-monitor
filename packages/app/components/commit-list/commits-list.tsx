@@ -1,20 +1,31 @@
 import { CommitListItem } from "../commit-list-item";
-import { useRepoContext } from "../repo-provider";
 import { Commits } from "../../github/types";
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import { getCommitsWithIssue } from "../../utils/get-commits-with-issue";
 
-export function CommitsList({
-    commits,
-}: {
-    commits?: Commits;
-}) {
+export function CommitsList() {
 
-    const {
+    const { query: {
         repo,
         owner,
         ref,
-    } = useRepoContext();
+    } } = useRouter();
 
-    const body = (commits || []).reduce<{ [date: string]: Commits }>(
+    const commits = useQuery(
+        [
+            'commits-issues',
+            owner,
+            repo,
+        ],
+        () => getCommitsWithIssue({
+            ref: ref as string,
+            repo: repo as string,
+            owner: owner as string,
+        }),
+    );
+
+    const body = (commits.data || []).reduce<{ [date: string]: Commits }>(
         (p, commit) => {
             const commitedOnTime = new Date(commit.commit.committer?.date || 0);
 

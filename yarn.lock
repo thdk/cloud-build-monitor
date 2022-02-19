@@ -1670,6 +1670,7 @@ __metadata:
     firebase-admin: ^10.0.1
     jira-client: ^8.0.0
     next: 12.0.8
+    nextjs-progressbar: ^0.0.13
     postcss: ^8.4.5
     react: 17.0.2
     react-dom: 17.0.2
@@ -5135,6 +5136,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nextjs-progressbar@npm:^0.0.13":
+  version: 0.0.13
+  resolution: "nextjs-progressbar@npm:0.0.13"
+  dependencies:
+    nprogress: ^0.2.0
+    prop-types: ^15.7.2
+  peerDependencies:
+    next: ">= 6.0.0 <=12.x.x"
+    react: ">= 16.0.0 <= 17.x.x"
+  checksum: 0e055b8e1000c8b8bbf8d0c278a268837ece478f87d193024a9510a7471ea149b2da69edafaeca59111f6f9c8a34dd2e41d203b9b802a2f7d5c4ca3dae1db4a0
+  languageName: node
+  linkType: hard
+
 "node-abi@npm:^3.3.0":
   version: 3.8.0
   resolution: "node-abi@npm:3.8.0"
@@ -5277,6 +5291,13 @@ __metadata:
     gauge: ^4.0.0
     set-blocking: ^2.0.0
   checksum: 33d8a7fe3d63bf83b16655b6588ae7ba10b5f37b067a661e7cab6508660d7c3204ae716ee2c5ce4eb9626fd1489cf2fa7645d789bc3b704f8c3ccb04a532a50b
+  languageName: node
+  linkType: hard
+
+"nprogress@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "nprogress@npm:0.2.0"
+  checksum: 66b7bec5d563ecf2d1c3d2815e6d5eb74ed815eee8563e0afa63d3f185ab1b9cf2ddd97e1ded263b9995c5019d26d600320e849e50f3747984daa033744619dc
   languageName: node
   linkType: hard
 

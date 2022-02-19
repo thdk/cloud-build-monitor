@@ -1,36 +1,46 @@
 import Link from "next/link";
-import { Repo } from "../../pages/repos"
+import { useQuery } from "react-query";
+import { getRepos } from "../../github/repos";
 
-export function RepoList({
-    repos,
-}: {
-    repos: Repo[],
-}) {
-    return (
-        <div
-            className="flex flex-col mx-20 m-10 border rounded-lg w-full"
-        >
-            {
-                repos.map((repo) => {
-                    return (
-                        <div
-                            className="p-4 w-full border"
-                            key={`${repo.owner}${repo.name}`}>
+export function RepoList() {
+    const {
+        data,
+    } = useQuery(
+        "repos",
+        getRepos,
+    );
+
+    return data
+        ? (
+            <div
+                className="flex flex-col mx-20 m-10 border rounded-lg w-full"
+            >
+                {
+                    data.map((repo) => {
+                        return (
+                            <div
+                                className="p-4 w-full border"
+                                key={`${repo.owner}${repo.name}`}>
 
 
-                            <Link
-                                href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}`}
-                            >
-                                <a
-                                    className="underline"
+                                <Link
+                                    href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}`}
                                 >
-                                    {repo.owner}/{repo.name}
-                                </a>
-                            </Link>
-                        </div>
-                    );
-                })
-            }
-        </div>
-    )
+                                    <a
+                                        className="underline"
+                                    >
+                                        {repo.owner}/{repo.name}
+                                    </a>
+                                </Link>
+                            </div>
+                        );
+                    })
+                }
+            </div>
+        )
+        : (
+            <div>
+                Loading repos...
+            </div>
+        );
 }

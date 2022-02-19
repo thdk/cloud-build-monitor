@@ -4,20 +4,15 @@ export type Commit = {
     commit: {
         message: string;
         committer: {
-            date: string;
+            date: string | null;
         },
-        author: {
-            avatar_url: string;
-        }
     },
     committer: {
-        avatar_url: string;
-        login: string;
+        avatar_url: string | null;
+        login: string | null;
     },
     author: {
-        login: string;
-        avatar_url: string;
-        name: string;
+        avatar_url: string | null;
     },
     sha: string;
     html_url: string;

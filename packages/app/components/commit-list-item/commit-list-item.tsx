@@ -1,8 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { getTagsGroupedByCommitSha } from "../../github/tags";
 import { Commit } from "../../github/types";
+import { useTags } from "../../github/use-tags";
 import { useIssueTracker } from "../../hooks/use-issue-tracker";
-import { useRepoContext } from "../repo-provider";
 import { Tag } from "../tag";
 
 export function CommitListItem({
@@ -18,12 +21,28 @@ export function CommitListItem({
   const { url } = useIssueTracker() || {};
 
   const {
-    tagDictionary,
-    repo,
-    owner
-  } = useRepoContext();
+    query: {
+      repo,
+      owner
+    }
+  } = useRouter();
 
-  const commitTags: undefined | string[] = tagDictionary[sha];
+  const tags = useTags({
+    repo: repo as string,
+    owner: owner as string,
+  });
+
+
+  const tagDictionary = useMemo<Record<string, string[]>>(
+    () => tags
+      ? getTagsGroupedByCommitSha(tags)
+      : {},
+    [
+      tags,
+    ],
+  );
+
+  const commitTags = tagDictionary[sha];
 
   return (
     <div
@@ -69,7 +88,7 @@ export function CommitListItem({
                       <img
                         title={committer.login!}
                         src={committer.avatar_url}
-                        alt={committer.login || committer.login}
+                        alt={committer.login || undefined}
                         width={40}
                         height={40}
                         className="rounded-full"

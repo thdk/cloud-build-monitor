@@ -1,12 +1,24 @@
 import { octokit } from "./octocit";
 
+type Tag = {
+    name: string;
+    commit: {
+        sha: string;
+    };
+};
+
 export async function getAllTags({
     owner,
     repo,
 }: {
-    owner: string;
-    repo: string;
+    owner?: string;
+    repo?: string;
 }) {
+
+    if (!owner || !repo) {
+        return [];
+    }
+
     let count = 0
     return octokit.paginate(
         octokit.repos.listTags,
@@ -27,11 +39,9 @@ export async function getAllTags({
 
 export type TagsDictionary = Record<string, string[]>
 
-export async function getTagsGroupedByCommitSha(
-    options: Parameters<typeof getAllTags>[0],
-    ) {
-    const tags = await getAllTags(options)
-    
+export function getTagsGroupedByCommitSha(
+    tags: Tag[],
+) {
     return tags.reduce<TagsDictionary>(
         (p, { commit: { sha }, name }) => {
 

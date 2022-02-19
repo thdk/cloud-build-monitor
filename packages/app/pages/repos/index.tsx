@@ -1,46 +1,36 @@
 import { GetStaticProps, NextPage } from "next";
 import { Layout } from "../../components/layout";
 import { RepoList } from "../../components/repo-list";
-import { octokit } from "../../github/octocit";
+import { getRepos } from "../../github/repos";
+import { dehydrate, QueryClient, useQuery } from 'react-query';
+
+
 
 export type Repo = {
     name: string;
     owner: string;
 }
 
-type Props = {
-    repos: Repo[],
-};
 
-const ReposPage: NextPage<Props> = ({
-    repos,
-}) => {
+const ReposPage: NextPage = () => {
 
     return (
         <Layout>
-            <RepoList
-                repos={repos}
-            />
+            <RepoList />
         </Layout>
     );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getStaticProps: GetStaticProps = async () => {
+    const queryClient = new QueryClient()
 
-
-    const repos = await octokit.repos.listForAuthenticatedUser({
-        type: "all"
-    });
+    await queryClient.prefetchQuery('repos', getRepos);
 
     return {
         props: {
-            repos: repos.data
-                .map((repo) => ({
-                    owner: repo.owner.login,
-                    name: repo.name,
-                })),
-        }
-    }
+            dehydratedState: dehydrate(queryClient),
+        },
+    };
 }
 
 export default ReposPage;
