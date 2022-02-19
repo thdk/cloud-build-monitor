@@ -73,6 +73,7 @@ export function CommitsList() {
                                 labelPlacement="start"
                                 control={
                                     <Checkbox
+                                        size="small"
                                         value={showCommitSubject}
                                         onChange={() => setShowCommitSubject(!showCommitSubject)}
                                     />}

@@ -151,9 +151,9 @@ export function CommitListItem({
               target="_blank"
               href={commit.html_url}
               rel="noreferrer"
-              className="no-wrap flex"
+              className="no-wrap flex underline"
             >
-              {commit.sha.substring(0, 7)} <span className="pl-2">🔗</span>
+              {commit.sha.substring(0, 7)}
             </a>
           </div>
         </div>

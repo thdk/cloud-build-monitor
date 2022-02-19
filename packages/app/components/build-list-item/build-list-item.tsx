@@ -96,7 +96,7 @@ export function BuildListItem({
         <a
           target="_blank"
           href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer">
-          {commitSha.substring(0, 7)} <span>🔗</span>
+          {commitSha.substring(0, 7)}
         </a>
       </td>
 
