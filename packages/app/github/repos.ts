@@ -6,7 +6,6 @@ export const getRepos = async () => {
     });
 
     return repos.data
-        .filter((repo) => repo.owner.login === "smartphoto-group")
         .map((repo) => ({
             owner: repo.owner.login,
             name: repo.name,
