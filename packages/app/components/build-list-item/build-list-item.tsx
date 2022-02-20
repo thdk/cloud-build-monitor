@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { useIssueTracker } from '../../hooks/use-issue-tracker';
+import { useRouter } from 'next/router';
 import { CICCDBuild } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
+import { CommitLinks } from '../commit-links';
 import { Timer } from '../timer';
 
 export function BuildListItem({
@@ -21,9 +22,9 @@ export function BuildListItem({
   finishTime,
   id,
 }: CICCDBuild & { id: string }) {
-
-
-  const { url } = useIssueTracker() || {};
+  const {
+    push
+  } = useRouter();
 
   const options = {
     year: 'numeric', month: 'numeric', day: 'numeric',
@@ -33,7 +34,8 @@ export function BuildListItem({
 
   return (
     <div
-      className='flex border justify-between'
+      className='flex border justify-between hover:bg-slate-100'
+      onClick={() => push(`/builds/${id}`)}
     >
       <div
         className='flex'
@@ -90,7 +92,7 @@ export function BuildListItem({
       </div>
       <div
         className='flex p-4'
-      >
+      >       
         <div
           className='flex flex-col px-4  text-slate-600 pr-16'
         >
@@ -106,45 +108,15 @@ export function BuildListItem({
         <div
           className='flex items-center align-center w-32 pl-4 justify-center mr-8'
         >
-          <a
-            target="_blank"
-            href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer"
-            className='underline'
-          >
-            { /* eslint-disable-next-line  */}
-            <img alt={origin} src='icons/github.png' style={{ width: "auto", height: "32px" }} />
-          </a>
-          <a
-            href={logUrl}
-            title='logs'
-            target="_blank" rel="noreferrer"
-            className='px-2'
-          >
-            {
-              (origin === "cloud-build")
-                // eslint-disable-next-line
-                ? <img alt={origin} src='icons/cloud_build.png' style={{ width: "auto", height: "32px" }} />
-                : null
-            }
-            {
-              (origin === "gocd")
-                // eslint-disable-next-line
-                ? <img alt={origin} src='icons/gocd.png' style={{ width: "auto", height: "16px" }} />
-                : null
-            }
-          </a>
-
-          {
-            url && issueNr && <a target="_blank" href={url
-              .replace("{0}", issueNr)
-              .replace("{1}", githubRepoOwner)
-              .replace("{2}", repo)
-            } rel="noreferrer"
-            >
-              { /* eslint-disable-next-line  */}
-              <img alt={origin} src='icons/jira-icon.png' style={{ width: "auto", height: "32px" }} />
-            </a>
-          }
+          <CommitLinks
+            commitSha={commitSha}
+            githubRepoOwner={githubRepoOwner}
+            issueNr={issueNr}
+            logUrl={logUrl}
+            repo={repo}
+            origin={origin}
+            size={"small"}
+          />
         </div>
       </div>
     </div>

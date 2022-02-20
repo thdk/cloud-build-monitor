@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { useRepo } from "../../github/repo-context";
 import { getTagsGroupedByCommitSha } from "../../github/tags";
 import { Commit } from "../../github/types";
 import { useTags } from "../../github/use-tags";
 import { useIssueTracker } from "../../hooks/use-issue-tracker";
+import { CommitChecks } from "../commit-checks";
+import { CommitLinks } from "../commit-links";
 import { Tag } from "../tag";
 
 export function CommitListItem({
@@ -23,11 +25,9 @@ export function CommitListItem({
   const { url } = useIssueTracker() || {};
 
   const {
-    query: {
-      repo,
-      owner
-    }
-  } = useRouter();
+    repo,
+    owner,
+  } = useRepo();
 
   const tags = useTags();
 
@@ -144,18 +144,23 @@ export function CommitListItem({
         <div
           className="flex items-center"
         >
+          <CommitChecks
+            sha={sha}
+          />
           <div
-            className='px-4 py-2'
+            className='px-8 py-2'
           >
-            <a
-              target="_blank"
-              href={commit.html_url}
-              rel="noreferrer"
-              className="no-wrap flex underline"
-            >
-              {commit.sha.substring(0, 7)}
-            </a>
+            {commit.sha.substring(0, 7)}
           </div>
+          {
+            owner && repo && <CommitLinks
+              commitSha={sha}
+              githubRepoOwner={owner}
+              issueNr={commit?.jiraIssue?.key}
+              repo={repo}
+              size="small"
+            />
+          }
         </div>
       </div>
     </div>

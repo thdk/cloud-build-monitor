@@ -53,7 +53,9 @@ export function CommitsList() {
             >
                 <h1
                     className="text-xl mb-10 py-4"
-                >{owner} / {repo}</h1>
+                >
+                    {owner} / {repo}
+                </h1>
             </div>
             <div
                 className="flex-col px-20"

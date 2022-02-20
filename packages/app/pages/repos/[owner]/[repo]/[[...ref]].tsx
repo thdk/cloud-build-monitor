@@ -23,7 +23,7 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
     repo: string;
     owner: string;
 }>) => {
-    const ref = context.params?.ref;
+    const ref = context.params?.ref || "master";
     const repo = context.params?.repo;
     const owner = context.params?.owner;
 

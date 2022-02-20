@@ -2,7 +2,6 @@ import { query, collection, orderBy, limit } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { firestore } from '../../firebase/init-firebase';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
-import { BuildListHeader } from '../build-list-header';
 import { BuildListItems } from '../build-list-items';
 
 export function BuildList() {

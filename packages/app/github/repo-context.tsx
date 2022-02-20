@@ -24,7 +24,7 @@ export const RepoProvider = ({
             setRepoRef(
                 Array.isArray(refFromParam)
                     ? refFromParam.join('/')
-                    : refFromParam || "master"
+                    : refFromParam
             )
         },
         [refFromParam]
