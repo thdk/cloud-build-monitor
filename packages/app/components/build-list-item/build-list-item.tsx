@@ -32,110 +32,121 @@ export function BuildListItem({
   } as const;
 
   return (
-    <tr
-      key={id}
-      className='border'
+    <div
+      className='flex border justify-between'
     >
-      <td
-        className='px-8 py-2'
+      <div
+        className='flex'
       >
-        <BuildStatusIcon
-          status={status}
-        />
-      </td>
-
-      <td
-        className='px-8 py-2'
-      >
-        <Link href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`} >
-          <a className='underline'>
-            {branchName}
-          </a>
-        </Link>
-      </td>
-
-      <td
-        className='px-8 py-2 w-64'
-      >
-        {commitAuthor}
-      </td>
-
-      <td
-        className='px-8 py-2'
-      >
-        {commitSubject}
-      </td>
-
-      <td
-        className='px-8 py-2 w-40'
-      >
-        {name}
-      </td>
-
-
-      <td
-        className='px-8 py-2'
-      >
-        {
-          (origin === "cloud-build")
-            // eslint-disable-next-line
-            ? <img alt={origin} src='icons/cloud_build.png' style={{ width: "auto", height: "32px" }} />
-            : null
-        }
-        {
-          (origin === "gocd")
-            // eslint-disable-next-line
-            ? <img alt={origin} src='icons/gocd.png' style={{ width: "auto", height: "16px" }} />
-            : null
-        }
-      </td>
-
-      <td
-        className='px-8 py-2  w-40'
-      >
-        <a
-          target="_blank"
-          href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer">
-          {commitSha.substring(0, 7)}
-        </a>
-      </td>
-
-      <td
-        className='px-8 py-2 text-slate-500'
-      >
-        {new Intl.DateTimeFormat('default', options).format(created)}
-      </td>
-
-      <td
-        className='px-8 py-2 text-slate-500 w-40'
-      >
-        <Timer
-          finishTime={finishTime}
-          startTime={startTime}
-        />
-      </td>
-
-      <td
-        className='px-8 py-2 flex'
-      >
-        <a
-          href={logUrl}
-          title='logs'
-          target="_blank" rel="noreferrer"
+        <div
+          className='flex items-center p-4 pl-8'
         >
-          📄
-        </a>
+          <BuildStatusIcon
+            status={status}
+          />
+        </div>
+        <div
+          key={id}
+          className='flex flex-col p-4'
+        >
+          <div
+            className='first-row'
+          >
+            <div
+              className=''
+            >
+              {name}
+              <span
+                className='px-2 text-slate-600'>
+                for
+              </span>
+              {commitSha.substring(0, 7)}
+              <span
+                className='px-2 text-slate-600'>
+                on
+              </span>
+              <Link href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`} >
+                <a className='underline'>
+                  {branchName}
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div
+            className='second-row flex align-center'
+          >
+            <div
+              className=''
+            >
+              {commitAuthor}
+              <span
+                className='px-2 text-slate-600'>
+                committed
+              </span>
+              {commitSubject}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className='flex p-4'
+      >
+        <div
+          className='flex flex-col px-4  text-slate-600 pr-16'
+        >
+          <div>
+            {new Intl.DateTimeFormat('default', options).format(created)}
 
-        {
-          url && issueNr && <a target="_blank" href={url
-            .replace("{0}", issueNr)
-            .replace("{1}", githubRepoOwner)
-            .replace("{2}", repo)
-          } rel="noreferrer">
-            🐛
+          </div>
+          <Timer
+            finishTime={finishTime}
+            startTime={startTime}
+          />
+        </div>
+        <div
+          className='flex items-center align-center w-32 pl-4 justify-center mr-8'
+        >
+          <a
+            target="_blank"
+            href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer"
+            className='underline'
+          >
+            { /* eslint-disable-next-line  */}
+            <img alt={origin} src='icons/github.png' style={{ width: "auto", height: "32px" }} />
           </a>
-        }
-      </td>
-    </tr>
+          <a
+            href={logUrl}
+            title='logs'
+            target="_blank" rel="noreferrer"
+            className='px-2'
+          >
+            {
+              (origin === "cloud-build")
+                // eslint-disable-next-line
+                ? <img alt={origin} src='icons/cloud_build.png' style={{ width: "auto", height: "32px" }} />
+                : null
+            }
+            {
+              (origin === "gocd")
+                // eslint-disable-next-line
+                ? <img alt={origin} src='icons/gocd.png' style={{ width: "auto", height: "16px" }} />
+                : null
+            }
+          </a>
+
+          {
+            url && issueNr && <a target="_blank" href={url
+              .replace("{0}", issueNr)
+              .replace("{1}", githubRepoOwner)
+              .replace("{2}", repo)
+            } rel="noreferrer"
+            >
+              { /* eslint-disable-next-line  */}
+              <img alt={origin} src='icons/jira-icon.png' style={{ width: "auto", height: "32px" }} />
+            </a>
+          }
+        </div>
+      </div>
+    </div>
   );
 }

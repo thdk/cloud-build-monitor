@@ -19,23 +19,16 @@ export function BuildList() {
   );
 
   return (
-    <table className="table-auto w-full text-left">
-      <thead
-        className='bg-gray-100 text-slate-500'
-      >
-        <BuildListHeader />
-      </thead>
-      <tbody>
+    <div className="w-full flex -pl-32 flex-col p-10">
+      <div>
         {error && <strong>Error: {JSON.stringify(error)}</strong>}
         {loading && <span>Loading...</span>}
         {value && (
-          <>
             <BuildListItems
               builds={value.docs.map((doc) => ({ id: doc.id, ...doc.data() }))}
             />
-          </>
         )}
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 }

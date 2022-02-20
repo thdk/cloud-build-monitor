@@ -8,7 +8,9 @@ export function BuildListItems({
 }) {
 
   return (
-    <>
+    <div
+      className='border rounded-lg'
+    >
       {
         builds.map((data) => {
           return (
@@ -19,6 +21,6 @@ export function BuildListItems({
           );
         })
       }
-    </>
+    </div>
   );
 }

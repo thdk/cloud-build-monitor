@@ -57,9 +57,6 @@ export function CommitsList() {
             </div>
             <div
                 className="flex-col px-20"
-                style={{
-                    maxWidth: "100em"
-                }}
             >
                 <div
                     className="flex flex-col"

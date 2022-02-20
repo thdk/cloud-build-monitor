@@ -6,16 +6,16 @@ export function BuildStatusIcon({
 
     switch (status) {
         case "success":
-            return <>✅</>;
+            return <div>✅</div>;
         case "failure":
-            return <>❌</>;
+            return <div>❌</div>;
         case "queued":
-            return <>🔜</>;
+            return <div>🔜</div>;
         case "working":
-            return <>⚙️</>;
+            return <div>⚙️</div>;
         case "cancelled":
-            return <>🛑</>;
+            return <div>🛑</div>;
         default:
-            return <>❔</>;
+            return <div>❔</div>;
     }
 }
