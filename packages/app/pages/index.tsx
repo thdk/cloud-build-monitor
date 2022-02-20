@@ -28,6 +28,12 @@ const Home: NextPage = () => {
               <p>Go to your dashboard and start monitoring your CI/CD builds.</p>
             </a>
           </Link>
+          <Link href="/repos">
+            <a className={styles.card}>
+              <h2>Repos &rarr;</h2>
+              <p>See what is happening in your source repositories.</p>
+            </a>
+          </Link>
           <a
             href="https://github.com/thdk/cloud-build-monitor"
             className={styles.card}
