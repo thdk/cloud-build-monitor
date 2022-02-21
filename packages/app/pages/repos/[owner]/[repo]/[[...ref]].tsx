@@ -30,7 +30,6 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
     const queryClient = new QueryClient()
 
     await Promise.all([
-        queryClient.prefetchQuery('repos', getRepos),
         queryClient.prefetchQuery(
             [
                 'tags',

@@ -19,7 +19,7 @@ export function CommitLinks({
 
     return (
         <div
-            className="flex"
+            className="flex px-4"
         >
             <a
                 target="_blank"

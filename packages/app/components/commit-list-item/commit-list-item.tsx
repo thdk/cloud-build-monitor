@@ -109,21 +109,9 @@ export function CommitListItem({
                     <div
                       className=""
                     >
-                      {
-                        url
-                          ? <a
-                            href={url
-                              .replace("{0}", commit.jiraIssue?.key)
-                            } rel="noreferrer">
-                            <span
-                              className="underline pr-2">
-                              {issue.key}
-                            </span>
-                          </a>
-                          : <span>
-                            {issue.key}
-                          </span>
-                      }
+                      <span>
+                        {issue.key}
+                      </span>
                       {issue.summary}
                     </div>
                   )
