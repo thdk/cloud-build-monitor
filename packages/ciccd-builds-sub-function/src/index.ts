@@ -24,7 +24,7 @@ export const ciccdBuildEvents: EventFunction = async ({
         origin,
         repo,
         githubRepoOwner,
-        logUrl,
+        logUrl = null,
         startTime,
         finishTime,
     } = attributes || {};

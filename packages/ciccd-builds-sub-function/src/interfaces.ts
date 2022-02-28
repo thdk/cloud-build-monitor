@@ -9,7 +9,7 @@ export interface CICCDBuild {
     readonly branchName: string;
     readonly id: string;
     readonly githubRepoOwner: string;
-    readonly logUrl: string;
+    readonly logUrl: string | null;
     readonly issueNr: string | null;
     readonly startTime: Date | null;
     readonly finishTime: Date | null;
