@@ -63,15 +63,15 @@ export const ciccdBuildEvents: EventFunction = async ({
                 ? toDateTime(+finishTime)
                 : null,
         }),
-        status !== "success" && status != "failure"
-            ? undefined
-            : sendBuildReportEmail({
-                branch: branchName,
-                author: commit.author.email,
-                issueNr,
-                sha: commitSha,
-                status,
-                trigger: name,
-            }),
+        // status !== "success" && status != "failure"
+        //     ? undefined
+        //     : sendBuildReportEmail({
+        //         branch: branchName,
+        //         author: commit.author.email,
+        //         issueNr,
+        //         sha: commitSha,
+        //         status,
+        //         trigger: name,
+        //     }),
     ]);
 };
