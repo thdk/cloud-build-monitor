@@ -5,7 +5,6 @@ import { useRepo } from "../../github/repo-context";
 import { getTagsGroupedByCommitSha } from "../../github/tags";
 import { Commit } from "../../github/types";
 import { useTags } from "../../github/use-tags";
-import { useIssueTracker } from "../../hooks/use-issue-tracker";
 import { CommitChecks } from "../commit-checks";
 import { CommitLinks } from "../commit-links";
 import { Tag } from "../tag";
@@ -13,16 +12,16 @@ import { Tag } from "../tag";
 export function CommitListItem({
   commit,
   showCommitSubject,
+  dateFormatOptions,
 }: {
   commit: Commit;
   showCommitSubject: boolean;
+  dateFormatOptions: Intl.DateTimeFormatOptions,
 }) {
   const committer = commit.committer;
   const commitSubject = commit.commit.message.split('\n')[0];
   const issue = commit.jiraIssue;
   const sha = commit.sha;
-
-  const { url } = useIssueTracker() || {};
 
   const {
     repo,
@@ -30,7 +29,6 @@ export function CommitListItem({
   } = useRepo();
 
   const tags = useTags();
-
 
   const tagDictionary = useMemo<Record<string, string[]>>(
     () => tags
@@ -43,6 +41,9 @@ export function CommitListItem({
 
   const commitTags = tagDictionary[sha];
 
+  const date = new Date(commit.commit.committer.date || 0);
+  const formattedDate = new Intl.DateTimeFormat(undefined, dateFormatOptions).format(date);
+
   return (
     <div
       className='flex border w-full flex-col'
@@ -54,7 +55,7 @@ export function CommitListItem({
     >
       {commitTags && (
         <div
-          className="flex pt-4 pl-4 pb-2"
+          className="flex mt-4 ml-4 mb-2"
         >
           {commitTags.map((tag) => (
             <Link
@@ -77,19 +78,19 @@ export function CommitListItem({
           className='flex items-center flex-shrink'
         >
           <div
-            className='px-4 py-2 max-w-32 w-16'
+            className='mx-4 my-2 max-w-32 flex-shrink-0 align-center'
           >
             {
               (committer.avatar_url)
                 ? (
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-center">
                     <span>
                       <img
                         title={committer.login!}
                         src={committer.avatar_url}
                         alt={committer.login || undefined}
-                        width={40}
-                        height={40}
+                        width={24}
+                        height={24}
                         className="rounded-full"
                       />
                     </span>
@@ -100,7 +101,7 @@ export function CommitListItem({
           </div>
 
           <div
-            className='px-8 pl-0 py-2'
+            className='mx-8 ml-0 my-2 mr-0'
           >
             <div className="flex flex-col">
               {
@@ -109,10 +110,7 @@ export function CommitListItem({
                     <div
                       className=""
                     >
-                      <span>
-                        {issue.key}
-                      </span>
-                      {issue.summary}
+                      {issue.key}: {issue.summary}
                     </div>
                   )
                   : null
@@ -126,7 +124,11 @@ export function CommitListItem({
 
             </div>
           </div>
-
+          <div
+            className="text-slate-500 mx-2"
+          >
+            {formattedDate}
+          </div>
         </div>
 
         <div
@@ -136,18 +138,22 @@ export function CommitListItem({
             sha={sha}
           />
           <div
-            className='px-8 py-2'
+            className='my-2 align-center'
           >
             {commit.sha.substring(0, 7)}
           </div>
           {
-            owner && repo && <CommitLinks
-              commitSha={sha}
-              githubRepoOwner={owner}
-              issueNr={commit?.jiraIssue?.key}
-              repo={repo}
-              size="small"
-            />
+            <div
+              className="w-24 flex justify-center align-center mx-4 mr-2"
+            >
+              <CommitLinks
+                commitSha={sha}
+                githubRepoOwner={owner}
+                issueNr={commit?.jiraIssue?.key}
+                repo={repo}
+                size="small"
+              />
+            </div>
           }
         </div>
       </div>

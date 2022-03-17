@@ -8,7 +8,7 @@ export function Tag({
     return (
         <a
             href={href}
-            className="px-2"
+            className="px-2 text-slate-500"
         >
             🏷 <span className="underline">{name}</span>
         </a>

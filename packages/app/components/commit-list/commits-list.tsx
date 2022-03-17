@@ -6,6 +6,7 @@ import { RefInput } from "../ref-input";
 import { useRepo } from "../../github/repo-context";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useState } from "react";
+import { getRepo } from "../../github/repos";
 
 export function CommitsList() {
 
@@ -15,6 +16,21 @@ export function CommitsList() {
         repoRef,
     } = useRepo();
 
+    const { data: gitRepo } = useQuery([
+        'repo',
+        owner,
+        repo,
+    ],
+        () => {
+            return owner && repo
+                ? getRepo({
+                    owner,
+                    repo,
+                })
+                : undefined
+        }
+    )
+
     const commits = useQuery(
         [
             'commits-issues',
@@ -23,10 +39,13 @@ export function CommitsList() {
             repoRef,
         ],
         () => getCommitsWithIssue({
-            ref: repoRef as string,
+            ref: repoRef || gitRepo?.data.default_branch as string,
             repo: repo as string,
             owner: owner as string,
         }),
+        {
+            enabled: !!gitRepo?.data.default_branch,
+        },
     );
 
     const body = (commits.data || []).reduce<{ [date: string]: Commits }>(
@@ -43,10 +62,15 @@ export function CommitsList() {
     );
 
     const [showCommitSubject, setShowCommitSubject] = useState(false);
+    const [groupCommitsByDay, setGroupCommitsByDay] = useState(false);
+
+    const commitDateFormatOptions: Intl.DateTimeFormatOptions = groupCommitsByDay
+        ? { hour: "2-digit", minute: "2-digit" }
+        : { year: 'numeric', month: 'short', day: 'numeric', hour: "2-digit", minute: "2-digit" };
 
     return (
         <div
-            className="w-full flex -pl-32 flex-col p-10"
+            className="w-full flex -pl-32 flex-col p-4 lg:p-10"
         >
             <div
                 className="flex"
@@ -58,7 +82,7 @@ export function CommitsList() {
                 </h1>
             </div>
             <div
-                className="flex-col px-20"
+                className="flex-col lg:px-20"
             >
                 <div
                     className="flex flex-col"
@@ -67,53 +91,97 @@ export function CommitsList() {
                         className="mb-4 flex justify-between"
                     >
                         <RefInput />
-                        <FormGroup>
-                            <FormControlLabel
-                                labelPlacement="start"
-                                control={
-                                    <Checkbox
-                                        size="small"
-                                        value={showCommitSubject}
-                                        onChange={() => setShowCommitSubject(!showCommitSubject)}
-                                    />}
-                                label="Show commit subject"
-                            />
-                        </FormGroup>
+                        <div
+                            className="flex"
+                        >
+                            <FormGroup>
+                                <FormControlLabel
+                                    labelPlacement="start"
+                                    control={
+                                        <Checkbox
+                                            size="small"
+                                            value={showCommitSubject}
+                                            onChange={() => setShowCommitSubject(!showCommitSubject)}
+                                        />}
+                                    label="Show commit subject"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <FormControlLabel
+                                    labelPlacement="start"
+                                    control={
+                                        <Checkbox
+                                            size="small"
+                                            value={groupCommitsByDay}
+                                            onChange={() => setGroupCommitsByDay(!groupCommitsByDay)}
+                                        />}
+                                    label="Group commits by day"
+                                />
+                            </FormGroup>
+
+                        </div>
                     </div>
                     <div>
                         {
-                            Object.entries(body).map(([key, commits]) => {
-                                const date = new Date(commits[0].commit.committer?.date || 0);
-                                const options = { weekday: 'long', month: 'short', day: 'numeric' } as const;
-                                const formattedDate = new Intl.DateTimeFormat(undefined, options).format(date);
-                                return (
-                                    <div key={key} className="flex flex-col">
-                                        <div
-                                            className="py-4 px-2"
-                                        >
-                                            Commits on {formattedDate}
-                                        </div>
-                                        <div
-                                            className="inline-block rounded-lg border w-full"
-                                        >
-                                            <div>
-                                                {
-                                                    commits.map((commit) => {
-                                                        return (
-                                                            <CommitListItem
-                                                                key={commit.sha}
-                                                                commit={commit}
-                                                                showCommitSubject={showCommitSubject}
-                                                            />
-                                                        );
-                                                    })
+                            groupCommitsByDay
+                                ? (
+                                    Object.entries(body).map(([key, commits]) => {
+                                        const date = new Date(commits[0].commit.committer?.date || 0);
+                                        const options = { weekday: 'long', month: 'short', day: 'numeric' } as const;
+                                        const formattedDate = new Intl.DateTimeFormat(undefined, options).format(date);
+                                        return (
+                                            <div key={key} className="flex flex-col">
+                                                <div
+                                                    className="pt-6 pr-8 mb-2 px-2 flex text-slate-700"
+                                                >
+                                                    Commits on {formattedDate}
+                                                </div>
+                                                <div
+                                                    className="inline-block rounded-lg border w-full"
+                                                >
+                                                    <div>
+                                                        {
+                                                            commits.map((commit) => {
+                                                                return (
+                                                                    <CommitListItem
+                                                                        key={commit.sha}
+                                                                        commit={commit}
+                                                                        showCommitSubject={showCommitSubject}
+                                                                        dateFormatOptions={commitDateFormatOptions}
+                                                                    />
+                                                                );
+                                                            })
 
-                                                }
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        );
+                                    })
+                                )
+                                : (
+                                    <div
+                                        className="inline-block rounded-lg border w-full"
+                                    >
+                                        {
+                                            commits.data?.map((commit) => {
+                                                return (
+                                                    <div
+                                                        key={commit.sha}
+                                                    >
+                                                        <CommitListItem
+                                                            key={commit.sha}
+                                                            commit={commit}
+                                                            showCommitSubject={showCommitSubject}
+                                                            dateFormatOptions={commitDateFormatOptions}
+                                                        />
+                                                    </div>
+
+                                                );
+                                            })
+                                        }
                                     </div>
-                                );
-                            })
+                                )
                         }
                     </div>
                 </div>

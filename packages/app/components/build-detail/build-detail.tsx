@@ -42,15 +42,19 @@ export function BuildDetail({
                     >
                         {status}: <span className="normal-case">{name}</span>
                     </h1>
-                    <CommitLinks
-                        commitSha={commitSha}
-                        githubRepoOwner={githubRepoOwner}
-                        issueNr={issueNr}
-                        logUrl={logUrl}
-                        repo={repo}
-                        origin={origin}
-                        size="standard"
-                    />
+                    <div
+                        className="w-32 flex align-center justify-center"
+                    >
+                        <CommitLinks
+                            commitSha={commitSha}
+                            githubRepoOwner={githubRepoOwner}
+                            issueNr={issueNr}
+                            logUrl={logUrl}
+                            repo={repo}
+                            origin={origin}
+                            size="standard"
+                        />
+                    </div>
 
                 </div>
 

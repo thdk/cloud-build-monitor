@@ -7,6 +7,7 @@ import { getCommitsWithIssue } from "../../../../utils/get-commits-with-issue";
 import { getRepos } from "../../../../github/repos";
 import { dehydrate, QueryClient } from "react-query";
 import { RepoProvider } from "../../../../github/repo-context";
+import { octokit } from "../../../../github/octocit";
 
 export const RepoPage: NextPage = () => {
     return (
@@ -23,9 +24,25 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
     repo: string;
     owner: string;
 }>) => {
-    const ref = context.params?.ref || "master";
+    const ref = context.params?.ref;
     const repo = context.params?.repo;
     const owner = context.params?.owner;
+
+    if (!ref && repo && owner) {
+        const gitRepo = await octokit.repos.get({
+            owner,
+            repo,
+        });
+
+        const defaultBranch = gitRepo.data.default_branch;
+
+        return {
+            redirect: {
+                statusCode: 301, // permanent redirect
+                destination: `/repos/${owner}/${repo}/${defaultBranch}`,
+            },
+        };
+    }
 
     const queryClient = new QueryClient()
 

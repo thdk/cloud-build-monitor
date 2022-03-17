@@ -67,8 +67,13 @@ export function BuildListItem({
                 className='px-2 text-slate-600'>
                 on
               </span>
-              <Link href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`} >
-                <a className='underline'>
+              <Link
+                href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`}
+              >
+                <a
+                  className='underline'
+                  onClick={e => e.stopPropagation()}
+                >
                   {branchName}
                 </a>
               </Link>
@@ -92,7 +97,7 @@ export function BuildListItem({
       </div>
       <div
         className='flex p-4'
-      >       
+      >
         <div
           className='flex flex-col px-4  text-slate-600 pr-16'
         >
@@ -106,17 +111,17 @@ export function BuildListItem({
           />
         </div>
         <div
-          className='flex items-center align-center w-32 pl-4 justify-center mr-8'
+          className='flex items-center align-center w-32 justify-center mr-8'
         >
-          <CommitLinks
-            commitSha={commitSha}
-            githubRepoOwner={githubRepoOwner}
-            issueNr={issueNr}
-            logUrl={logUrl}
-            repo={repo}
-            origin={origin}
-            size={"small"}
-          />
+            <CommitLinks
+              commitSha={commitSha}
+              githubRepoOwner={githubRepoOwner}
+              issueNr={issueNr}
+              logUrl={logUrl}
+              repo={repo}
+              origin={origin}
+              size={"small"}
+            />
         </div>
       </div>
     </div>

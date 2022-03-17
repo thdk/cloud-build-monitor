@@ -18,9 +18,7 @@ export function CommitLinks({
     const { url } = useIssueTracker() || {};
 
     return (
-        <div
-            className="flex px-4"
-        >
+        <>
             <a
                 target="_blank"
                 href={`https://github.com/${githubRepoOwner}/${repo}/commit/${commitSha}`} rel="noreferrer"
@@ -60,6 +58,6 @@ export function CommitLinks({
                     <img alt={origin} src='/icons/jira-icon.png' style={{ width: "auto", height: size === "small" ? "24px" : "32px" }} />
                 </a>
             }
-        </div>
+        </>
     );
 }

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 const RepoContext = createContext<{
     repo: string | undefined,
@@ -17,14 +18,14 @@ export const RepoProvider = ({
         ref: refFromParam,
     } } = useRouter();
 
-    const [repoRef, setRepoRef] = useState(refFromParam);
+    const [repoRef, setRepoRef] = useState<string | undefined | null>(null);
 
     useEffect(
         () => {
             setRepoRef(
                 Array.isArray(refFromParam)
                     ? refFromParam.join('/')
-                    : refFromParam
+                    : refFromParam || null
             )
         },
         [refFromParam]
@@ -41,4 +42,9 @@ export const RepoProvider = ({
     );
 }
 
-export const useRepo = () => useContext(RepoContext);
+export const useRepo = () => {
+
+    const context = useContext(RepoContext);
+
+    return context;
+};

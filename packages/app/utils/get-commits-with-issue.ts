@@ -58,7 +58,6 @@ export async function getCommitsWithIssue({
                         }
                     }))
                     .catch((e) => {
-                        console.error(e);
                         return commitData;
                     })
                     .finally(() => commitData)

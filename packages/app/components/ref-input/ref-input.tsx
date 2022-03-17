@@ -14,13 +14,13 @@ export function RefInput() {
         repoRef,
     } = useRepo();
 
-    return tags
+    return tags && repoRef !== null
         ? (
             <AutoComplete
                 options={[...branches, ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
                 renderInput={(params) => <TextField {...params} label="Tag / Branch / Sha" />}
                 freeSolo
-                value={repoRef || ""}
+                value={repoRef  || "master"}
                 onChange={(_, value) => {
                     value && setRepoRef(value);
                 }}
