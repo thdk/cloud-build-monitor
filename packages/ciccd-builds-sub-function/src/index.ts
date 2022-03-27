@@ -1,10 +1,8 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 import type { EventFunction } from '@google-cloud/functions-framework';
-import { sendBuildReportEmail } from './send-email';
 import { getCommitInfo } from './git';
 import { config } from './config';
 import { addOrUpdateCICCDBuild } from './firestore';
-import { FieldValue } from 'firebase-admin/firestore';
 
 function toDateTime(secs: number) {
     var t = new Date(1970, 0, 1);
@@ -63,15 +61,5 @@ export const ciccdBuildEvents: EventFunction = async ({
                 ? toDateTime(+finishTime)
                 : null,
         }),
-        // status !== "success" && status != "failure"
-        //     ? undefined
-        //     : sendBuildReportEmail({
-        //         branch: branchName,
-        //         author: commit.author.email,
-        //         issueNr,
-        //         sha: commitSha,
-        //         status,
-        //         trigger: name,
-        //     }),
     ]);
 };

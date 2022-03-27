@@ -5,8 +5,9 @@ export const getRepos = async () => {
         type: "all"
     });
 
+    const repoRegex = new RegExp(process.env.NEXT_PUBLIC_REPO_REGEX || '.*');
     return repos.data
-        .filter((repo) => repo.owner.login === "smartphoto-group")
+        .filter((repo) => repoRegex.test(repo.full_name))
         .map((repo) => ({
             owner: repo.owner.login,
             name: repo.name,
