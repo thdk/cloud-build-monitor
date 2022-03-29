@@ -11,11 +11,9 @@ import { Tag } from "../tag";
 
 export function CommitListItem({
   commit,
-  showCommitSubject,
   dateFormatOptions,
 }: {
   commit: Commit;
-  showCommitSubject: boolean;
   dateFormatOptions: Intl.DateTimeFormatOptions,
 }) {
   const committer = commit.committer;
@@ -115,12 +113,9 @@ export function CommitListItem({
                   )
                   : null
               }
-              {(showCommitSubject || !issue) && (<div
-                className=""
-              >
+              <div>
                 {commitSubject}
               </div>
-              )}
 
             </div>
           </div>

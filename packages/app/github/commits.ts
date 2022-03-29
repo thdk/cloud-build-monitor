@@ -1,14 +1,32 @@
 import { octokit } from "../github/octocit";
 
-export async function getCommitsWithIssue({
+export async function getCommit({
+    owner,
+    repo,
+    ref,
+}: {
+    owner: string;
+    repo: string;
+    ref: string;
+}) {
+    return octokit.repos.getCommit({
+        owner,
+        repo,
+        ref,
+    });
+};
+
+export async function getCommits({
     ref,
     repo,
     owner,
+    since,
 }: {
     /* branch or sh */
     ref?: string;
     repo?: string;
     owner?: string;
+    since?: string;
 }) {
     if (!repo || !owner) {
         return [];
@@ -19,12 +37,13 @@ export async function getCommitsWithIssue({
             owner,
             repo,
             sha: ref,
+            per_page: 100,
+            since,
         }),
     ]);
 
     return Promise.all(
         commits.data.map(async (commit) => {
-
             const commitData = {
                 sha: commit.sha,
                 html_url: commit.html_url,
@@ -41,27 +60,10 @@ export async function getCommitsWithIssue({
                         date: commit.commit.committer?.date || null,
                     },
                 },
+                parents: commit.parents.map((parent) => parent.sha),
             };
 
-            // Jira?
-            const jiraIssueRegex = new RegExp(/[A-Z]{3}-[0-9]*/);
-            const jiraIssueNr = commit.commit.message.match(jiraIssueRegex);
-
-            return jiraIssueNr
-                ? fetch(`${process.env.NEXT_PUBLIC_HOST}/api/jira/issue/${jiraIssueNr[0]}`)
-                    .then((response) => response.json())
-                    .then((jiraIssue) => ({
-                        ...commitData,
-                        jiraIssue: {
-                            summary: jiraIssue.fields.summary || null,
-                            key: jiraIssue.key,
-                        }
-                    }))
-                    .catch((e) => {
-                        return commitData;
-                    })
-                    .finally(() => commitData)
-                : commitData;
+            return commitData;
         }),
     );
 }

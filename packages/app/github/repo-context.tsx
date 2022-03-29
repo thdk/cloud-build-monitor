@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { octokit } from "./octocit";
 
 const RepoContext = createContext<{
     repo: string | undefined,
     owner: string | undefined,
     repoRef: string | undefined,
     setRepoRef: (ref: string) => void,
+    defaultBranch: string | undefined,
 }>({} as any);
 
 export const RepoProvider = ({
@@ -29,9 +31,25 @@ export const RepoProvider = ({
             )
         },
         [refFromParam]
-    )
+    );
+
+    const repoQuery = useQuery([
+        "repo",
+        owner,
+        repo,
+    ],
+        () => octokit.repos.get({
+            owner: owner as string,
+            repo: repo as string,
+        }),
+        {
+            enabled: !!(owner && repo),
+        },
+    );
+
     return (
         <RepoContext.Provider value={{
+            defaultBranch: repoQuery.data?.data.default_branch,
             repo: repo as string | undefined,
             owner: owner as string | undefined,
             repoRef: Array.isArray(repoRef) ? repoRef[0] : repoRef,

@@ -3,11 +3,11 @@ import React from "react";
 import { CommitsList } from "../../../../components/commit-list";
 import { Layout } from "../../../../components/layout";
 import { getAllTags } from "../../../../github/tags";
-import { getCommitsWithIssue } from "../../../../utils/get-commits-with-issue";
 import { getRepos } from "../../../../github/repos";
 import { dehydrate, QueryClient } from "react-query";
 import { RepoProvider } from "../../../../github/repo-context";
 import { octokit } from "../../../../github/octocit";
+import { getCommits } from "../../../../github/commits";
 
 export const RepoPage: NextPage = () => {
     return (
@@ -64,7 +64,7 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
                 owner,
                 repo,
             ],
-            () => getCommitsWithIssue({
+            () => getCommits({
                 ref,
                 repo,
                 owner,

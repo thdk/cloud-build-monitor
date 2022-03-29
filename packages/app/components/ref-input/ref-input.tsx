@@ -2,32 +2,40 @@ import { useTags } from "../../github/use-tags";
 
 import AutoComplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { useRepo } from "../../github/repo-context";
 import { useBranches } from "../../github/use-branches";
+import { ComponentProps } from "react";
 
-export function RefInput() {
+export function RefInput({
+    value,
+    label,
+    noBranches,
+    onChange,
+    ...autoCompleteProps
+}: {
+    value: string | undefined;
+    noBranches?: boolean,
+    label: string;
+    onChange: (value: string | undefined) => void;
+} & Pick<ComponentProps<typeof AutoComplete>, "disableClearable" | "className">) {
     const tags = useTags();
     const branches = useBranches();
 
-    const {
-        setRepoRef,
-        repoRef,
-    } = useRepo();
-
-    return tags && repoRef !== null
+    return tags
         ? (
             <AutoComplete
-                options={[...branches, ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
-                renderInput={(params) => <TextField {...params} label="Tag / Branch / Sha" />}
+                {...autoCompleteProps}
+                options={[...(noBranches ? [] : branches), ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
+                renderInput={(params) => (
+                    <TextField {...params} label={label} />
+                )}
                 freeSolo
-                value={repoRef  || "master"}
                 onChange={(_, value) => {
-                    value && setRepoRef(value);
+                    value && onChange(value);
                 }}
+                value={value || ""}
                 sx={{
                     width: 300,
                 }}
-                disableClearable
                 size="small"
             />
         )
