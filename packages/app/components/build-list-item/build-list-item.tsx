@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { CICCDBuild } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
@@ -23,7 +22,10 @@ export function BuildListItem({
   id,
 }: CICCDBuild & { id: string }) {
   const {
-    push
+    pathname,
+    query,
+    push,
+    replace,
   } = useRouter();
 
   const options = {
@@ -62,21 +64,42 @@ export function BuildListItem({
                 className='px-2 text-slate-600'>
                 for
               </span>
-              {commitSha.substring(0, 7)}
+              <a
+                className='underline'
+                onClick={e => {
+                  e.stopPropagation();
+
+                  replace({
+                    pathname,
+                    query: {
+                      ...query,
+                      commit: commitSha,
+                    }
+                  });
+                }}
+              >
+                {commitSha.substring(0, 7)}
+              </a>
               <span
                 className='px-2 text-slate-600'>
                 on
               </span>
-              <Link
-                href={`/repos/${githubRepoOwner}/${repo}/${encodeURIComponent(branchName)}`}
+              <a
+                className='underline'
+                onClick={e => {
+                  e.stopPropagation();
+
+                  replace({
+                    pathname,
+                    query: {
+                      ...query,
+                      branch: branchName,
+                    }
+                  });
+                }}
               >
-                <a
-                  className='underline'
-                  onClick={e => e.stopPropagation()}
-                >
-                  {branchName}
-                </a>
-              </Link>
+                {branchName}
+              </a>
             </div>
           </div>
           <div
@@ -113,15 +136,15 @@ export function BuildListItem({
         <div
           className='flex items-center align-center w-32 justify-center mr-8'
         >
-            <CommitLinks
-              commitSha={commitSha}
-              githubRepoOwner={githubRepoOwner}
-              issueNr={issueNr}
-              logUrl={logUrl}
-              repo={repo}
-              origin={origin}
-              size={"small"}
-            />
+          <CommitLinks
+            commitSha={commitSha}
+            githubRepoOwner={githubRepoOwner}
+            issueNr={issueNr}
+            logUrl={logUrl}
+            repo={repo}
+            origin={origin}
+            size={"small"}
+          />
         </div>
       </div>
     </div>

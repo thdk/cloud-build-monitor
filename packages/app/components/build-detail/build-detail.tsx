@@ -43,7 +43,7 @@ export function BuildDetail({
                         {status}: <span className="normal-case">{name}</span>
                     </h1>
                     <div
-                        className="w-32 flex align-center justify-center"
+                        className="w-32 flex items-center justify-center"
                     >
                         <CommitLinks
                             commitSha={commitSha}

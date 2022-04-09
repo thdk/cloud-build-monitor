@@ -1,20 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import { useMemo } from "react";
 import { useRepo } from "../../github/repo-context";
-import { getTagsGroupedByCommitSha } from "../../github/tags";
 import { Commit } from "../../github/types";
-import { useTags } from "../../github/use-tags";
 import { CommitChecks } from "../commit-checks";
 import { CommitLinks } from "../commit-links";
-import { Tag } from "../tag";
+import { CommitTags } from "../commit-tags";
 
 export function CommitListItem({
   commit,
-  dateFormatOptions,
+  dateFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: "2-digit",
+    minute: "2-digit"
+},
 }: {
   commit: Commit;
-  dateFormatOptions: Intl.DateTimeFormatOptions,
+  dateFormatOptions?: Intl.DateTimeFormatOptions,
 }) {
   const committer = commit.committer;
   const commitSubject = commit.commit.message.split('\n')[0];
@@ -25,58 +27,32 @@ export function CommitListItem({
     repo,
     owner,
   } = useRepo();
-
-  const tags = useTags();
-
-  const tagDictionary = useMemo<Record<string, string[]>>(
-    () => tags
-      ? getTagsGroupedByCommitSha(tags)
-      : {},
-    [
-      tags,
-    ],
-  );
-
-  const commitTags = tagDictionary[sha];
-
+ 
   const date = new Date(commit.commit.committer.date || 0);
   const formattedDate = new Intl.DateTimeFormat(undefined, dateFormatOptions).format(date);
 
   return (
     <div
-      className='flex border w-full flex-col'
+      className='flex border-b last:border-0 w-full flex-col'
       style={{
         borderTop: "none",
         borderLeft: "none",
         borderRight: "none",
       }}
     >
-      {commitTags && (
-        <div
-          className="flex mt-4 ml-4 mb-2"
-        >
-          {commitTags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/repos/${owner}/${repo}/${tag}`}
-              passHref
-            >
-              <Tag
-                name={tag}
-              />
-            </Link>
-          ))}
-        </div>
-      )}
+      <CommitTags 
+        sha={sha}
+        className="ml-4 mt-4"
+      />
       <div
         className="flex justify-between"
       >
         <div
           key={sha}
-          className='flex items-center flex-shrink'
+          className='flex items-center'
         >
           <div
-            className='mx-4 my-2 max-w-32 flex-shrink-0 align-center'
+            className='mx-4 my-2 max-w-32 align-center flex-none'
           >
             {
               (committer.avatar_url)
@@ -99,28 +75,30 @@ export function CommitListItem({
           </div>
 
           <div
-            className='mx-8 ml-0 my-2 mr-0'
+            className='mx-8 ml-0 my-2 mr-0 shrink'
           >
             <div className="flex flex-col">
               {
                 issue
                   ? (
                     <div
-                      className=""
+                      className="truncate ... shrink"
                     >
                       {issue.key}: {issue.summary}
                     </div>
                   )
                   : null
               }
-              <div>
+              <div
+                className="truncate ... shrink"
+              >
                 {commitSubject}
               </div>
 
             </div>
           </div>
           <div
-            className="text-slate-500 mx-2"
+            className="text-slate-500 mx-2 whitespace-nowrap flex-none w-20"
           >
             {formattedDate}
           </div>

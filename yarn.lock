@@ -80,6 +80,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.1":
+  version: 7.17.8
+  resolution: "@babel/runtime@npm:7.17.8"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 68d195c1630bb91ac20e86635d292a17ebab7f361cfe79406b3f5a6cc2e59fa283ae5006568899abf869312c2b35b744bd407aea8ffdb650f1a68d07785d47e9
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2":
   version: 7.16.7
   resolution: "@babel/runtime@npm:7.16.7"
@@ -966,6 +975,15 @@ __metadata:
   bin:
     proto-loader-gen-types: build/bin/proto-loader-gen-types.js
   checksum: 30081a5a6e866506d8e799ebed00367024a2710b9b990104d804fe23c60d81d5ccaa74ad14bd0bedfab6fb313eccbc18e0bbcf3bda7f3288d8eb31cab040255f
+  languageName: node
+  linkType: hard
+
+"@heroicons/react@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "@heroicons/react@npm:1.0.6"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 372b1eda3ce735ef069777bc96304f70de585ebb71a6d1cedc121bb695f9bca235619112e3ee14e8779e95a03096813cbbe3b755927a54b7580d1ce084fa4096
   languageName: node
   linkType: hard
 
@@ -2018,12 +2036,14 @@ __metadata:
   dependencies:
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
+    "@heroicons/react": ^1.0.6
     "@mui/material": ^5.4.2
     "@octokit/rest": ^18.12.0
     "@types/jira-client": ^7.1.4
     "@types/node": 17.0.8
     "@types/react": 17.0.38
     autoprefixer: ^10.4.2
+    classnames: ^2.3.1
     eslint: 8.7.0
     eslint-config-next: 12.0.8
     firebase: ^9.6.3
@@ -2032,6 +2052,7 @@ __metadata:
     next: 12.0.8
     nextjs-progressbar: ^0.0.13
     postcss: ^8.4.5
+    rc-progress: ^3.2.4
     react: 17.0.2
     react-dom: 17.0.2
     react-firebase-hooks: ^4.0.2
@@ -2561,6 +2582,13 @@ __metadata:
     yenv: ^3.0.1
   languageName: unknown
   linkType: soft
+
+"classnames@npm:^2.2.6, classnames@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "classnames@npm:2.3.1"
+  checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
+  languageName: node
+  linkType: hard
 
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
@@ -6360,6 +6388,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rc-progress@npm:^3.2.4":
+  version: 3.2.4
+  resolution: "rc-progress@npm:3.2.4"
+  dependencies:
+    "@babel/runtime": ^7.10.1
+    classnames: ^2.2.6
+    rc-util: ^5.16.1
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 9efc3c3296a0dbdd35a3f399a427b33d67aae966a00016dc2acf7f2ad09ce937a9d5c73ccf2531e8f096469088811eb4d9fb390a46a27284c40d3b91e66ec473
+  languageName: node
+  linkType: hard
+
+"rc-util@npm:^5.16.1":
+  version: 5.19.3
+  resolution: "rc-util@npm:5.19.3"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    react-is: ^16.12.0
+    shallowequal: ^1.1.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 40dcc17a978d65ef2cb59eb5b3b1eb11f2a8e77ebfce9d773ee74d35480e93c665f158286c75a6ade9af687c1e96c1500d693fc3153a94b600ee3a1cf5422fe4
+  languageName: node
+  linkType: hard
+
 "rc@npm:^1.2.7":
   version: 1.2.8
   resolution: "rc@npm:1.2.8"
@@ -6404,7 +6460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1, react-is@npm:^16.7.0":
+"react-is@npm:^16.12.0, react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -6821,6 +6877,13 @@ __metadata:
   version: 1.2.0
   resolution: "setprototypeof@npm:1.2.0"
   checksum: be18cbbf70e7d8097c97f713a2e76edf84e87299b40d085c6bf8b65314e994cc15e2e317727342fa6996e38e1f52c59720b53fe621e2eb593a6847bf0356db89
+  languageName: node
+  linkType: hard
+
+"shallowequal@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "shallowequal@npm:1.1.0"
+  checksum: f4c1de0837f106d2dbbfd5d0720a5d059d1c66b42b580965c8f06bb1db684be8783538b684092648c981294bf817869f743a066538771dbecb293df78f765e00
   languageName: node
   linkType: hard
 

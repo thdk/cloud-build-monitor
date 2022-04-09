@@ -30,7 +30,7 @@ export function RefInput({
                 )}
                 freeSolo
                 onChange={(_, value) => {
-                    value && onChange(value);
+                    onChange(value || undefined);
                 }}
                 value={value || ""}
                 sx={{

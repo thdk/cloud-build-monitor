@@ -6,7 +6,7 @@ import { useRepo } from "../../github/repo-context";
 import { FormControl, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import { getRepo } from "../../github/repos";
-import { CommitsListByDay } from "../commit-list-by-day";
+import { CommitsListGrouped } from "../commit-list-grouped";
 import { getCommit, getCommits } from "../../github/commits";
 import { getIssue } from "../../jira/issues";
 
@@ -39,8 +39,10 @@ function getListCommitsByIssueGroupKey(commit: Commit) {
 
 function CommitListGroupedByIssueTitle({
     issueId,
+    commit,
 }: {
     issueId: string;
+    commit: Commit;
 }) {
     const issueQuery = useQuery(
         [
@@ -58,7 +60,7 @@ function CommitListGroupedByIssueTitle({
             {
                 issueQuery.data
                     ? `${issueId}: ${issueQuery.data.summary}`
-                    : `Commits for ${issueId}`
+                    : commit.commit.message.split("\n")[0]
             }
         </strong>
     );
@@ -133,17 +135,15 @@ export function CommitsList() {
             since: sinceDate,
         }),
         {
-            select: (data) => groupBy === "issue"
-                // filter out merge commits (they have more than one parent)
-                ? data.filter((commit) => commit.parents.length === 1)
-                : data,
+            select: (data) => {
+                return groupBy === "issue"
+                    // filter out merge commits (they have more than one parent)
+                    ? data.filter((commit) => commit.parents.length === 1)
+                    : data;
+            },
             enabled: !!gitRepo?.data.default_branch && commitData !== undefined,
         },
     );
-
-    const commitDateFormatOptions: Intl.DateTimeFormatOptions = groupBy === "date"
-        ? { hour: "2-digit", minute: "2-digit" }
-        : { year: 'numeric', month: 'short', day: 'numeric', hour: "2-digit", minute: "2-digit" };
 
     return (
         <div
@@ -209,16 +209,19 @@ export function CommitsList() {
                     <div>
                         {
                             groupBy === "date" && (
-                                <CommitsListByDay
+                                <CommitsListGrouped
                                     commits={commits.data || []}
                                     groupKey={getListCommitsByDayGroupKey}
                                     GroupTitle={CommitListGroupedByDayTitle}
+                                    dateFormatOptions={
+                                        { hour: "2-digit", minute: "2-digit" }
+                                    }
                                 />
                             )
                         }
                         {
                             groupBy === "issue" && (
-                                <CommitsListByDay
+                                <CommitsListGrouped
                                     commits={commits.data || []}
                                     groupKey={getListCommitsByIssueGroupKey}
                                     GroupTitle={CommitListGroupedByIssueTitle}
@@ -235,7 +238,6 @@ export function CommitsList() {
                                             <CommitListItem
                                                 key={commit.sha}
                                                 commit={commit}
-                                                dateFormatOptions={commitDateFormatOptions}
                                             />
 
                                         );
