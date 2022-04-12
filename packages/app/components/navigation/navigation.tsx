@@ -5,15 +5,25 @@ export function Navigation() {
         <div
             className="flex flex-col pt-32 fixed"
         >
-                <NavigationLink
-                    href="/builds"
-                    label="Builds"
-                />
+            <NavigationLink
+                href="/"
+                label="Home"
+            />
 
-                <NavigationLink
-                    href="/repos"
-                    label="Repos"
-                />
+            <NavigationLink
+                href="/builds"
+                label="Builds"
+            />
+
+            <NavigationLink
+                href="/repos"
+                label="Repos"
+            />
+
+            <NavigationLink
+                href="/config/builds"
+                label="Config"
+            />
         </div>
     );
 };

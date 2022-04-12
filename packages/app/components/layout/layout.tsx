@@ -1,24 +1,30 @@
 import { PropsWithChildren } from "react";
 import { Navigation } from "../navigation";
+import { Col, Layout as AntLayout, Row } from "antd";
+const { Sider } = AntLayout;
 
 export function Layout({
     children,
 }: PropsWithChildren<unknown>) {
     return (
-        <div
-            className="flex"
+        <AntLayout style={{ minHeight: '100vh' }}
+            hasSider
         >
-            <div
-                className="w-32"
+            <Sider
+                style={{ background: "inherit" }}
             >
                 <Navigation />
-            </div>
-
-            <div
-                className="w-full flex pb-20 -ml-32 pl-32"
+            </Sider>
+            <AntLayout
             >
-                {children}
-            </div>
-        </div>
+                <Row>
+                    <Col
+                        span={23}
+                    >
+                        {children}
+                    </Col>
+                </Row>
+            </AntLayout>
+        </AntLayout>
     );
 }

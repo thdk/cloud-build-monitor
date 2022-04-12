@@ -34,6 +34,12 @@ const Home: NextPage = () => {
               <p>See what is happening in your source repositories.</p>
             </a>
           </Link>
+          <Link href="/config/builds">
+            <a className={styles.card}>
+              <h2>Config &rarr;</h2>
+              <p>Customise your ciccd experience.</p>
+            </a>
+          </Link>
           <a
             href="https://github.com/thdk/cloud-build-monitor"
             className={styles.card}
