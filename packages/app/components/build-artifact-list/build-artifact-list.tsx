@@ -12,14 +12,15 @@ const columns: ColumnType<BuildArtifact>[] = [
         title: 'Name',
         dataIndex: 'triggerName',
         render: (text: string) => <a>{text}</a>,
-        width: 240,
+        width: 200,
     },
     {
-        title: 'Description',
-        dataIndex: 'description',
+        title: 'Title',
+        dataIndex: 'title',
+        width: 320,
     },
     {
-        title: 'Artifact url',
+        title: 'Url',
         dataIndex: 'artifactUrl',
     },
 ];

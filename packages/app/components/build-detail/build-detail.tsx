@@ -1,10 +1,13 @@
-import { Button, Descriptions, Layout, PageHeader, Row, Tag } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import Column from "antd/lib/table/Column";
+import { Descriptions, Layout, PageHeader, Tag, Typography } from "antd";
 import Link from "next/link";
 import { CICCDBuild } from "../../interfaces/build";
-import { CommitLinks, GithubLink, IssueLink, LogsLink } from "../commit-links";
+import { ArtifactList } from "../artifact-list";
+import { GithubLink, IssueLink, LogsLink } from "../commit-links";
 import { Timer } from "../timer";
+
+const {
+    Title,
+} = Typography;
 
 const options = {
     year: 'numeric', month: 'numeric', day: 'numeric',
@@ -13,7 +16,12 @@ const options = {
 } as const;
 
 export function BuildDetail({
-    build: {
+    build,
+}: {
+    build: CICCDBuild;
+}) {
+
+    const {
         name,
         repo,
         created,
@@ -28,10 +36,7 @@ export function BuildDetail({
         origin,
         status,
         issueNr,
-    },
-}: {
-    build: CICCDBuild;
-}) {
+    } = build;
 
     let tagColor = "blue";
     switch (status) {
@@ -43,7 +48,7 @@ export function BuildDetail({
             break;
     }
     return (
-        <>
+        <Layout>
             <PageHeader
                 title="Build detail"
                 subTitle={name}
@@ -101,6 +106,18 @@ export function BuildDetail({
                     </div>
                 </div>
             </PageHeader>
-        </>
+            <Layout.Content
+                className="p-8"
+            >
+                <Title
+                    level={5}
+                >
+                    Build artifacts
+                </Title>
+                <ArtifactList
+                    build={build}
+                />
+            </Layout.Content>
+        </Layout>
     )
 };

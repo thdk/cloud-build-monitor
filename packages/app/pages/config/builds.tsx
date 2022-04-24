@@ -31,11 +31,11 @@ const BuildsConfig: NextPage = () => {
             <PageHeader
                 className="site-page-header-responsive"
                 onBack={() => window.history.back()}
-                title="Build configs"
+                title="Artifact urls"
                 extra={[
                     <Button key="1" type="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
-                        New build config
+                        New artifact url
                     </Button>
                 ]}
             >
@@ -45,7 +45,7 @@ const BuildsConfig: NextPage = () => {
             />
 
             <Drawer
-                title={activeDocument ? "Edit build artifact" : "Add build artifact"}
+                title={activeDocument ? "Edit artifact url" : "Add artifact url"}
                 width={720}
                 visible={activeDocument !== null}
                 onClose={() => setActiveDocumentId(null)}

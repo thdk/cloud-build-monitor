@@ -31,6 +31,8 @@ export function BuildConfigForm({
             artifact || { 
                 artifactUrl: "",
                 triggerName: "",
+                title: "",
+                key: "",
             })
     }, [
         artifact,
@@ -68,6 +70,19 @@ export function BuildConfigForm({
                     {
                         required: true,
                         message: 'Please add trigger name',
+                    },
+                ]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Artifact title"
+                name="title"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please add trigger title',
                     },
                 ]}
             >
