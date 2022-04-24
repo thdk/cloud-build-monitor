@@ -25,34 +25,12 @@ export function CommitChecks({
         <div
             className="px-4 w-32"
         >
-            {/* {
-                buildData?.docs.map((build) => {
-                    const {
-                        name,
-                        status,
-                    } = build.data();
-
-                    return (
-                        <Link
-                            href={`/builds/${build.id}`}
-                            key={build.id}
-                        >
-                            <a
-                                title={name}
-                            >
-                                <BuildStatusIcon
-                                    status={status}
-                                />
-                            </a>
-                        </Link>
-                    );
-                })
-            } */}
             {total && <Link
                 href={`/builds?commit=${sha}`}
             >
                 <a
                     title="Show all builds for this commit"
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <Line
                         percent={total ? success / total * 100 : 0}
