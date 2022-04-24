@@ -1,6 +1,9 @@
+import { Button, Descriptions, Layout, PageHeader, Row, Tag } from "antd";
+import { Content } from "antd/lib/layout/layout";
+import Column from "antd/lib/table/Column";
 import Link from "next/link";
 import { CICCDBuild } from "../../interfaces/build";
-import { CommitLinks } from "../commit-links";
+import { CommitLinks, GithubLink, IssueLink, LogsLink } from "../commit-links";
 import { Timer } from "../timer";
 
 const options = {
@@ -29,79 +32,75 @@ export function BuildDetail({
 }: {
     build: CICCDBuild;
 }) {
+
+    let tagColor = "blue";
+    switch (status) {
+        case "success":
+            tagColor = "green"
+            break;
+        case "failure":
+            tagColor = "red";
+            break;
+    }
     return (
-        <div
-            className="w-full flex -pl-32 flex-col p-10"
-        >
-            <div>
-                <div
-                    className="flex justify-between align-center"
-                >
-                    <h1
-                        className="text-2xl mb-10 py-2 capitalize"
-                    >
-                        {status}: <span className="normal-case">{name}</span>
-                    </h1>
-                    <div
-                        className="w-32 flex items-center justify-center"
-                    >
-                        <CommitLinks
-                            commitSha={commitSha}
-                            githubRepoOwner={githubRepoOwner}
-                            issueNr={issueNr}
-                            logUrl={logUrl}
-                            repo={repo}
-                            origin={origin}
-                            size="standard"
-                        />
-                    </div>
-
-                </div>
-
-                <p
-                    className="mb-4 text-xl"
-                >
-                    Build summary
-                </p>
-            </div>
-            <div
-                className="flex justify-between border rounded-lg p-4"
+        <>
+            <PageHeader
+                title="Build detail"
+                subTitle={name}
+                tags={<Tag color={tagColor}>{status}</Tag>}
+                onBack={() => window.history.back()}
             >
-                <div
-                    className="flex flex-col"
-                >
-                    <div>
-                        Trigger: {name}
-                    </div>
-                    <div>
-                        Source: {githubRepoOwner}/{repo}
-                    </div>
-                    <div>
-                        Branch: <Link href={`/repos/${githubRepoOwner}/${repo}/${branchName}`}>
-                            <a className="underline">{branchName}</a>
-                        </Link>
-                    </div>
-                    <div>
-                        Commit: <Link href={`/repos/${githubRepoOwner}/${repo}/${commitSha}`}>
-                            <a className="underline">{commitSha}</a>
-                        </Link>
-                    </div>
-                </div>
-                <div
-                    className="flex flex-col"
-                >
-                    <div>
-                        Started on {new Intl.DateTimeFormat('default', options).format(created)}
+                <div>
 
-                    </div>
-                    <div>
-                        Duration: <Timer
-                            finishTime={finishTime}
-                            startTime={startTime}
+                    <Descriptions size="small" column={3}>
+                        <Descriptions.Item label="Source">
+                            {githubRepoOwner}/{repo}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Branch">
+                            <Link href={`/repos/${githubRepoOwner}/${repo}/${branchName}`}>
+                                <a className="underline">{branchName}</a>
+                            </Link>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Commit">
+                            <Link href={`/repos/${githubRepoOwner}/${repo}/${commitSha}`}>
+                                <a className="underline">{commitSha}</a>
+                            </Link>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Started on">
+                            {new Intl.DateTimeFormat('default', options).format(created)}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Duration">
+                            <Timer
+                                finishTime={finishTime}
+                                startTime={startTime}
+                            />
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <div
+                        className="flex space-x-8 mt-4"
+                    >
+                        <GithubLink
+                            owner={githubRepoOwner}
+                            repo={repo}
+                            sha={commitSha}
+                            label="github"
+                        />
+
+                        <LogsLink
+                            logUrl={logUrl}
+                            label="logs"
+                            origin={origin}
+                        />
+
+                        <IssueLink
+                            issueNr={issueNr}
+                            owner={githubRepoOwner}
+                            repo={repo}
+                            label={issueNr}
                         />
                     </div>
                 </div>
-            </div>
-        </div>
+            </PageHeader>
+        </>
     )
 };
