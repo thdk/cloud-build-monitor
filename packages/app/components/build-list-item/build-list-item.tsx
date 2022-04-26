@@ -43,7 +43,7 @@ export function BuildListItem({
         className='flex'
       >
         <div
-          className='flex items-center p-4 pl-8'
+          className='flex items-center m-4 ml-8'
         >
           <BuildStatusIcon
             status={status}
@@ -51,7 +51,7 @@ export function BuildListItem({
         </div>
         <div
           key={id}
-          className='flex flex-col p-4'
+          className='flex flex-col m-4'
         >
           <div
             className='first-row'
@@ -100,6 +100,27 @@ export function BuildListItem({
               >
                 {branchName}
               </a>
+              <span
+                className='px-2 text-slate-600'>
+                in
+              </span>
+              <a
+                className='underline'
+                onClick={e => {
+                  e.stopPropagation();
+
+                  replace({
+                    pathname,
+                    query: {
+                      ...query,
+                      repo,
+                      owner: githubRepoOwner,
+                    }
+                  });
+                }}
+              >
+                {`${githubRepoOwner}/${repo}`}
+              </a>
             </div>
           </div>
           <div
@@ -119,7 +140,7 @@ export function BuildListItem({
         </div>
       </div>
       <div
-        className='flex p-4'
+        className='flex m-4'
       >
         <div
           className='flex flex-col px-4  text-slate-600 pr-16'

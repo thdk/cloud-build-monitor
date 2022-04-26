@@ -38,6 +38,7 @@ export const BuildArtifactList = ({
     return (
 
         <Table
+            className="m-4"
             size="large"
             columns={columns}
             dataSource={data}

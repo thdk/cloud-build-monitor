@@ -3,6 +3,7 @@ import { Layout } from "../../components/layout";
 import { RepoList } from "../../components/repo-list";
 import { getRepos } from "../../github/repos";
 import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { PageHeader } from "antd";
 
 
 
@@ -16,6 +17,9 @@ const ReposPage: NextPage = () => {
 
     return (
         <Layout>
+            <PageHeader
+                title="Repos"
+            />
             <RepoList />
         </Layout>
     );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fragment } from "react";
 import { useQuery } from "react-query";
 import { getRepos } from "../../github/repos";
 
@@ -13,26 +14,24 @@ export function RepoList() {
     return data
         ? (
             <div
-                className="flex flex-col mx-20 m-10 border rounded-lg w-full"
+                className="flex flex-col m-4 border rounded-lg"
             >
                 {
                     data.map((repo) => {
                         return (
-                            <div
-                                className="p-4 w-full border"
-                                key={`${repo.owner}${repo.name}`}>
-
-
+                            <Fragment
+                                key={`${repo.owner}${repo.name}`}
+                            >
                                 <Link
                                     href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}`}
                                 >
                                     <a
-                                        className="underline"
+                                        className="p-4 underline border"
                                     >
                                         {repo.owner}/{repo.name}
                                     </a>
                                 </Link>
-                            </div>
+                            </Fragment>
                         );
                     })
                 }

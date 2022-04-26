@@ -5,3 +5,7 @@
 html {
   font-size: 90%;
 }
+
+.ant-layout, .ant-layout * {
+  box-sizing: initial !important;
+}

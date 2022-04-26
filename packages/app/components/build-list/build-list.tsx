@@ -44,9 +44,9 @@ export function BuildList() {
   }, [error]);
 
   return (
-    <div className="w-full flex -pl-32 flex-col p-10">
+    <div className="flex -pl-32 flex-col m-4">
       <div
-        className='mb-4 flex'
+        className='mb-4 flex space-x-4'
       >
         <RefInput
           value={commit as string | undefined}

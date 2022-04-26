@@ -17,13 +17,7 @@ export function Layout({
             </Sider>
             <AntLayout
             >
-                <Row>
-                    <Col
-                        span={23}
-                    >
-                        {children}
-                    </Col>
-                </Row>
+                {children}
             </AntLayout>
         </AntLayout>
     );

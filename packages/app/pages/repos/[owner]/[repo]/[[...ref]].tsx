@@ -3,18 +3,31 @@ import React from "react";
 import { CommitsList } from "../../../../components/commit-list";
 import { Layout } from "../../../../components/layout";
 import { getRepos } from "../../../../github/repos";
-import { RepoProvider } from "../../../../github/repo-context";
+import { RepoProvider, useRepo } from "../../../../github/repo-context";
 import { octokit } from "../../../../github/octocit";
+import { PageHeader } from "antd";
 
-export const RepoPage: NextPage = () => {
-    return (
-        <RepoProvider>
-            <Layout>
-                <CommitsList />
-            </Layout>
-        </RepoProvider>
-    );
-};
+export const RepoPage: NextPage<{
+    repo: string;
+    owner: string;
+}> = ({
+    repo,
+    owner,
+}) => {
+        return (
+            <RepoProvider>
+                <Layout>
+                    <PageHeader
+                        onBack={() => window.history.back()}
+                        title={`${owner} / ${repo}`}
+                    >
+
+                    </PageHeader>
+                    <CommitsList />
+                </Layout>
+            </RepoProvider>
+        );
+    };
 
 export const getStaticProps = async (context: GetStaticPropsContext<{
     ref?: string;
@@ -42,7 +55,10 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
     }
 
     return {
-        props: {},
+        props: {
+            repo,
+            owner,
+        },
     };
 };
 

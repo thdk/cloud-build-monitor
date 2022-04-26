@@ -147,25 +147,16 @@ export function CommitsList() {
 
     return (
         <div
-            className="w-full flex -pl-32 flex-col p-4 lg:p-10"
+            className="w-full flex -pl-32 flex-col mt-4 lg:mt-10"
         >
             <div
-                className="flex"
-            >
-                <h1
-                    className="text-xl mb-10 py-4"
-                >
-                    {owner} / {repo}
-                </h1>
-            </div>
-            <div
-                className="flex-col lg:px-20"
+                className="flex-col px-6"
             >
                 <div
                     className="flex flex-col"
                 >
                     <div
-                        className="mb-4 flex"
+                        className="mb-4 flex items-center space-x-4"
                     >
                         {repoRef !== null && <RefInput
                             label="Head"
@@ -183,9 +174,8 @@ export function CommitsList() {
                             className="mr-4"
                         />}
                         <div
-                            className="flex"
+                            className="flex pl-4"
                         >
-                            <FormGroup>
                                 <FormControl>
                                     <InputLabel id="group-select-label">Group by</InputLabel>
                                     <Select
@@ -203,7 +193,6 @@ export function CommitsList() {
                                         <MenuItem value="issue">Issue</MenuItem>
                                     </Select>
                                 </FormControl>
-                            </FormGroup>
                         </div>
                     </div>
                     <div>

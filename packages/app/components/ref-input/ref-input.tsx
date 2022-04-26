@@ -26,7 +26,7 @@ export function RefInput({
                 {...autoCompleteProps}
                 options={[...(noBranches ? [] : branches), ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
                 renderInput={(params) => (
-                    <TextField {...params} label={label} />
+                    <TextField {...params} label={label} size="small" />
                 )}
                 freeSolo
                 onChange={(_, value) => {
@@ -35,8 +35,7 @@ export function RefInput({
                 value={value || ""}
                 sx={{
                     width: 300,
-                }}
-                size="small"
+                }}                
             />
         )
         : null;

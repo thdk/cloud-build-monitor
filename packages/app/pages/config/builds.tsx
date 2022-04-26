@@ -30,7 +30,6 @@ const BuildsConfig: NextPage = () => {
         <Layout>
             <PageHeader
                 className="site-page-header-responsive"
-                onBack={() => window.history.back()}
                 title="Artifact urls"
                 extra={[
                     <Button key="1" type="primary"
