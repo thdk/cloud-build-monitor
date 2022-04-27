@@ -33,7 +33,7 @@ export function CommitListItem({
 
   return (
     <div
-      className='flex border-b last:border-0 w-full flex-col'
+      className='flex border-b last:border-0 flex-col'
       style={{
         borderTop: "none",
         borderLeft: "none",

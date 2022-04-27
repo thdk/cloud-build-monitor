@@ -1,8 +1,9 @@
-import { query, collection, orderBy, limit, where } from 'firebase/firestore';
+import { query, collection, orderBy, limit, where, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { firestore } from '../../firebase/init-firebase';
+import { useRepo } from '../../github/repo-context';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 import { BuildListItems } from '../build-list-items';
 import { RefInput } from '../ref-input';
@@ -20,6 +21,11 @@ export function BuildList() {
     limit(30));
 
   const {
+    repo,
+    owner,
+  } = useRepo();
+
+  const {
     commit,
     branch,
   } = routerQuery;
@@ -31,6 +37,25 @@ export function BuildList() {
   if (branch) {
     baseQuery = query(baseQuery, where("branchName", "==", decodeURIComponent(branch as string)));
   }
+
+  if (repo && owner) {
+    baseQuery = query(
+      baseQuery,
+      where("githubRepoOwner", "==", owner),
+      where("repo", "==", repo),
+    );
+  }
+
+  useEffect(() => {
+    getDocs(
+      query(baseQuery),
+    ).catch((e) => {
+      console.error(e);
+    }
+    )
+  },
+    [baseQuery]
+  )
 
   const [value, loading, error] = useCollection<CICCDBuild>(
     query(baseQuery),
@@ -44,7 +69,7 @@ export function BuildList() {
   }, [error]);
 
   return (
-    <div className="flex -pl-32 flex-col m-4">
+    <div className="flex -pl-32 flex-col">
       <div
         className='mb-4 flex space-x-4'
       >

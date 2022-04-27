@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useRepo } from '../../github/repo-context';
 import { CICCDBuild } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
 import { CommitLinks } from '../commit-links';
@@ -27,6 +28,11 @@ export function BuildListItem({
     push,
     replace,
   } = useRouter();
+
+  const {
+    repo: contextRepo,
+    owner: contextOwner,
+  } = useRepo();
 
   const options = {
     year: 'numeric', month: 'numeric', day: 'numeric',
@@ -100,27 +106,34 @@ export function BuildListItem({
               >
                 {branchName}
               </a>
-              <span
-                className='px-2 text-slate-600'>
-                in
-              </span>
-              <a
-                className='underline'
-                onClick={e => {
-                  e.stopPropagation();
+              {
+                (contextRepo !== repo && contextOwner != githubRepoOwner) && (
 
-                  replace({
-                    pathname,
-                    query: {
-                      ...query,
-                      repo,
-                      owner: githubRepoOwner,
-                    }
-                  });
-                }}
-              >
-                {`${githubRepoOwner}/${repo}`}
-              </a>
+                  <>
+                    <span
+                      className='px-2 text-slate-600'>
+                      in
+                    </span>
+                    <a
+                      className='underline'
+                      onClick={e => {
+                        e.stopPropagation();
+
+                        replace({
+                          pathname,
+                          query: {
+                            ...query,
+                            repo,
+                            owner: githubRepoOwner,
+                          }
+                        });
+                      }}
+                    >
+                      {`${githubRepoOwner}/${repo}`}
+                    </a>
+                  </>
+                )
+              }
             </div>
           </div>
           <div

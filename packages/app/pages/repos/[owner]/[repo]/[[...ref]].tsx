@@ -5,7 +5,12 @@ import { Layout } from "../../../../components/layout";
 import { getRepos } from "../../../../github/repos";
 import { RepoProvider, useRepo } from "../../../../github/repo-context";
 import { octokit } from "../../../../github/octocit";
-import { PageHeader } from "antd";
+import { PageHeader, Tabs } from "antd";
+import { BuildList } from "../../../../components/build-list";
+
+const {
+    TabPane,
+} = Tabs;
 
 export const RepoPage: NextPage<{
     repo: string;
@@ -23,7 +28,22 @@ export const RepoPage: NextPage<{
                     >
 
                     </PageHeader>
-                    <CommitsList />
+                    <div
+                        className="mx-4 mb-8"
+                    >
+
+                        <Tabs
+                            defaultActiveKey="commits"
+                        >
+                            <TabPane tab="Commits" key="commits" className="mt-4">
+                                <CommitsList />
+
+                            </TabPane>
+                            <TabPane tab="Builds" key="builds" className="mt-4">
+                                <BuildList />
+                            </TabPane>
+                        </Tabs>
+                    </div>
                 </Layout>
             </RepoProvider>
         );

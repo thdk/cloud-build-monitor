@@ -43,7 +43,7 @@ export function CommitsListGrouped({
                         <Foldable
                             key={key}
                             Header={({ open }: { open: boolean }) => (
-                                <div className="justify-between flex w-full items-center">
+                                <div className="w-full justify-between flex items-center">
                                     <div
                                         className="flex items-center space-x-2"
                                     >

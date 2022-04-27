@@ -147,10 +147,10 @@ export function CommitsList() {
 
     return (
         <div
-            className="w-full flex -pl-32 flex-col mt-4 lg:mt-10"
+            className="flex -pl-32 flex-col"
         >
             <div
-                className="flex-col px-6"
+                className="flex-col"
             >
                 <div
                     className="flex flex-col"
@@ -219,7 +219,7 @@ export function CommitsList() {
                         }
                         {groupBy === "none" && (
                             <div
-                                className="inline-block rounded-lg border w-full"
+                                className="rounded-lg border"
                             >
                                 {
                                     commits.data?.map((commit) => {

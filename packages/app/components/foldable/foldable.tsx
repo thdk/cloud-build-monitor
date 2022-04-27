@@ -14,7 +14,7 @@ export function Foldable({
     const [isOpen, setIsOpen] = useState(open || false);
     const styles = classNames([
         "pt-2 pr-8 mb-2 px-2 flex text-slate-700 items-center",
-        "w-full border-solid border-gray-200 rounded-lg",
+        "border-solid border-gray-200 rounded-lg",
         {
             "border-b": !isOpen
         }
@@ -32,7 +32,7 @@ export function Foldable({
                 <Header open={isOpen} />
             </div>
             <div
-                className="rounded-lg border w-full mb-4"
+                className="rounded-lg border mb-4"
                 style={{
                     display: isOpen ? "block" : "none"
                 }}
