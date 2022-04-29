@@ -23,7 +23,7 @@ export function RepoList() {
                                 key={`${repo.owner}${repo.name}`}
                             >
                                 <Link
-                                    href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}`}
+                                    href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
                                 >
                                     <a
                                         className="p-4 underline border"
