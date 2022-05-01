@@ -18,3 +18,8 @@ dist/
 /config
 
 topic_policy.json
+
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars

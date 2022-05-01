@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+.yarn/cache
+.git
+**/.next/
+terraform
+README.md
+chart.png
+docs/
