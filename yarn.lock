@@ -4364,7 +4364,6 @@ __metadata:
     express: ^4.18.1
     nodemon: ^2.0.16
     typescript: ^4.5.4
-    yenv: ^3.0.1
   languageName: unknown
   linkType: soft
 

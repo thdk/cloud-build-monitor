@@ -2,7 +2,7 @@ import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
 import { PubSub } from '@google-cloud/pubsub';
 import { getBuild } from './build-details';
-import { config } from './config';
+
 import express from "express";
 
 const dotenv = require('dotenv');
@@ -33,14 +33,19 @@ const handleCloudBuildPubSubMessage = async ({
     build,
   } = await getBuild(buildId);
 
+  console.log({
+    trigger,
+    source,
+  })
+
   await pubSubClient.topic("ciccd-builds").publishMessage({
     attributes: {
       origin: "cloud-build",
       name: trigger?.name || "n/a",
       status: status.toLowerCase(),
       commitSha: source.commitSha,
-      repo: trigger?.github ? source.repo : config.GITHUB_REPO || "",
-      githubRepoOwner: trigger?.github?.owner || config.GITHUB_OWNER || "",
+      repo: trigger?.github ? source.repo : "",
+      githubRepoOwner: trigger?.github?.owner || "",
       branchName: source.branchName,
       id: buildId,
       logUrl: build.logUrl || "",

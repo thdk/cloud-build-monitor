@@ -41,6 +41,39 @@ resource "google_project_service" "services" {
   disable_on_destroy = false
 }
 
+# Service accounts
+
+resource "google_service_account" "builder" {
+  account_id   = "builder"
+  display_name = "builder"
+  project = var.project
+  description = "Service account used for cloud builds (including deploy permissions)"
+}
+
+resource "google_project_iam_member" "run-admin" {
+  project = var.project
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
+resource "google_project_iam_member" "logging-logWriter" {
+  project = var.project
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
+resource "google_project_iam_member" "artifactregistry-writer" {
+  project = var.project
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
+resource "google_project_iam_member" "iam-serviceAccountUser" {
+  project = var.project
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
 # Artifact registry
 resource "google_artifact_registry_repository" "docker-repo" {
   provider = google-beta.impersonated
@@ -52,10 +85,13 @@ resource "google_artifact_registry_repository" "docker-repo" {
 }
 
 # Cloud run service
+
 resource "google_cloud_run_service" "forward-service" {
   name     = "forward-service"
   location = var.region
   project  = var.project
+  
+  autogenerate_revision_name = true
 
   template {
     spec {
@@ -101,21 +137,31 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
 
   included_files = ["packages/forward-service/**"]
 
+  service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
+
   build {
     step {
       name = "gcr.io/cloud-builders/docker"
       args = [
         "build",
         "-t",
-        "${var.region}.pkg.dev/${var.project}/forward-service:$COMMIT_SHA",
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA",
         "-f",
         "packages/forward-service/Dockerfile",
         "."
         ]
     }
     step {
+      name = "gcr.io/cloud-builders/gcloud"
+      args = [
+        "auth",
+        "configure-docker",
+        "${var.region}-docker.pkg.dev"
+      ]
+    }
+    step {
       name = "gcr.io/cloud-builders/docker"
-      args = ["push", "${var.region}.pkg.dev/${var.project}/forward-service:$COMMIT_SHA"]
+      args = ["push", "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA"]
     }
     step {
       name       = "gcr.io/cloud-builders/gcloud"
@@ -124,15 +170,21 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
         "deploy",
         google_cloud_run_service.forward-service.name,
         "--image",
-        "${var.region}.pgk.dev/${var.project}/forward-service:$COMMIT_SHA",
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA",
         "--region",
         var.region,
         "--update-env-vars",
-        "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url}"
+        "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
+        "--service-account",
+        google_service_account.builder.email
       ]
     }
     artifacts {
-      images = ["${var.region}.pkg.dev/${var.project}/forward-service:$COMMIT_SHA"]
+      images = ["${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA"]
+    }
+
+    options {
+      logging = "CLOUD_LOGGING_ONLY"
     }
   }
 }
