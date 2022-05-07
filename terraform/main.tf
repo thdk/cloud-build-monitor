@@ -240,11 +240,11 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA",
         "--region",
         var.region,
-        "--update-env-vars",
+        "--set-env-vars",
         "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
         "--service-account",
         google_service_account.builder.email,
-        "--impersonate-service-acount",
+        "--impersonate-service-account",
         google_service_account.run-forward-service.email
       ]
     }
