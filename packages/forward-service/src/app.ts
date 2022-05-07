@@ -27,42 +27,36 @@ const handleCloudBuildPubSubMessage = async ({
     return;
   }
 
-  const {
-    trigger,
-    source,
-    build,
-  } = await getBuild(buildId)
-    .catch((e) => {
-      console.error(e);
-      return {
-        trigger: undefined,
-        source: undefined,
-        build: undefined,
-      };
+  await getBuild(buildId)
+    .then(({
+      trigger,
+      source,
+      build,
+    }) => {
+
+      console.log({
+        trigger,
+        source,
+      });
+
+      return pubSubClient.topic("ciccd-builds").publishMessage({
+        attributes: {
+          origin: "cloud-build",
+          name: trigger?.name || "n/a",
+          status: status.toLowerCase(),
+          commitSha: source.commitSha,
+          repo: trigger?.github ? source.repo : "",
+          githubRepoOwner: trigger?.github?.owner || "",
+          branchName: source.branchName,
+          id: buildId,
+          logUrl: build.logUrl || "",
+          startTime: build.startTime?.seconds?.toString() || "",
+          finishTime: build.finishTime?.seconds?.toString() || "",
+        },
+      }).catch((error) => {
+        console.error(error);
+      });
     });
-
-  console.log({
-    trigger,
-    source,
-  })
-
-  await pubSubClient.topic("ciccd-builds").publishMessage({
-    attributes: {
-      origin: "cloud-build",
-      name: trigger?.name || "n/a",
-      status: status.toLowerCase(),
-      commitSha: source.commitSha,
-      repo: trigger?.github ? source.repo : "",
-      githubRepoOwner: trigger?.github?.owner || "",
-      branchName: source.branchName,
-      id: buildId,
-      logUrl: build.logUrl || "",
-      startTime: build.startTime?.seconds?.toString() || "",
-      finishTime: build.finishTime?.seconds?.toString() || "",
-    },
-  }).catch((error) => {
-    console.error(error);
-  });
 };
 
 // express routes
