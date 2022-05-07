@@ -31,7 +31,15 @@ const handleCloudBuildPubSubMessage = async ({
     trigger,
     source,
     build,
-  } = await getBuild(buildId);
+  } = await getBuild(buildId)
+    .catch((e) => {
+      console.error(e);
+      return {
+        trigger: undefined,
+        source: undefined,
+        build: undefined,
+      };
+    });
 
   console.log({
     trigger,
