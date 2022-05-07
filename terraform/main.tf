@@ -2,6 +2,9 @@ locals {
   target_service_account = "terraform@${var.project}.iam.gserviceaccount.com"
 }
 
+# expose the current project config (https://stackoverflow.com/questions/63824928/how-can-we-add-project-number-from-variable-in-terraform-gcp-resource-iam-bindin)
+data "google_project" "current-project" {}
+
 # Default providers
 provider "google" {
   project     = var.project
@@ -43,6 +46,7 @@ resource "google_project_service" "services" {
 
 # Service accounts
 
+## Builder
 resource "google_service_account" "builder" {
   account_id   = "builder"
   display_name = "builder"
@@ -74,6 +78,15 @@ resource "google_project_iam_member" "iam-serviceAccountUser" {
   member  = "serviceAccount:${google_service_account.builder.email}"
 }
 
+## Invoker
+
+resource "google_service_account" "invoker" {
+  account_id   = "invoker"
+  display_name = "invoker"
+  project = var.project
+  description = "Service account used to invoke cloud run services"
+}
+
 # Artifact registry
 resource "google_artifact_registry_repository" "docker-repo" {
   provider = google-beta.impersonated
@@ -85,6 +98,8 @@ resource "google_artifact_registry_repository" "docker-repo" {
 }
 
 # Cloud run service
+
+## forward-service
 
 resource "google_cloud_run_service" "forward-service" {
   name     = "forward-service"
@@ -115,6 +130,41 @@ resource "google_cloud_run_service" "forward-service" {
   depends_on = [
     google_project_service.services
   ]
+}
+
+resource "google_cloud_run_service_iam_binding" "forward-service-invoker-binding" {
+  location = google_cloud_run_service.forward-service.location
+  project = google_cloud_run_service.forward-service.project
+  service = google_cloud_run_service.forward-service.name
+  role = "roles/run.invoker"
+  members = [
+    "serviceAccount:${google_service_account.invoker.email}",
+  ]
+}
+
+# Pub sub
+
+## Allow pubsub to create authentication tokens
+resource "google_project_iam_member" "pubsub-token-creator" {
+  project = var.project
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member = "serviceAccount:service-${data.google_project.current-project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
+## push subscription for cloud-builds topic
+
+resource "google_pubsub_subscription" "cloud-build" {
+  name    = "cloud-build-subscription"
+  labels  = {}
+  topic   = "cloud-builds"
+
+  ack_deadline_seconds = 600
+  push_config {
+    push_endpoint = google_cloud_run_service.forward-service.status[0].url
+    oidc_token {
+      service_account_email = google_service_account.invoker.email
+    }
+  }
 }
 
 # Cloud builds
