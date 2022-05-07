@@ -44,7 +44,7 @@ resource "google_project_service" "services" {
   disable_on_destroy = false
 }
 
-# Service accounts
+# Global service accounts
 
 ## Builder
 resource "google_service_account" "builder" {
@@ -100,7 +100,6 @@ resource "google_artifact_registry_repository" "docker-repo" {
 # Cloud run service
 
 ## forward-service
-
 resource "google_cloud_run_service" "forward-service" {
   name     = "forward-service"
   location = var.region
@@ -132,6 +131,9 @@ resource "google_cloud_run_service" "forward-service" {
   ]
 }
 
+### IAM
+
+#### Allow global invoker service account to invoke the forward service
 resource "google_cloud_run_service_iam_binding" "forward-service-invoker-binding" {
   location = google_cloud_run_service.forward-service.location
   project = google_cloud_run_service.forward-service.project
@@ -141,6 +143,21 @@ resource "google_cloud_run_service_iam_binding" "forward-service-invoker-binding
     "serviceAccount:${google_service_account.invoker.email}",
   ]
 }
+
+#### Create and configure runtime service account
+resource "google_service_account" "run-forward-service" {
+  account_id   = "forward-service"
+  display_name = "forward-service"
+  project = var.project
+  description = "Service account which will get impersonated by the forward service"
+}
+
+resource "google_project_iam_member" "cloudbuild-builds-viewer-forward-service" {
+  project = var.project
+  role    = "roles/cloudbuild.builds.viewer"
+  member  = "serviceAccount:${google_service_account.run-forward-service.email}"
+}
+
 
 # Pub sub
 
@@ -226,7 +243,9 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
         "--update-env-vars",
         "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
         "--service-account",
-        google_service_account.builder.email
+        google_service_account.builder.email,
+        "--impersonate-service-acount",
+        google_service_account.run-forward-service.email
       ]
     }
     artifacts {
