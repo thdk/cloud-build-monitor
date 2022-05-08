@@ -5,8 +5,9 @@ A tool to get an overiew of your different CI/CD workflows. Whether they run on 
 ## Features
 
 - Send email notifications for failed / successful builds
-- WIP: update status in issue tracker for failed / successful builds
-- WIP: Configurable build overview
+- Update status in issue tracker for failed / successful builds
+- Configurable build dashboard listing builds of any provider
+- Git repo page showing commits related to your builds
 
 ## Flow
 
@@ -18,15 +19,20 @@ The dashboard runs on nextjs and is deployed on Google App Engine.
 
 See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
 
-## Cloud functions
+## Services (cloud run)
 
-- [cloud-builds-sub-function](packages/cloud-builds-sub-function/README.md)
+- [ciccd-service](packages/ciccd-service/README.md)
+
+  required: handles CICCD pub sub messages to add build statuses to the dashboard database
+
+- [forward-service](packages/forward-service/README.md)
   
-  optional: converts pub sub messages send by Google Cloud Build to CICCD messages
+  optional: converts 'cloud-builds' pub sub messages send by Google Cloud Build to CICCD messages
 
-- [ciccd-builds-sub-function](packages/ciccd-builds-sub-function/README.md)
+- [report-service](packages/ciccd-service/README.md)
 
-  required: handles CICCD pub sub messages to add build statuses to the dashboard database and sends notifications
+  optional: sends build report emails when configured and adds commit status checks to github
+
 
 ## Available scripts
 

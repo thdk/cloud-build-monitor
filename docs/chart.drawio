@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" scale="1" border="20">
     <diagram id="RedGnTHk0uesk3baBE4j" name="Page-1">
-        <mxGraphModel dx="1054" dy="728" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+        <mxGraphModel dx="688" dy="728" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -23,7 +23,7 @@
                         <mxPoint x="243" y="300" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="13" value="cloud-builds-sub-function" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                <mxCell id="13" value="forward-service" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
                     <mxGeometry x="48" y="273" width="159" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" style="edgeStyle=none;html=1;entryX=0.467;entryY=0.088;entryDx=0;entryDy=0;entryPerimeter=0;sketch=1;curved=1;rounded=0;strokeColor=#1A1A1A;exitX=0.631;exitY=0.995;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="65" target="25" edge="1">
@@ -35,7 +35,7 @@
                 <mxCell id="62" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;sketch=1;curved=1;rounded=0;strokeColor=#1A1A1A;exitX=0.25;exitY=1;exitDx=0;exitDy=0;fontStyle=0" parent="1" source="65" target="60" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="cloud-builds-sub-function" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                <mxCell id="15" value="ciccd-service" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
                     <mxGeometry x="255" y="480" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="56" style="edgeStyle=none;html=1;entryX=0.454;entryY=0.013;entryDx=0;entryDy=0;entryPerimeter=0;sketch=1;curved=1;rounded=0;strokeColor=#1A1A1A;" parent="1" source="17" target="19" edge="1">
@@ -118,7 +118,7 @@
                 <mxCell id="60" value="Issue tracker" style="swimlane;startSize=23;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
                     <mxGeometry x="478" y="467.5" width="140" height="85" as="geometry"/>
                 </mxCell>
-                <mxCell id="65" value="build-status-report-function" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
+                <mxCell id="65" value="report-service" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;sketch=1;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="1" vertex="1">
                     <mxGeometry x="497" y="266" width="201" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="66" value="&lt;meta charset=&quot;utf-8&quot;&gt;&lt;span style=&quot;font-family: helvetica; font-size: 11px; font-style: normal; font-weight: 400; letter-spacing: normal; text-align: center; text-indent: 0px; text-transform: none; word-spacing: 0px; display: inline; float: none;&quot;&gt;topic: ciccd-builds&lt;/span&gt;" style="edgeStyle=none;html=1;sketch=1;curved=1;rounded=0;strokeColor=#1A1A1A;labelBackgroundColor=#FFFFFF;fontColor=#1A1A1A;exitX=1.023;exitY=0.2;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64" target="65" edge="1">

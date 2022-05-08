@@ -15,6 +15,7 @@ export const app = express();
 app.use(express.json());
 
 const handleCloudBuildPubSubMessage = async ({
+  data,
   attributes,
 }: PubsubMessage) => {
   const { buildId, status } = attributes || {};
@@ -27,6 +28,12 @@ const handleCloudBuildPubSubMessage = async ({
     return;
   }
 
+  const name = typeof data === "string"
+    ? Buffer.from(data, 'base64').toString()
+    : 'World';
+
+  console.log(`Hello, ${name}!`);
+
   await getBuild(buildId)
     .then(({
       trigger,
@@ -34,18 +41,13 @@ const handleCloudBuildPubSubMessage = async ({
       build,
     }) => {
 
-      console.log({
-        trigger,
-        source,
-      });
-
       return pubSubClient.topic("ciccd-builds").publishMessage({
         attributes: {
           origin: "cloud-build",
           name: trigger?.name || "n/a",
           status: status.toLowerCase(),
           commitSha: source.commitSha,
-          repo: trigger?.github ? source.repo : "",
+          repo: trigger?.github?.name || source.repo || "",
           githubRepoOwner: trigger?.github?.owner || "",
           branchName: source.branchName,
           id: buildId,
@@ -75,10 +77,6 @@ app.post('/', async (req, res) => {
   }
 
   const pubSubMessage = req.body.message;
-  console.log({
-    body: JSON.stringify(req.body),
-    message: pubSubMessage,
-  });
 
   await handleCloudBuildPubSubMessage(pubSubMessage);
 

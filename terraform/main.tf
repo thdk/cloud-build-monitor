@@ -1,5 +1,6 @@
 locals {
   target_service_account = "terraform@${var.project}.iam.gserviceaccount.com"
+  cloud_build_topics = toset(var.cloud-build-topics)
 }
 
 # expose the current project config (https://stackoverflow.com/questions/63824928/how-can-we-add-project-number-from-variable-in-terraform-gcp-resource-iam-bindin)
@@ -78,6 +79,12 @@ resource "google_project_iam_member" "iam-serviceAccountUser" {
   member  = "serviceAccount:${google_service_account.builder.email}"
 }
 
+resource "google_project_iam_member" "builder-token-creator" {
+  project = var.project
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
 ## Invoker
 
 resource "google_service_account" "invoker" {
@@ -123,6 +130,7 @@ resource "google_cloud_run_service" "forward-service" {
   lifecycle {
     ignore_changes = [
       template[0].spec[0].containers[0].image,
+      template[0].spec[0].containers[0].env,
     ]
   }
 
@@ -158,8 +166,18 @@ resource "google_project_iam_member" "cloudbuild-builds-viewer-forward-service" 
   member  = "serviceAccount:${google_service_account.run-forward-service.email}"
 }
 
+resource "google_pubsub_topic_iam_member" "pubsub-publisher-forward-service" {
+  project   = google_pubsub_topic.ciccd-builds.project
+  topic     = google_pubsub_topic.ciccd-builds.name
+  role      = "roles/pubsub.publisher"
+  member    = "serviceAccount:${google_service_account.run-forward-service.email}"
+}
 
 # Pub sub
+
+resource "google_pubsub_topic" "ciccd-builds" {
+  name = "ciccd-builds"
+}
 
 ## Allow pubsub to create authentication tokens
 resource "google_project_iam_member" "pubsub-token-creator" {
@@ -168,12 +186,13 @@ resource "google_project_iam_member" "pubsub-token-creator" {
   member = "serviceAccount:service-${data.google_project.current-project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
 
-## push subscription for cloud-builds topic
+## push subscription for cloud-builds topic in listed gcp projects
 
 resource "google_pubsub_subscription" "cloud-build" {
-  name    = "cloud-build-subscription"
+  for_each = local.cloud_build_topics
+  name    = "cloud-build-subscription-${each.value}"
   labels  = {}
-  topic   = "cloud-builds"
+  topic   = "projects/${each.value}/topics/cloud-builds"
 
   ack_deadline_seconds = 600
   push_config {
@@ -183,6 +202,7 @@ resource "google_pubsub_subscription" "cloud-build" {
     }
   }
 }
+
 
 # Cloud builds
 resource "google_cloudbuild_trigger" "forward-service-trigger" {
@@ -243,9 +263,9 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
         "--set-env-vars",
         "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
         "--service-account",
-        google_service_account.builder.email,
+        google_service_account.run-forward-service.email,
         "--impersonate-service-account",
-        google_service_account.run-forward-service.email
+        google_service_account.builder.email,
       ]
     }
     artifacts {

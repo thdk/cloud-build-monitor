@@ -25,4 +25,10 @@ variable "repo_name" {}
 
 variable "repo_branch_pattern" {}
 
-
+# list all gcp projects from which cloud-build pub sub messages should and can be handled
+variable "cloud-build-topics" {
+    type    = list(string)
+    default =  [
+      "cloud-builds",
+    ]
+}
