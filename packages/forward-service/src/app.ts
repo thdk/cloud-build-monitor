@@ -28,13 +28,14 @@ const handleCloudBuildPubSubMessage = async ({
     return;
   }
 
-  const name = typeof data === "string"
-    ? Buffer.from(data, 'base64').toString()
-    : 'World';
+  if (typeof data !== "string") {
+      return;
+  }
 
-  console.log(`Hello, ${name}!`);
+  // https://cloud.google.com/build/docs/api/reference/rest/v1/projects.builds
+  const build = JSON.parse(Buffer.from(data, 'base64').toString());
 
-  await getBuild(buildId)
+  await getBuild(build)
     .then(({
       trigger,
       source,

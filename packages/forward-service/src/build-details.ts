@@ -1,29 +1,30 @@
 import { CloudBuildClient } from '@google-cloud/cloudbuild';
-import { config } from './config';
 
 // Creates a client
 const cb = new CloudBuildClient();
 
-export const getBuild = async (id: string) => {
-  const [build] = await cb
-    .getBuild({
-      id,
-      projectId: config.GCP_PROJECT,
-    })
-    .catch(error => {
-      console.error(`Failed to get build: ${id} in project ${config.GCP_PROJECT}`);
-      throw error;
-    });
+export const getBuild = async (build: any) => {
+  // const [build] = await cb
+  //   .getBuild({
+  //     id,
+  //   })
+  //   .catch(error => {
+  //     console.error(`Failed to get build: ${id} in project ${projectId}`);
+  //     throw error;
+  //   });
+
+  const projectId = build.projectId;
+  const id = build.id;
 
   const [trigger] =
     (build.buildTriggerId &&
       (await cb
         .getBuildTrigger({
           triggerId: build.buildTriggerId,
-          projectId: config.GCP_PROJECT,
+          projectId: projectId,
         })
         .catch(error => {
-          console.error(`Failed to get build trigger: ${build.buildTriggerId} in project ${config.GCP_PROJECT}`);
+          console.error(`Failed to get build trigger: ${build.buildTriggerId} in project ${projectId}`);
           throw error;
         }))) ||
     [];

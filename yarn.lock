@@ -2903,17 +2903,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"cloud-builds-sub-function@workspace:packages/cloud-builds-sub-function":
-  version: 0.0.0-use.local
-  resolution: "cloud-builds-sub-function@workspace:packages/cloud-builds-sub-function"
-  dependencies:
-    "@google-cloud/cloudbuild": ^2.6.0
-    "@google-cloud/pubsub": ^2.18.4
-    typescript: ^4.5.4
-    yenv: ^3.0.1
-  languageName: unknown
-  linkType: soft
-
 "cloudevents@npm:^5.1.0":
   version: 5.2.0
   resolution: "cloudevents@npm:5.2.0"
