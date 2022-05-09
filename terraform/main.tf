@@ -41,6 +41,13 @@ provider "google-beta" {
   access_token = data.google_service_account_access_token.default.access_token
 }
 
+# Add firebase to the project
+resource "google_app_engine_application" "app" {
+  project     = var.project
+  location_id = var.location
+  database_type = "CLOUD_FIRESTORE"
+}
+
 # Enable required apis
 resource "google_project_service" "services" {
   count              = length(var.gcp_service_list)
@@ -179,6 +186,13 @@ resource "google_pubsub_topic_iam_member" "pubsub-publisher-forward-service" {
   topic     = google_pubsub_topic.ciccd-builds.name
   role      = "roles/pubsub.publisher"
   member    = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
+}
+
+// Add roles to runtime service account for ciccd service
+resource "google_project_iam_member" "firebase-admin-ciccd-service" {
+  project = var.project
+  role    = "roles/firebase.admin"
+  member  = "serviceAccount:${google_service_account.run-service-accounts["ciccd-service"].email}"
 }
 
 # Pub sub

@@ -1,11 +1,10 @@
-import { initializeApp, cert } from 'firebase-admin/app';
+import { initializeApp, applicationDefault,  } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
-import { config } from './config';
 import { CICCDBuild } from './interfaces';
 
 initializeApp(
     {
-        credential: cert(JSON.parse(config.FIREBASE_ADMIN))
+        credential: applicationDefault(),
     }
 );
 

@@ -1,5 +1,8 @@
 variable "project" { }
 
+variable "location" {
+  default = "us-central"
+}
 variable "region" {
   default = "us-central1"
 }
