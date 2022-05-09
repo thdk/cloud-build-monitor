@@ -22,22 +22,9 @@ status           |     x      | [success, failure, cancelled, queued]
 
 ## Setup the service
 
-- create a `ciccd-builds` topic and add a subscription
-    ```sh
-    gcloud pubsub topics create ciccd-builds
-    gcloud pubsub subscriptions create ciccd-builds-sub --topic ciccd-builds
-    ```
 - create a `config.yaml` file containing the following keys:
   
-    SENDGRID_TEMPLATE_PREVIEW_BUILD_STATUS: ""
-
-    SENDGRID_SENDER: ""
-
     ISSUE_REGEX: ""
-
-    GITHUB_REPO: ""
-
-    GITHUB_OWNER: ""
 
     - make the `config.yaml` file available as 'ciccd-config' secret in Cloud Secret Manager
   

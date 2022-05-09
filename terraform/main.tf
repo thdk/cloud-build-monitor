@@ -1,6 +1,10 @@
 locals {
   target_service_account = "terraform@${var.project}.iam.gserviceaccount.com"
   cloud_build_topics = toset(var.cloud-build-topics)
+  services = toset([
+    "forward-service", 
+    "ciccd-service",
+  ])
 }
 
 # expose the current project config (https://stackoverflow.com/questions/63824928/how-can-we-add-project-number-from-variable-in-terraform-gcp-resource-iam-bindin)
@@ -107,8 +111,9 @@ resource "google_artifact_registry_repository" "docker-repo" {
 # Cloud run service
 
 ## forward-service
-resource "google_cloud_run_service" "forward-service" {
-  name     = "forward-service"
+resource "google_cloud_run_service" "cloud-run-services" {
+  for_each = local.services
+  name     = each.key
   location = var.region
   project  = var.project
   
@@ -141,11 +146,12 @@ resource "google_cloud_run_service" "forward-service" {
 
 ### IAM
 
-#### Allow global invoker service account to invoke the forward service
-resource "google_cloud_run_service_iam_binding" "forward-service-invoker-binding" {
-  location = google_cloud_run_service.forward-service.location
-  project = google_cloud_run_service.forward-service.project
-  service = google_cloud_run_service.forward-service.name
+#### Allow global invoker service account to invoke the cloud run services
+resource "google_cloud_run_service_iam_binding" "services-invoker-binding" {
+  for_each = local.services
+  location = google_cloud_run_service.cloud-run-services[each.key].location
+  project = google_cloud_run_service.cloud-run-services[each.key].project
+  service = google_cloud_run_service.cloud-run-services[each.key].name
   role = "roles/run.invoker"
   members = [
     "serviceAccount:${google_service_account.invoker.email}",
@@ -153,24 +159,26 @@ resource "google_cloud_run_service_iam_binding" "forward-service-invoker-binding
 }
 
 #### Create and configure runtime service account
-resource "google_service_account" "run-forward-service" {
-  account_id   = "forward-service"
-  display_name = "forward-service"
+resource "google_service_account" "run-service-accounts" {
+  for_each = local.services
+  account_id   = each.key
+  display_name = each.key
   project = var.project
-  description = "Service account which will get impersonated by the forward service"
+  description = "Service account which will get impersonated by the ${each.key}"
 }
 
+// Add roles to runtime service account for forward service
 resource "google_project_iam_member" "cloudbuild-builds-viewer-forward-service" {
   project = var.project
   role    = "roles/cloudbuild.builds.viewer"
-  member  = "serviceAccount:${google_service_account.run-forward-service.email}"
+  member  = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
 }
 
 resource "google_pubsub_topic_iam_member" "pubsub-publisher-forward-service" {
   project   = google_pubsub_topic.ciccd-builds.project
   topic     = google_pubsub_topic.ciccd-builds.name
   role      = "roles/pubsub.publisher"
-  member    = "serviceAccount:${google_service_account.run-forward-service.email}"
+  member    = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
 }
 
 # Pub sub
@@ -190,13 +198,27 @@ resource "google_project_iam_member" "pubsub-token-creator" {
 
 resource "google_pubsub_subscription" "cloud-build" {
   for_each = local.cloud_build_topics
-  name    = "cloud-build-subscription-${each.value}"
+  name    = "cloud-builds-subscription-${each.key}"
   labels  = {}
-  topic   = "projects/${each.value}/topics/cloud-builds"
+  topic   = "projects/${each.key}/topics/cloud-builds"
 
   ack_deadline_seconds = 600
   push_config {
-    push_endpoint = google_cloud_run_service.forward-service.status[0].url
+    push_endpoint = google_cloud_run_service.cloud-run-services["forward-service"].status[0].url
+    oidc_token {
+      service_account_email = google_service_account.invoker.email
+    }
+  }
+}
+
+resource "google_pubsub_subscription" "ciccd-build" {
+  name    = "ciccd-builds-subscription"
+  labels  = {}
+  topic   = "ciccd-builds"
+
+  ack_deadline_seconds = 600
+  push_config {
+    push_endpoint = google_cloud_run_service.cloud-run-services["ciccd-service"].status[0].url
     oidc_token {
       service_account_email = google_service_account.invoker.email
     }
@@ -205,14 +227,14 @@ resource "google_pubsub_subscription" "cloud-build" {
 
 
 # Cloud builds
-resource "google_cloudbuild_trigger" "forward-service-trigger" {
-
+resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
+  for_each = local.services
   provider = google-beta
-  name     = "forward-service-trigger-deploy"
+  name     = "${each.key}-trigger-deploy"
 
   project = var.project
 
-  description = "build and deploy forward-service on cloud run"
+  description = "build and deploy ${each.key} on cloud run"
 
   github {
     owner = var.repo_owner
@@ -222,7 +244,7 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
     }
   }
 
-  included_files = ["packages/forward-service/**"]
+  included_files = ["packages/${each.key}/**"]
 
   service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
 
@@ -232,44 +254,39 @@ resource "google_cloudbuild_trigger" "forward-service-trigger" {
       args = [
         "build",
         "-t",
-        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA",
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
         "-f",
-        "packages/forward-service/Dockerfile",
+        "packages/${each.key}/Dockerfile",
         "."
         ]
     }
-    step {
-      name = "gcr.io/cloud-builders/gcloud"
-      args = [
-        "auth",
-        "configure-docker",
-        "${var.region}-docker.pkg.dev"
-      ]
-    }
+
     step {
       name = "gcr.io/cloud-builders/docker"
-      args = ["push", "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA"]
+      args = ["push", "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA"]
     }
     step {
       name       = "gcr.io/cloud-builders/gcloud"
       entrypoint = "gcloud"
       args = ["run",
         "deploy",
-        google_cloud_run_service.forward-service.name,
+        google_cloud_run_service.cloud-run-services[each.key].name,
         "--image",
-        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA",
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
         "--region",
         var.region,
         "--set-env-vars",
-        "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
+        "HOSTNAME=${google_cloud_run_service.cloud-run-services[each.key].status[0].url},GCP_PROJECT=${var.project}",
         "--service-account",
-        google_service_account.run-forward-service.email,
+        google_service_account.run-service-accounts[each.key].email,
         "--impersonate-service-account",
         google_service_account.builder.email,
       ]
     }
     artifacts {
-      images = ["${var.region}-docker.pkg.dev/${var.project}/docker-repository/forward-service:$COMMIT_SHA"]
+      images = [
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
+      ]
     }
 
     options {

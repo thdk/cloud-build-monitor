@@ -56,6 +56,11 @@ This section will describe the require actions to setup everything in a new GCP 
 - Already have a 'default' app service running on app engine
 - A fork (recommended) or clone of this repo
 
+## Give permissions to ciccd service accounts
+
+Each gcp project that you want to collect build info from should give the `Cloud Build Viewer` role to the following
+service account: `forward-service@ciccd-console.iam.gserviceaccount.com`.
+
 ### Enable apis and setup service account roles
 
 Please review `scripts/setup.sh` before running this script so you are aware of which service accounts are used
