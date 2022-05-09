@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon --watch dist -e js --quiet dist/index.js\"",
+    "dev": "concurrently \"tsc --watch\" \"nodemon --watch dist -e js --quiet dist/index.js\""
   },
   "dependencies": {
     "@google-cloud/cloudbuild": "^2.6.0",
