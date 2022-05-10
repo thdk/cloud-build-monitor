@@ -12,7 +12,17 @@ Example:
 project = "YOUR PROJECT ID"
 region = "europe-west1"
 zone = "europe-west1-c"
+
+cloud-build-projects = [
+    "ciccd-console",
+    "scrum-poker-31315",
+    "team-timesheets",
+]
 ```
+
+Note: each project listed in `cloud-build-projects` must have a `cloud-builds` topic.
+
+If this topic does not exists already, you must manually create it for your project.
 
 ## Plan & Apply
 

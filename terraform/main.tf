@@ -1,6 +1,6 @@
 locals {
   target_service_account = "terraform@${var.project}.iam.gserviceaccount.com"
-  cloud_build_topics = toset(var.cloud-build-topics)
+  cloud_build_topics = toset(var.cloud-build-projects)
   services = toset([
     "forward-service", 
     "ciccd-service",
@@ -115,9 +115,8 @@ resource "google_artifact_registry_repository" "docker-repo" {
   format        = "DOCKER"
 }
 
-# Cloud run service
+# Cloud run services
 
-## forward-service
 resource "google_cloud_run_service" "cloud-run-services" {
   for_each = local.services
   name     = each.key
@@ -239,6 +238,28 @@ resource "google_pubsub_subscription" "ciccd-build" {
   }
 }
 
+# Secret manager
+
+resource "google_secret_manager_secret" "github-token" {
+  secret_id = "github-token"
+  labels      = {}
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "github-token-dummy" {
+  secret = google_secret_manager_secret.github-token.id
+
+  secret_data = "GITHUB_TOKEN" // must manually add new secret version outside terraform
+}
+
+resource "google_secret_manager_secret_iam_member" "builer-secret-accessor" {
+  project = google_secret_manager_secret.github-token.project
+  secret_id = google_secret_manager_secret.github-token.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.builder.email}"
+}
 
 # Cloud builds
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
@@ -295,6 +316,8 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
         google_service_account.run-service-accounts[each.key].email,
         "--impersonate-service-account",
         google_service_account.builder.email,
+        "--update-secrets",
+        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest"
       ]
     }
     artifacts {
