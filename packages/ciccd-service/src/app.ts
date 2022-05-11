@@ -1,7 +1,6 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
 import { getCommitInfo } from './git';
-import { config } from './config';
 import { addOrUpdateCICCDBuild } from './firestore';
 
 import express from "express";
