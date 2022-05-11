@@ -41,9 +41,6 @@ const handleCloudBuildPubSubMessage = async ({
         owner: githubRepoOwner,
     });
 
-    const issue = commit.message.match(new RegExp(config.ISSUE_REGEX));
-    const issueNr = issue ? issue[0] : null;
-
      await Promise.all([
         addOrUpdateCICCDBuild({
             branchName,
@@ -57,7 +54,7 @@ const handleCloudBuildPubSubMessage = async ({
             id,
             githubRepoOwner,
             logUrl,
-            issueNr,
+            issueNr: null, // todo: remove?
             startTime: startTime
                 ? toDateTime(+startTime)
                 : null,

@@ -254,11 +254,20 @@ resource "google_secret_manager_secret_version" "github-token-dummy" {
   secret_data = "GITHUB_TOKEN" // must manually add new secret version outside terraform
 }
 
-resource "google_secret_manager_secret_iam_member" "builer-secret-accessor" {
+// TODO: forward service doesnt use the github token secret, create separate deploy script for each service
+// and remove this permission
+resource "google_secret_manager_secret_iam_member" "forward-service-secret-accessor" {
   project = google_secret_manager_secret.github-token.project
   secret_id = google_secret_manager_secret.github-token.secret_id
   role = "roles/secretmanager.secretAccessor"
-  member = "serviceAccount:${google_service_account.builder.email}"
+  member = "serviceAccount:${google_service_account.run-service-accounts["ciccd-service"].email}"
+}
+
+resource "google_secret_manager_secret_iam_member" "ciccd-service-secret-accessor" {
+  project = google_secret_manager_secret.github-token.project
+  secret_id = google_secret_manager_secret.github-token.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
 }
 
 # Cloud builds

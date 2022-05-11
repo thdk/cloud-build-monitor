@@ -22,12 +22,5 @@ status           |     x      | [success, failure, cancelled, queued]
 
 ## Setup the service
 
-- create a `config.yaml` file containing the following keys:
-  
-    ISSUE_REGEX: ""
-
-    - make the `config.yaml` file available as 'ciccd-config' secret in Cloud Secret Manager
-  
-- provide the following environment variables using Google Cloud Secret Manager:
-    - GITHUB_TOKEN
-    - SENDGRID_API_KEY
+Add your github access token to the github-token secret in Google Secret Manager.
+This secret is created with a dummy value by terraform.

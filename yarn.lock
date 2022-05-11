@@ -2792,7 +2792,6 @@ __metadata:
     concurrently: ^7.1.0
     firebase-admin: ^10.0.1
     typescript: ^4.5.4
-    yenv: ^3.0.1
   languageName: unknown
   linkType: soft
 
@@ -2854,13 +2853,6 @@ __metadata:
   version: 1.1.0
   resolution: "code-point-at@npm:1.1.0"
   checksum: 17d5666611f9b16d64fdf48176d9b7fb1c7d1c1607a189f7e600040a11a6616982876af148230336adb7d8fe728a559f743a4e29db3747e3b1a32fa7f4529681
-  languageName: node
-  linkType: hard
-
-"coercer@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "coercer@npm:1.1.2"
-  checksum: bd28e4a16d61712d637bb28b5b5a7fea7cf1e89459c0cc40da99396d56e6a52d58bbe57bfbe6d458211ed140db3e16059aaed35541e49cda1556af60a87c6936
   languageName: node
   linkType: hard
 
@@ -5434,13 +5426,6 @@ __metadata:
     jwa: ^2.0.0
     safe-buffer: ^5.0.1
   checksum: d68d07aa6d1b8cb35c363a9bd2b48f15064d342a5d9dc18a250dbbce8dc06bd7e4792516c50baa16b8d14f61167c19e851fd7f66b59ecc68b7f6a013759765f7
-  languageName: node
-  linkType: hard
-
-"keyblade@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "keyblade@npm:0.3.2"
-  checksum: e75c19a6ade360511489ea5077c473ac1dc1c89b0db38e31e9848310877d2ce54d1c04560799e9ce2c404355cbb6d691fda31142bcf98cd1a851ad90360f9397
   languageName: node
   linkType: hard
 
@@ -9124,13 +9109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^21.0.0":
-  version: 21.0.0
-  resolution: "yargs-parser@npm:21.0.0"
-  checksum: 1e205fca1cb7a36a1585e2b94a64e641c12741b53627d338e12747f4dca3c3610cdd9bb235040621120548dd74c3ef03a8168d52a1eabfedccbe4a62462b6731
-  languageName: node
-  linkType: hard
-
 "yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
@@ -9143,36 +9121,6 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b14afbb51e3251a204d81937c86a7e9d4bdbf9a2bcee38226c900d00f522969ab675703bee2a6f99f8e20103f608382936034e64d921b74df82b63c07c5e8f59
-  languageName: node
-  linkType: hard
-
-"yargs@npm:^17.2.1":
-  version: 17.3.1
-  resolution: "yargs@npm:17.3.1"
-  dependencies:
-    cliui: ^7.0.2
-    escalade: ^3.1.1
-    get-caller-file: ^2.0.5
-    require-directory: ^2.1.1
-    string-width: ^4.2.3
-    y18n: ^5.0.5
-    yargs-parser: ^21.0.0
-  checksum: 64fc2e32c56739f1d14d2d24acd17a6944c3c8e3e3558f09fc1953ac112e868cc16013d282886b9d5be22187f8b9ed4f60741a6b1011f595ce2718805a656852
-  languageName: node
-  linkType: hard
-
-"yenv@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "yenv@npm:3.0.1"
-  dependencies:
-    coercer: ^1.1.2
-    deep-extend: ^0.6.0
-    js-yaml: ^4.1.0
-    keyblade: ^0.3.2
-    yargs: ^17.2.1
-  bin:
-    yenv: bin/yenv
-  checksum: bef41d168a58cc96c5bded74f5a3e5044f034ae913877a6be21a41dc51b5ee16651410b4f35ac0dd63f8a513433d76051b5eb7388289551b99a3c659b509c645
   languageName: node
   linkType: hard
 
