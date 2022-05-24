@@ -357,7 +357,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
     }
   }
 
-  included_files = ["packages/app}/**"]
+  included_files = ["packages/app/**"]
 
   service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
 
