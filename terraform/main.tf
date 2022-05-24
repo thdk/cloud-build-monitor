@@ -363,12 +363,14 @@ resource "google_cloudbuild_trigger" "app-triggers" {
 
   build {
     step {
-      name       = "gcr.io/cloud-builders/gcloud"
-      entrypoint = "gcloud"
-      args = ["app",
-        "deploy",
-        "--quiet"
-      ]
+      name        = "gcr.io/cloud-builders/gcloud"
+      dir         = "packages/app"
+      entrypoint  = "gcloud"
+      args        = [
+                      "app",
+                      "deploy",
+                      "--quiet"
+                    ]
     }
 
      options {
