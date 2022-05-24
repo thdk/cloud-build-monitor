@@ -370,5 +370,9 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         "--quiet"
       ]
     }
+
+     options {
+      logging = "CLOUD_LOGGING_ONLY"
+    }
   }
 }
