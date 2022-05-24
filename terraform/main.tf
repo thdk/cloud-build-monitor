@@ -340,3 +340,35 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
     }
   }
 }
+
+resource "google_cloudbuild_trigger" "app-triggers" {
+  provider = google-beta
+  name     = "app-trigger-deploy"
+
+  project = var.project
+
+  description = "build and deploy ciccd console app on app engine"
+
+  github {
+    owner = var.repo_owner
+    name  = var.repo_name
+    push {
+      branch = var.repo_branch_pattern
+    }
+  }
+
+  included_files = ["packages/app}/**"]
+
+  service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
+
+  build {
+    step {
+      name       = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["app",
+        "deploy",
+        "--quiet"
+      ]
+    }
+  }
+}

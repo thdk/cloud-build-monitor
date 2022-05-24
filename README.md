@@ -48,7 +48,7 @@ See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
 
 This section will describe the require actions to setup everything in a new GCP project.
 
-## Requirements
+## Requirements for manual setup
 
 - GCP Project with billing enabled
 - A firebase project (Cannot be the same as your GCP project if you already use datastore in that GCP project)
