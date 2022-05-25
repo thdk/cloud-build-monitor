@@ -3,7 +3,7 @@ FROM node:16-alpine as dependencies
 WORKDIR /workspace
 
 COPY .yarn/ .yarn/
-COPY package*.json .yarnrc.yml ./
+COPY package*.json .yarnrc.yml yarn.lock ./
 
 COPY packages/forward-service/package.json packages/forward-service/package.json
 
