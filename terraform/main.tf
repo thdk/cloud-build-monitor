@@ -273,6 +273,13 @@ resource "google_secret_manager_secret_iam_member" "ciccd-service-secret-accesso
   member = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
 }
 
+resource "google_secret_manager_secret_iam_member" "app-secret-accessor" {
+  project = google_secret_manager_secret.github-token.project
+  secret_id = google_secret_manager_secret.github-token.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.run-service-accounts["app"].email}"
+}
+
 # Cloud builds
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
   for_each = toset(concat(local.services, local.apps))

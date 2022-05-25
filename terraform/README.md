@@ -9,15 +9,20 @@
 
 Example:
 ```
-project = "YOUR PROJECT ID"
+project = "ciccd-console"
 region = "europe-west1"
 zone = "europe-west1-c"
+location = "europe-west"
 
 cloud-build-projects = [
     "ciccd-console",
     "scrum-poker-31315",
     "team-timesheets",
 ]
+
+repo_branch_pattern = ".*"
+repo_name = "cloud-build-monitor"
+repo_owner = "thdk"
 ```
 
 Note: each project listed in `cloud-build-projects` must have a `cloud-builds` topic.
