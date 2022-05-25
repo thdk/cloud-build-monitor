@@ -1,10 +1,13 @@
 locals {
   target_service_account = "terraform@${var.project}.iam.gserviceaccount.com"
   cloud_build_topics = toset(var.cloud-build-projects)
-  services = toset([
+  services = [
     "forward-service", 
     "ciccd-service",
-  ])
+  ]
+  apps = [
+    "app",
+  ]
 }
 
 # expose the current project config (https://stackoverflow.com/questions/63824928/how-can-we-add-project-number-from-variable-in-terraform-gcp-resource-iam-bindin)
@@ -118,7 +121,7 @@ resource "google_artifact_registry_repository" "docker-repo" {
 # Cloud run services
 
 resource "google_cloud_run_service" "cloud-run-services" {
-  for_each = local.services
+  for_each = toset(concat(local.services, local.apps))
   name     = each.key
   location = var.region
   project  = var.project
@@ -154,7 +157,7 @@ resource "google_cloud_run_service" "cloud-run-services" {
 
 #### Allow global invoker service account to invoke the cloud run services
 resource "google_cloud_run_service_iam_binding" "services-invoker-binding" {
-  for_each = local.services
+  for_each = toset(local.services)
   location = google_cloud_run_service.cloud-run-services[each.key].location
   project = google_cloud_run_service.cloud-run-services[each.key].project
   service = google_cloud_run_service.cloud-run-services[each.key].name
@@ -166,8 +169,8 @@ resource "google_cloud_run_service_iam_binding" "services-invoker-binding" {
 
 #### Create and configure runtime service account
 resource "google_service_account" "run-service-accounts" {
-  for_each = local.services
-  account_id   = each.key
+  for_each = toset(concat(local.services, local.apps))
+  account_id   = "${each.key}-runtime"
   display_name = each.key
   project = var.project
   description = "Service account which will get impersonated by the ${each.key}"
@@ -272,7 +275,7 @@ resource "google_secret_manager_secret_iam_member" "ciccd-service-secret-accesso
 
 # Cloud builds
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
-  for_each = local.services
+  for_each = toset(concat(local.services, local.apps))
   provider = google-beta
   name     = "${each.key}-trigger-deploy"
 
@@ -336,44 +339,6 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
     }
 
     options {
-      logging = "CLOUD_LOGGING_ONLY"
-    }
-  }
-}
-
-resource "google_cloudbuild_trigger" "app-triggers" {
-  provider = google-beta
-  name     = "app-trigger-deploy"
-
-  project = var.project
-
-  description = "build and deploy ciccd console app on app engine"
-
-  github {
-    owner = var.repo_owner
-    name  = var.repo_name
-    push {
-      branch = var.repo_branch_pattern
-    }
-  }
-
-  included_files = ["packages/app/**"]
-
-  service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
-
-  build {
-    step {
-      name        = "gcr.io/cloud-builders/gcloud"
-      dir         = "packages/app"
-      entrypoint  = "gcloud"
-      args        = [
-                      "app",
-                      "deploy",
-                      "--quiet"
-                    ]
-    }
-
-     options {
       logging = "CLOUD_LOGGING_ONLY"
     }
   }
