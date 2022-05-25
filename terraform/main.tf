@@ -313,6 +313,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
         "packages/${each.key}/Dockerfile",
         "."
         ]
+      secret_env = ["GITHUB_TOKEN"]
     }
 
     step {
@@ -343,6 +344,13 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
       images = [
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
       ]
+    }
+
+    available_secrets {
+      secret_manager {
+        env          = "GITHUB_TOKEN"
+        version_name = "projects/${var.project}/secrets/${google_secret_manager_secret.github-token.secret_id}/versions/latest"
+      }
     }
 
     options {
