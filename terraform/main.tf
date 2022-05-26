@@ -257,6 +257,14 @@ resource "google_secret_manager_secret_version" "github-token-dummy" {
   secret_data = "GITHUB_TOKEN" // must manually add new secret version outside terraform
 }
 
+resource "google_secret_manager_secret" "firebase-env" {
+  secret_id = "firebase-env"
+  labels      = {}
+  replication {
+    automatic = true
+  }
+}
+
 // TODO: forward service doesnt use the github token secret, create separate deploy script for each service
 // and remove this permission
 resource "google_secret_manager_secret_iam_member" "forward-service-secret-accessor" {
@@ -282,7 +290,7 @@ resource "google_secret_manager_secret_iam_member" "app-secret-accessor" {
 
 # Cloud builds
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
-  for_each = toset(concat(local.services, local.apps))
+  for_each = toset(local.services)
   provider = google-beta
   name     = "${each.key}-trigger-deploy"
 
@@ -307,14 +315,83 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
       name = "gcr.io/cloud-builders/docker"
       entrypoint = "bash"
       args = [
-        "-c | docker",
-        "build",
-        "-t",
+        "-c",
+        "docker build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile ."
+        ]
+    }
+
+    step {
+      name = "gcr.io/cloud-builders/docker"
+      args = ["push", "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA"]
+    }
+    step {
+      name       = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["run",
+        "deploy",
+        google_cloud_run_service.cloud-run-services[each.key].name,
+        "--image",
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
-        "-f",
-        "packages/${each.key}/Dockerfile",
-        "--build-args=GITHUB_TOKEN=$$GITHUB_TOKEN",
-        "."
+        "--region",
+        var.region,
+        "--set-env-vars",
+        "HOSTNAME=${google_cloud_run_service.cloud-run-services[each.key].status[0].url},GCP_PROJECT=${var.project}",
+        "--service-account",
+        google_service_account.run-service-accounts[each.key].email,
+        "--impersonate-service-account",
+        google_service_account.builder.email,
+        "--update-secrets",
+        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest"
+      ]
+    }
+    artifacts {
+      images = [
+        "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
+      ]
+    }
+
+    options {
+      logging = "CLOUD_LOGGING_ONLY"
+    }
+  }
+}
+
+resource "google_cloudbuild_trigger" "app-triggers" {
+  for_each = toset(local.apps)
+  provider = google-beta
+  name     = "${each.key}-trigger-deploy"
+
+  project = var.project
+
+  description = "build and deploy ${each.key} on cloud run"
+
+  github {
+    owner = var.repo_owner
+    name  = var.repo_name
+    push {
+      branch = var.repo_branch_pattern
+    }
+  }
+
+  included_files = ["packages/${each.key}/**"]
+
+  service_account = "projects/${var.project}/serviceAccounts/${google_service_account.builder.email}"
+
+  build {
+    step {
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "bash"
+      args = [
+        "-c",
+        "gcloud secrets versions access latest --secret=firebase-env | tee ./packages/app/.env"
+        ]
+    }
+    step {
+      name = "gcr.io/cloud-builders/docker"
+      entrypoint = "bash"
+      args = [
+        "-c",
+        "docker build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile --build-arg=GITHUB_TOKEN=$$GITHUB_TOKEN ."
         ]
       secret_env = ["GITHUB_TOKEN"]
     }
