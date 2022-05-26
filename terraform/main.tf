@@ -502,7 +502,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
       entrypoint = "bash"
       args = [
         "-c",
-        "docker build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile --build-arg=GITHUB_TOKEN=$$GITHUB_TOKEN ."
+        "docker build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile --build-arg=GITHUB_TOKEN=$$GITHUB_TOKEN --build-arg=REPO_REGEX=${var.repo_regex} ."
         ]
       secret_env = ["GITHUB_TOKEN"]
     }
@@ -526,9 +526,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         "--service-account",
         google_service_account.run-service-accounts[each.key].email,
         "--impersonate-service-account",
-        google_service_account.builder.email,
-        "--update-secrets",
-        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest"
+        google_service_account.builder.email
       ]
     }
     artifacts {
