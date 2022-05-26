@@ -277,7 +277,7 @@ resource "google_secret_manager_secret_iam_member" "app-secret-accessor" {
   project = google_secret_manager_secret.github-token.project
   secret_id = google_secret_manager_secret.github-token.secret_id
   role = "roles/secretmanager.secretAccessor"
-  member = "serviceAccount:${google_service_account.run-service-accounts["app"].email}"
+  member  = "serviceAccount:${google_service_account.builder.email}"
 }
 
 # Cloud builds
@@ -305,12 +305,15 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
   build {
     step {
       name = "gcr.io/cloud-builders/docker"
+      entrypoint = "bash"
       args = [
+        "-c | docker",
         "build",
         "-t",
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
         "-f",
         "packages/${each.key}/Dockerfile",
+        "--build-args=GITHUB_TOKEN=$$GITHUB_TOKEN",
         "."
         ]
       secret_env = ["GITHUB_TOKEN"]
