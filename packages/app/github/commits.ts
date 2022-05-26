@@ -1,4 +1,4 @@
-import { octokit } from "../github/octocit";
+import { octokit } from "./octokit";
 
 export async function getCommit({
     owner,

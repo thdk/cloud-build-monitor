@@ -4,7 +4,7 @@ import { CommitsList } from "../../../../../components/commit-list";
 import { Layout } from "../../../../../components/layout";
 import { getRepos } from "../../../../../github/repos";
 import { RepoProvider } from "../../../../../github/repo-context";
-import { octokit } from "../../../../../github/octocit";
+import { octokit } from "../../../../../github/octokit";
 import { PageHeader, Tabs } from "antd";
 import { BuildList } from "../../../../../components/build-list";
 import { useRouter } from "next/router";

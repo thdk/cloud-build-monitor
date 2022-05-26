@@ -3,6 +3,9 @@ FROM node:16-alpine
 ARG GITHUB_TOKEN=foobar
 
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
+ENV CI=true
+ENV NO_COLOR=true
+ENV NODE_ENV=production
 
 WORKDIR /workspace
 

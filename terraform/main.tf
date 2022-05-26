@@ -51,6 +51,96 @@ resource "google_app_engine_application" "app" {
   database_type = "CLOUD_FIRESTORE"
 }
 
+# Firestore indexes
+
+resource "google_firestore_index" "builds-1" {
+  project = var.project
+
+  collection = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "branch"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "commitSha"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order = "DESCENDING"
+  }
+}
+
+resource "google_firestore_index" "builds-3" {
+  project = var.project
+
+  collection = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "branch"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order = "DESCENDING"
+  }
+}
+
+resource "google_firestore_index" "builds-4" {
+  project = var.project
+
+  collection = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "branchName"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order = "DESCENDING"
+  }
+}
+
+resource "google_firestore_index" "builds-5" {
+  project = var.project
+
+  collection = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "commitSha"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order = "DESCENDING"
+  }
+}
+
+resource "google_firestore_index" "builds-6" {
+  project = var.project
+
+  collection = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "githubRepoOwner"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "repo"
+    order = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order = "DESCENDING"
+  }
+}
+
 # Enable required apis
 resource "google_project_service" "services" {
   count              = length(var.gcp_service_list)
@@ -281,11 +371,25 @@ resource "google_secret_manager_secret_iam_member" "ciccd-service-secret-accesso
   member = "serviceAccount:${google_service_account.run-service-accounts["forward-service"].email}"
 }
 
-resource "google_secret_manager_secret_iam_member" "app-secret-accessor" {
+resource "google_secret_manager_secret_iam_member" "app-github-token-secret-accessor" {
   project = google_secret_manager_secret.github-token.project
   secret_id = google_secret_manager_secret.github-token.secret_id
   role = "roles/secretmanager.secretAccessor"
   member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
+resource "google_secret_manager_secret_iam_member" "app-firebase-env-secret-accessor" {
+  project = google_secret_manager_secret.firebase-env.project
+  secret_id = google_secret_manager_secret.firebase-env.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.builder.email}"
+}
+
+resource "google_secret_manager_secret_iam_member" "app-runtime-github-token-secret-accessor" {
+  project = google_secret_manager_secret.github-token.project
+  secret_id = google_secret_manager_secret.github-token.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.run-service-accounts["app"].email}"
 }
 
 # Cloud builds
@@ -417,7 +521,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         "--impersonate-service-account",
         google_service_account.builder.email,
         "--update-secrets",
-        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest"
+        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest,/workspace/packages/app/.env=${google_secret_manager_secret.firebase-env.secret_id}:latest"
       ]
     }
     artifacts {

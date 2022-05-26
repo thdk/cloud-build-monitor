@@ -35,3 +35,9 @@ variable "cloud-build-projects" {
       "cloud-builds",
     ]
 }
+
+# App
+
+variable "repo_regex" {
+  default = ".*"
+}

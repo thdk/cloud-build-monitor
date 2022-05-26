@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { octokit } from "./octocit";
+import { octokit } from "./octokit";
 
 const RepoContext = createContext<{
     repo: string | undefined,
