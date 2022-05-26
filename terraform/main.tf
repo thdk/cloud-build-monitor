@@ -392,6 +392,13 @@ resource "google_secret_manager_secret_iam_member" "app-runtime-github-token-sec
   member = "serviceAccount:${google_service_account.run-service-accounts["app"].email}"
 }
 
+resource "google_secret_manager_secret_iam_member" "app-runtime-firebase-env-secret-accessor" {
+  project = google_secret_manager_secret.firebase-env.project
+  secret_id = google_secret_manager_secret.firebase-env.secret_id
+  role = "roles/secretmanager.secretAccessor"
+  member = "serviceAccount:${google_service_account.run-service-accounts["app"].email}"
+}
+
 # Cloud builds
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
   for_each = toset(local.services)
@@ -521,7 +528,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         "--impersonate-service-account",
         google_service_account.builder.email,
         "--update-secrets",
-        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest,/workspace/packages/app/.env=${google_secret_manager_secret.firebase-env.secret_id}:latest"
+        "GITHUB_TOKEN=${google_secret_manager_secret.github-token.secret_id}:latest"
       ]
     }
     artifacts {

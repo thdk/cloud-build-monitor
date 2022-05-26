@@ -34,10 +34,20 @@ const handleCloudBuildPubSubMessage = async ({
         throw new Error("'id' is missing in message attributes");
     }
 
+
+    console.log({
+      commitSha,
+      repo,
+      githubRepoOwner,
+    });
+
     const commit = await getCommitInfo({
         sha: commitSha,
         repo,
         owner: githubRepoOwner,
+    }).catch((e) => {
+      console.error(e);
+      throw e;
     });
 
      await Promise.all([
