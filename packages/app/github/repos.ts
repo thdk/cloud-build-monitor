@@ -1,8 +1,11 @@
 import { octokit } from "./octokit";
 
 export const getRepos = async () => {
+    // TODO: allow user to choose to list only private, public, owner, repos
+    // and fetch all of them (not only the first page)
     const repos = await octokit.repos.listForAuthenticatedUser({
-        type: "all"
+        type: "all",
+        per_page: 100,
     });
 
     const repoRegex = new RegExp(process.env.NEXT_PUBLIC_REPO_REGEX || '.*');
