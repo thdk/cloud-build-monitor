@@ -341,7 +341,8 @@ resource "google_pubsub_subscription" "ciccd-build" {
   labels  = {}
   topic   = "ciccd-builds"
 
-  ack_deadline_seconds = 600
+  ack_deadline_seconds        = 600
+  enable_message_ordering     = true
   push_config {
     push_endpoint = google_cloud_run_service.cloud-run-services["ciccd-service"].status[0].url
     oidc_token {

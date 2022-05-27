@@ -59,6 +59,7 @@ const handleCloudBuildPubSubMessage = async ({
           startTime: build.startTime?.seconds?.toString() || "",
           finishTime: build.finishTime?.seconds?.toString() || "",
         },
+        orderingKey: buildId,
       });
     }).catch((error) => {
       console.error(error);
