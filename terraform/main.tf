@@ -10,6 +10,25 @@ locals {
   ]
 }
 
+# Terraform backend
+
+resource "google_storage_bucket" "terraform-state" {
+  name          = "ciccd-terraform-state"
+  force_destroy = false
+  location      = "EU"
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
+}
+
+terraform {
+ backend "gcs" {
+   bucket  = "ciccd-terraform-state"
+   prefix  = "terraform/state"
+ }
+}
+
 # expose the current project config (https://stackoverflow.com/questions/63824928/how-can-we-add-project-number-from-variable-in-terraform-gcp-resource-iam-bindin)
 data "google_project" "current-project" {}
 

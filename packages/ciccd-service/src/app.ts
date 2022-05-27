@@ -30,6 +30,10 @@ const handleCloudBuildPubSubMessage = async ({
         finishTime,
     } = attributes || {};
 
+    console.log({
+      attributes,
+    })
+
     if (!id) {
         throw new Error("'id' is missing in message attributes");
     }

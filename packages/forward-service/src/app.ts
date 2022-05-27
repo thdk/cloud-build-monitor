@@ -42,6 +42,9 @@ const handleCloudBuildPubSubMessage = async ({
       build,
     }) => {
 
+      console.log({
+        build,
+      })
       return pubSubClient.topic("ciccd-builds").publishMessage({
         attributes: {
           origin: "cloud-build",
