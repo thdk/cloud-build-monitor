@@ -20,6 +20,11 @@ const handleCloudBuildPubSubMessage = async ({
 }: PubsubMessage) => {
   const { buildId, status } = attributes || {};
 
+  console.log({
+    attributes,
+    data,
+  });
+
   if (!buildId) {
     return;
   }
