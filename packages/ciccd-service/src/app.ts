@@ -62,11 +62,15 @@ const handleCloudBuildPubSubMessage = async ({
             logUrl,
             issueNr: null, // todo: remove?
             startTime: startTime
-                ? toDateTime(+startTime)
+                ? new Date(startTime)
                 : null,
             finishTime: finishTime
-                ? toDateTime(+finishTime)
+                ? new Date(finishTime)
                 : null,
+        }).catch((e) => {
+          console.error("Failed to insert build status in firestore databse");
+          console.error(e);
+          throw e;
         }),
     ]).catch((error) => {
       console.error(error);
@@ -94,9 +98,3 @@ app.post('/', async (req, res) => {
 
   res.status(204).send();
 });
-
-function toDateTime(secs: number) {
-    var t = new Date(1970, 0, 1);
-    t.setSeconds(secs);
-    return t;
-}

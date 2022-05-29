@@ -61,8 +61,8 @@ const handleCloudBuildPubSubMessage = async ({
           branchName: source.branchName,
           id: buildId,
           logUrl: build.logUrl || "",
-          startTime: build.startTime?.seconds?.toString() || "",
-          finishTime: build.finishTime?.seconds?.toString() || "",
+          startTime: build.startTime?.toString() || "",
+          finishTime: build.finishTime?.toString() || "",
         },
         orderingKey: buildId,
       });
