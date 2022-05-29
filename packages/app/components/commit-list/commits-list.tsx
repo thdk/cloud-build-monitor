@@ -31,7 +31,11 @@ function CommitListGroupedByDayTitle({
 }
 
 function getListCommitsByIssueGroupKey(commit: Commit) {
-    const issueRegex = new RegExp(process.env.NEXT_PUBLIC_ISSUE_REGEX || "")
+    if (!process.env.NEXT_PUBLIC_ISSUE_REGEX) {
+        return commit.sha;        
+    }
+
+    const issueRegex = new RegExp(process.env.NEXT_PUBLIC_ISSUE_REGEX)
     const issueId = commit.commit.message.match(issueRegex);
 
     return issueId ? issueId[0] : commit.sha;
@@ -76,7 +80,12 @@ export function CommitsList() {
         defaultBranch,
     } = useRepo();
 
-    const [groupBy, setGroupBy] = useState<"none" | "date" | "issue">("issue");
+    const [groupBy, setGroupBy] = useState<"none" | "date" | "issue">(
+        process.env.NEXT_PUBLIC_ISSUE_REGEX
+            ? "issue"
+            : "date"
+        );
+
     const [since, setSince] = useState<string | undefined>();
 
     const { data: gitRepo } = useQuery([
@@ -190,7 +199,7 @@ export function CommitsList() {
                                     >
                                         <MenuItem value="none">None</MenuItem>
                                         <MenuItem value="date">Date</MenuItem>
-                                        <MenuItem value="issue">Issue</MenuItem>
+                                        {process.env.NEXT_PUBLIC_ISSUE_REGEX && <MenuItem value="issue">Issue</MenuItem>}
                                     </Select>
                                 </FormControl>
                         </div>

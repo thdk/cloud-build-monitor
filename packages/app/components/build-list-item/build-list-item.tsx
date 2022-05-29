@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useRepo } from '../../github/repo-context';
 import { CICCDBuild } from '../../interfaces/build';
@@ -114,23 +115,27 @@ export function BuildListItem({
                       className='px-2 text-slate-600'>
                       in
                     </span>
-                    <a
-                      className='underline'
-                      onClick={e => {
-                        e.stopPropagation();
-
-                        replace({
-                          pathname,
-                          query: {
-                            ...query,
-                            repo,
-                            owner: githubRepoOwner,
-                          }
-                        });
-                      }}
+                    <Link
+                      href={`repos/${githubRepoOwner}/${repo}/builds`}
                     >
-                      {`${githubRepoOwner}/${repo}`}
-                    </a>
+                      <a
+                        className='underline'
+                        onClick={e => {
+                          e.stopPropagation();
+
+                          replace({
+                            pathname,
+                            query: {
+                              ...query,
+                              repo,
+                              owner: githubRepoOwner,
+                            }
+                          });
+                        }}
+                      >
+                        {`${githubRepoOwner}/${repo}`}
+                      </a>
+                    </Link>
                   </>
                 )
               }

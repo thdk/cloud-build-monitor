@@ -1,4 +1,5 @@
 import {
+  applicationDefault,
   cert,
   getApp,
   getApps,
@@ -6,13 +7,12 @@ import {
 } from "firebase-admin/app";
 
 
-const serviceAccount = require("../firebase-admin.json");
 async function getFirebaseAdminApp() {
 
 
   return initializeApp(
     {
-      credential: cert(serviceAccount)
+      credential: applicationDefault(),
     }
   );
 }

@@ -1,4 +1,4 @@
-import { octokit } from "./octocit";
+import { octokit } from "./octokit";
 
 type Tag = {
     name: string;

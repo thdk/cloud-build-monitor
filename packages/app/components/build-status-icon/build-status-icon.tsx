@@ -15,6 +15,8 @@ export function BuildStatusIcon({
             return <div>⚙️</div>;
         case "cancelled":
             return <div>🛑</div>;
+        case "timeout":
+            return <div>⏰</div>;
         default:
             return <div>❔</div>;
     }

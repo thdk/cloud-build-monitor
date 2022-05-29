@@ -11,6 +11,9 @@ const config: FirebaseOptions = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+console.log({
+    config,
+})
 function createFirebaseApp(config: FirebaseOptions) {
     try {
         return getApp();
