@@ -42,10 +42,15 @@ This section will describe the require actions to setup everything in a new GCP 
 
 ### Requirements
 
-- GCP Project with billing enabled
 - A fork (recommended) or clone of this repo
 - terraform installed
 - gcloud sdk installed
+
+### Create and configure GCP project
+
+- add a billing account
+- connect your fork/clone of this github repository from the cloud build triggers page.
+
 
 ### Authenticate and set gcp project
 
@@ -53,26 +58,45 @@ This section will describe the require actions to setup everything in a new GCP 
 gcloud auth login
 gcloud config set project YOUR-GCP_PROJECT
 ```
-
 ### Create a service account that will be used to create all required resources
 
 The service account that will be used is: `terraform@PROJECT_ID.iam.gserviceaccount.com`,
 
 You must create this service account manually and give it the following permissions:
 
-- artifactregistry.repositories.create
-- artifactregistry.repositories.delete
-- artifactregistry.repositories.get
-- iam.serviceAccounts.actAs
-- resourcemanager.projects.get
-- run.services.create
-- run.services.get
-- serviceusage.operations.get
-- serviceusage.services.enable
-- serviceusage.services.get
-- serviceusage.services.list
+- App Engine Admin
+- Artifact Registry Administrator
+- Cloud Build Editor
+- Cloud Run Admin
+- Project IAM Admin
+- Pub/Sub Admin
+- Secret Manager Admin
+- Storage Admin
 
-Note: you must have permissions to impersonate this service account when running terraform locally.
+### Make sure you have the Service Account Token Creator role
+
+
+### Set application default credentials
+
+```
+gcloud auth aplication-default login
+gcloud auth config set project YOUR_GCP_PROJECT
+```
+
+### Create a bucket to store terraform state
+
+```sh
+gsutil mb -p <projectId> -c <storage-class> -l <region> -b gs://<bucket-name>
+gsutil versioning set on gs://<bucket-name>
+```
+
+### Create terraform backend config file
+
+in `./terraform` add a file `config.gcs.tfbackend` with content:
+
+```
+bucket = "YOUR_GCP_BUCKET"
+```
 
 ### Add your a terraform variable file `terraform.tfvars` in the `./terraform` sub folder.
 
@@ -106,6 +130,9 @@ repo_branch_pattern = ".*"
 repo_regex = "^thdk"
 ```
 
+
+
+
 ### Let terraform create the required resources
 
 ```sh
@@ -113,6 +140,20 @@ cd terraform
 terrafom init
 terraform apply
 ```
+
+### Add values to the created secrets
+
+- github-token
+
+
+- firebase-env
+    NEXT_PUBLIC_FIREBASE_API_KEY=
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+    NEXT_PUBLIC_FIREBASE_APP_ID=
+
 
 ### Trigger initial cloud builds
 

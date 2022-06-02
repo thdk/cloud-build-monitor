@@ -1,9 +1,12 @@
 # Modules
 module "forward-service" {
-  source               = "./forward-service"
+  source = "./forward-service"
   depends_on = [
-    module.ciccd-service
+    module.ciccd-service,
+    google_project_service.services,
+    google_artifact_registry_repository.docker-repo
   ]
+
   cloud_build_projects = var.cloud_build_projects
   project              = var.project
   region               = var.region
@@ -13,12 +16,17 @@ module "forward-service" {
 }
 
 module "ciccd-service" {
-  source               = "./ciccd-service"
-  project              = var.project
-  region               = var.region
-  repo_branch_pattern  = var.repo_branch_pattern
-  repo_owner           = var.repo_owner
-  repo_name            = var.repo_name
+  source              = "./ciccd-service"
+  project             = var.project
+  region              = var.region
+  repo_branch_pattern = var.repo_branch_pattern
+  repo_owner          = var.repo_owner
+  repo_name           = var.repo_name
+
+  depends_on = [
+    google_project_service.services,
+    google_artifact_registry_repository.docker-repo,
+  ]
 }
 
 module "app" {
@@ -29,6 +37,12 @@ module "app" {
   repo_owner          = var.repo_owner
   repo_name           = var.repo_name
   repo_regex          = var.repo_regex
+
+  depends_on = [
+    module.ciccd-service,
+    google_project_service.services,
+    google_artifact_registry_repository.docker-repo
+  ]
 }
 
 #-----------------------------------------------#
@@ -78,9 +92,9 @@ resource "google_service_account" "builder" {
 
 resource "google_project_iam_member" "run-admin" {
   for_each = toset(local.builder_roles)
-  project = var.project
-  role    = "${each.key}"
-  member  = "serviceAccount:${google_service_account.builder.email}"
+  project  = var.project
+  role     = each.key
+  member   = "serviceAccount:${google_service_account.builder.email}"
 }
 
 ## Invoker
@@ -100,6 +114,10 @@ resource "google_artifact_registry_repository" "docker-repo" {
   repository_id = "docker-repository"
   description   = "docker repository"
   format        = "DOCKER"
+
+  depends_on = [
+    google_project_service.services
+  ]
 }
 
 #-----------------------------------------------#
@@ -123,6 +141,10 @@ resource "google_secret_manager_secret" "github-token" {
   replication {
     automatic = true
   }
+
+  depends_on = [
+    google_project_service.services
+  ]
 }
 
 resource "google_secret_manager_secret" "firebase-env" {
@@ -131,6 +153,10 @@ resource "google_secret_manager_secret" "firebase-env" {
   replication {
     automatic = true
   }
+
+  depends_on = [
+    google_project_service.services
+  ]
 }
 
 resource "google_secret_manager_secret_iam_member" "forward-service-secret-accessor" {

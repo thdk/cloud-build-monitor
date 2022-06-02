@@ -1,4 +1,4 @@
-variable "project" { }
+variable "project" {}
 
 variable "location" {
   default = "us-central"
@@ -10,14 +10,18 @@ variable "region" {
 variable "zone" {
   default = "us-central1-c"
 }
-
 variable "gcp_service_list" {
-  description ="The list of apis necessary for the project"
-  type = list(string)
+  description = "The list of apis necessary for the project"
+  type        = list(string)
   default = [
     "storage.googleapis.com",
     "run.googleapis.com",
     "artifactregistry.googleapis.com",
+    "secretmanager.googleapis.com",
+    "firestore.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "iam.googleapis.com",
+    "iap.googleapis.com"
   ]
 }
 
@@ -30,10 +34,10 @@ variable "repo_branch_pattern" {}
 
 # list all gcp projects from which cloud-build pub sub messages should and can be handled
 variable "cloud_build_projects" {
-    type    = list(string)
-    default =  [
-      "cloud-builds",
-    ]
+  type = list(string)
+  default = [
+    "cloud-builds",
+  ]
 }
 
 # App

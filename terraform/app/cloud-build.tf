@@ -1,7 +1,3 @@
-data "google_service_account" "builder" {
-  account_id = "builder"
-}
-
 resource "google_cloudbuild_trigger" "app-triggers" {
   provider = google-beta
   name     = "app-trigger-deploy"
@@ -20,7 +16,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
 
   included_files = ["packages/app/**"]
 
-  service_account = "projects/${var.project}/serviceAccounts/${data.google_service_account.builder.email}"
+  service_account = "projects/${var.project}/serviceAccounts/${"builder@${var.project}.iam.gserviceaccount.com"}"
 
   build {
     step {

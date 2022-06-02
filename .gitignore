@@ -20,4 +20,5 @@ dist/
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
-terraform.tfvars
+*.tfvars
+*.tfbackend

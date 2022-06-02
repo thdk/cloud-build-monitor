@@ -9,6 +9,9 @@ resource "google_app_engine_application" "app" {
 # Firestore indexes
 
 resource "google_firestore_index" "builds-1" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
   project = var.project
 
   collection  = "builds"
@@ -29,6 +32,9 @@ resource "google_firestore_index" "builds-1" {
 }
 
 resource "google_firestore_index" "builds-3" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
   project = var.project
 
   collection  = "builds"
@@ -45,6 +51,9 @@ resource "google_firestore_index" "builds-3" {
 }
 
 resource "google_firestore_index" "builds-4" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
   project = var.project
 
   collection  = "builds"
@@ -61,6 +70,9 @@ resource "google_firestore_index" "builds-4" {
 }
 
 resource "google_firestore_index" "builds-5" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
   project = var.project
 
   collection  = "builds"
@@ -77,6 +89,9 @@ resource "google_firestore_index" "builds-5" {
 }
 
 resource "google_firestore_index" "builds-6" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
   project = var.project
 
   collection  = "builds"
