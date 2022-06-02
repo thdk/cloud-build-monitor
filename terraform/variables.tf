@@ -21,7 +21,8 @@ variable "gcp_service_list" {
     "firestore.googleapis.com",
     "cloudbuild.googleapis.com",
     "iam.googleapis.com",
-    "iap.googleapis.com"
+    "iap.googleapis.com",
+    "firebase.googleapis.com",
   ]
 }
 

@@ -72,6 +72,8 @@ You must create this service account manually and give it the following permissi
 - Pub/Sub Admin
 - Secret Manager Admin
 - Storage Admin
+- Firebase Admin
+- Service Usage Admin
 
 ### Make sure you have the Service Account Token Creator role
 
