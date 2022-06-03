@@ -192,3 +192,14 @@ gcloud beta builds triggers run forward-service-trigger-deploy --branch=main
 
 Next builds will be automatically triggered by adding new commits to the main branch.
 
+### Deploy firestore security rules
+
+Unfortuneatly, you cannot [yet](https://github.com/hashicorp/terraform-provider-google/issues/8263) setup firebase rules in terraform.
+Therefor you must manually deploy the firestore rules.
+
+- install firebase tools
+- `cd packages/app`
+- `firebase login`
+- `firebase use YOUR_PROJECT_ID`
+- `firebase deploy --only firestore:rules`
+
