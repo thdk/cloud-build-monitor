@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import { getAllBranches } from "./branches";
 import { useRepo } from "./repo-context";
 
 export function useBranches() {
@@ -16,10 +15,12 @@ export function useBranches() {
             owner,
             repo,
         ],
-        () => getAllBranches({
-            owner,
-            repo,
-        }),
+        () => fetch(
+            `/api/github/repos/${owner}/${repo}/branches`,
+        ).then((response) => response.json()),
+        {
+            enabled: !!(owner && repo),
+        },
     );
 
     return data || [];

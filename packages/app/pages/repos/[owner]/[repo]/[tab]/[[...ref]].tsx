@@ -2,7 +2,6 @@ import { GetStaticPaths, GetStaticPropsContext, NextPage } from "next"
 import React from "react";
 import { CommitsList } from "../../../../../components/commit-list";
 import { Layout } from "../../../../../components/layout";
-import { getRepos } from "../../../../../github/repos";
 import { RepoProvider } from "../../../../../github/repo-context";
 import { octokit } from "../../../../../github/octokit";
 import { PageHeader, Tabs } from "antd";
@@ -33,7 +32,7 @@ export const RepoPage: NextPage<{
                 <Layout>
                     <PageHeader
                         onBack={() => window.history.back()}
-                        title={`${owner} / ${repo}`}
+                        title={ owner && repo ? `${owner} / ${repo}` : "/"}
                         footer={
                             <Tabs
                                 defaultActiveKey={tab}
@@ -111,29 +110,10 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const repos = await getRepos();
-    const paths = repos.flatMap(({
-        owner,
-        name: repo,
-    }) => {
-        return [
-            "commits",
-            "builds",
-        ].map(tab => ({
-            params: {
-                ref: ["master"],
-                repo,
-                owner,
-                tab,
-            },
-        }));
-    });
-
     return {
-        paths,
+        paths: [],
         fallback: true,
     };
 };
-
 
 export default RepoPage;

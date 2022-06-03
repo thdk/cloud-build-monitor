@@ -36,14 +36,10 @@ resource "google_cloudbuild_trigger" "app-triggers" {
           "docker build",
           "-t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/app:$COMMIT_SHA",
           "-f packages/app/Dockerfile",
-          "--build-arg GITHUB_TOKEN=$$GITHUB_TOKEN",
           "--build-arg REPO_REGEX=${var.repo_regex}",
           "--build-arg ISSUE_REGEX='${var.issue_regex}'",
           " ."
         ]),
-      ]
-      secret_env = [
-        "GITHUB_TOKEN",
       ]
     }
 
@@ -71,6 +67,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         join(",", [
           "JIRA_USER=jira-user:latest",
           "JIRA_PASSWORD=jira-password:latest",
+          "GITHUB_TOKEN=github-token:latest",
         ]),
         "--service-account",
         google_service_account.run-service-account.email
@@ -81,14 +78,6 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/app:$COMMIT_SHA",
       ]
     }
-
-    available_secrets {
-      secret_manager {
-        env          = "GITHUB_TOKEN"
-        version_name = "projects/${var.project}/secrets/github-token/versions/latest"
-      }
-    }
-
     options {
       logging = "CLOUD_LOGGING_ONLY"
     }

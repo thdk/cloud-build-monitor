@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { octokit } from "./octokit";
 
 const RepoContext = createContext<{
     repo: string | undefined,
@@ -38,9 +37,10 @@ export const RepoProvider = ({
         owner,
         repo,
     ],
-        () => octokit.repos.get({
-            owner: owner as string,
-            repo: repo as string,
+        () => fetch(
+            `/api/github/repos/${owner}/${repo}`,
+        ).then((response) => {
+            return response.json();
         }),
         {
             enabled: !!(owner && repo),

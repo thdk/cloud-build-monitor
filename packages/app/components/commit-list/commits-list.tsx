@@ -3,11 +3,9 @@ import { Commit } from "../../github/types";
 import { useQuery } from "react-query";
 import { RefInput } from "../ref-input";
 import { useRepo } from "../../github/repo-context";
-import { FormControl, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
-import { getRepo } from "../../github/repos";
 import { CommitsListGrouped } from "../commit-list-grouped";
-import { getCommit, getCommits } from "../../github/commits";
 import { getIssue } from "../../jira/issues";
 
 function getListCommitsByDayGroupKey(commit: Commit) {
@@ -95,10 +93,7 @@ export function CommitsList() {
     ],
         () => {
             return owner && repo
-                ? getRepo({
-                    owner,
-                    repo,
-                })
+                ? fetch(`/api/github/repos/${owner}/${repo}`).then((response) => response.json())
                 : undefined
         }
     )
@@ -119,15 +114,14 @@ export function CommitsList() {
                 return null;
             }
 
-            return getCommit({
-                owner: owner,
-                repo: repo,
-                ref: since,
-            });
+            return fetch(
+                `/api/github/repos/${owner}/${repo}/commit/${since}`
+            ).then((response) => response.json());
         },
     );
 
     const sinceDate = commitData?.data.commit.committer?.date;
+
     const commits = useQuery(
         [
             'commits',
@@ -137,17 +131,14 @@ export function CommitsList() {
             groupBy,
             sinceDate,
         ],
-        () => getCommits({
-            ref: repoRef || gitRepo?.data.default_branch as string,
-            repo: repo as string,
-            owner: owner as string,
-            since: sinceDate,
-        }),
+        () => fetch(
+            `/api/github/repos/${owner}/${repo}/commits/${repoRef || gitRepo?.data.default_branch}?since=${sinceDate || ""}`,
+        ).then((response) => response.json()),
         {
             select: (data) => {
                 return groupBy === "issue"
                     // filter out merge commits (they have more than one parent)
-                    ? data.filter((commit) => commit.parents.length === 1)
+                    ? data.filter((commit: any) => commit.parents.length === 1)
                     : data;
             },
             enabled: !!gitRepo?.data.default_branch && commitData !== undefined,
@@ -231,7 +222,7 @@ export function CommitsList() {
                                 className="rounded-lg border"
                             >
                                 {
-                                    commits.data?.map((commit) => {
+                                    commits.data?.map((commit: any) => {
                                         return (
                                             <CommitListItem
                                                 key={commit.sha}

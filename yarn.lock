@@ -2188,6 +2188,7 @@ __metadata:
     "@heroicons/react": ^1.0.6
     "@mui/material": ^5.4.2
     "@octokit/rest": ^18.12.0
+    "@octokit/types": ^6.34.0
     "@types/jira-client": ^7.1.4
     "@types/mustache": ^4.1.2
     "@types/node": 17.0.8

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useRepo } from "./repo-context";
-import { getAllTags } from "./tags";
+
 export function useTags() {
     const {
         repo,
@@ -15,11 +15,13 @@ export function useTags() {
             owner,
             repo,
         ],
-        () => getAllTags({
-            owner,
-            repo,
-        }),
+        () => fetch(
+            `/api/github/repos/${owner}/${repo}/tags`,
+        ).then((response) => response.json()),
+        {
+            enabled: !!(owner && repo),
+        },
     );
 
-    return data;
+    return data || [];
 }

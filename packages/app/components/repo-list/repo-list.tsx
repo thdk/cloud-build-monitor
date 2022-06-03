@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
-import { getRepos } from "../../github/repos";
+import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
+import { octokit } from "../../github/octokit";
 
 export function RepoList() {
     const {
         data,
     } = useQuery(
         "repos",
-        getRepos,
+        () => fetch(
+            "/api/github/repos",
+        ).then<GetResponseDataTypeFromEndpointMethod<typeof octokit.repos.listForAuthenticatedUser>>((response) => response.json()),
     );
 
     return data
@@ -20,15 +23,15 @@ export function RepoList() {
                     data.map((repo) => {
                         return (
                             <Fragment
-                                key={`${repo.owner}${repo.name}`}
+                                key={`${repo.owner.login}${repo.name}`}
                             >
                                 <Link
-                                    href={`/repos/${repo.owner.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
+                                    href={`/repos/${repo.owner.login.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
                                 >
                                     <a
                                         className="p-4 underline border"
                                     >
-                                        {repo.owner}/{repo.name}
+                                        {repo.owner.login}/{repo.name}
                                     </a>
                                 </Link>
                             </Fragment>
