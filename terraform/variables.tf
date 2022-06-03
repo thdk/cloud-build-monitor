@@ -46,3 +46,24 @@ variable "cloud_build_projects" {
 variable "repo_regex" {
   default = ".*"
 }
+
+variable "issue_regex" {
+  description = "[A-Z][A-Z0-9]+-[0-9]+1"
+  type = string
+  default = ""
+}
+
+variable "jira_host" {
+  type = string
+  default = ""
+}
+
+variable "jira_user" {
+  type = string
+  default = ""
+}
+
+variable "jira_password" {
+  type = string
+  default = ""
+}

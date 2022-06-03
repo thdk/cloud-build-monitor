@@ -1,10 +1,10 @@
 import JiraApi from "jira-client";
 
-export const jiraApi = process.env.NEXT_PUBLIC_JIRA_HOST
+export const jiraApi = process.env.JIRA_HOST
     ? new JiraApi({
-        host: process.env.NEXT_PUBLIC_JIRA_HOST,
-        username: process.env.NEXT_PUBLIC_JIRA_USER_NAME,
-        password: process.env.NEXT_PUBLIC_JIRA_PASSWORD,
+        host: process.env.JIRA_HOST,
+        username: process.env.JIRA_USER_NAME,
+        password: process.env.JIRA_PASSWORD,
         protocol: "https",
         strictSSL: true,
     })

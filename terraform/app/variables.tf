@@ -25,3 +25,23 @@ output "runtime_service_account" {
 variable "repo_regex" {
   default = ".*"
 }
+
+variable "issue_regex" {
+  type = string
+  default = ""
+}
+
+variable "jira_host" {
+  type = string
+  default = ""
+}
+
+variable "jira_user" {
+  type = string
+  default = ""
+}
+
+variable "jira_password" {
+  type = string
+  default = ""
+}
