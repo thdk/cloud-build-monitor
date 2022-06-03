@@ -26,6 +26,7 @@ module "ciccd-service" {
   depends_on = [
     google_project_service.services,
     google_artifact_registry_repository.docker-repo,
+    google_secret_manager_secret.secrets,
   ]
 }
 
@@ -133,69 +134,3 @@ resource "google_project_iam_member" "pubsub-token-creator" {
 
 #-----------------------------------------------#
 
-# Secret manager
-
-resource "google_secret_manager_secret" "github-token" {
-  secret_id = "github-token"
-  labels    = {}
-  replication {
-    automatic = true
-  }
-
-  depends_on = [
-    google_project_service.services
-  ]
-}
-
-resource "google_secret_manager_secret" "firebase-env" {
-  secret_id = "firebase-env"
-  labels    = {}
-  replication {
-    automatic = true
-  }
-
-  depends_on = [
-    google_project_service.services
-  ]
-}
-
-resource "google_secret_manager_secret_iam_member" "forward-service-secret-accessor" {
-  project   = google_secret_manager_secret.github-token.project
-  secret_id = google_secret_manager_secret.github-token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${module.ciccd-service.runtime_service_account}"
-}
-
-resource "google_secret_manager_secret_iam_member" "app-github-token-secret-accessor" {
-  project   = google_secret_manager_secret.github-token.project
-  secret_id = google_secret_manager_secret.github-token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.builder.email}"
-}
-
-resource "google_secret_manager_secret_iam_member" "app-firebase-env-secret-accessor" {
-  project   = google_secret_manager_secret.firebase-env.project
-  secret_id = google_secret_manager_secret.firebase-env.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.builder.email}"
-}
-
-resource "google_secret_manager_secret_iam_member" "app-runtime-github-token-secret-accessor" {
-  project   = google_secret_manager_secret.github-token.project
-  secret_id = google_secret_manager_secret.github-token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${module.app.runtime_service_account}"
-  depends_on = [
-    module.app
-  ]
-}
-
-resource "google_secret_manager_secret_iam_member" "app-runtime-firebase-env-secret-accessor" {
-  project   = google_secret_manager_secret.firebase-env.project
-  secret_id = google_secret_manager_secret.firebase-env.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${module.app.runtime_service_account}"
-  depends_on = [
-    module.app
-  ]
-}

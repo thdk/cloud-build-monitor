@@ -37,15 +37,19 @@ resource "google_cloudbuild_trigger" "app-triggers" {
           "-t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/app:$COMMIT_SHA",
           "-f packages/app/Dockerfile",
           "--build-arg=GITHUB_TOKEN=$$GITHUB_TOKEN",
+          "--build-arg=JIRA_USER=$$JIRA_USER",
+          "--build-arg=JIRA_PASSWORD=$$JIRA_PASSWORD",
           "--build-arg=REPO_REGEX=${var.repo_regex}",
           "--build-arg=JIRA_HOST=${var.jira_host}",
-          "--build-arg=JIRA_USER=${var.jira_user}",
-          "--build-arg=JIRA_PASSWORD=${var.jira_password}",
           "--build-arg=ISSUE_REGEX=${var.issue_regex}",
           " ."
         ]),
       ]
-      secret_env = ["GITHUB_TOKEN"]
+      secret_env = [
+        "GITHUB_TOKEN",
+        "JIRA_USER",
+        "JIRA_PASSWORD"
+      ]
     }
 
     step {
@@ -78,6 +82,14 @@ resource "google_cloudbuild_trigger" "app-triggers" {
       secret_manager {
         env          = "GITHUB_TOKEN"
         version_name = "projects/${var.project}/secrets/github-token/versions/latest"
+      }
+      secret_manager {
+        env          = "JIRA_USER"
+        version_name = "projects/${var.project}/secrets/jira-user/versions/latest"
+      }
+      secret_manager {
+        env          = "JIRA_PASSWORD"
+        version_name = "projects/${var.project}/secrets/jira-password/versions/latest"
       }
     }
 

@@ -35,13 +35,3 @@ variable "jira_host" {
   type = string
   default = ""
 }
-
-variable "jira_user" {
-  type = string
-  default = ""
-}
-
-variable "jira_password" {
-  type = string
-  default = ""
-}

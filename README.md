@@ -1,6 +1,6 @@
 # CI Cloud CD (CICCD)
 
-A tool to get an overiew of your different CI/CD workflows. Whether they run on some cloud platform or on premises.
+A tool to get an overview of your different CI/CD workflows. Whether they run on some cloud platform or on premises.
 
 ## Features
 
@@ -102,7 +102,6 @@ bucket = "YOUR_GCP_BUCKET"
 
 ### Add your a terraform variable file `terraform.tfvars` in the `./terraform` sub folder.
 
-
 ```
 # Your gcp project in which you want to run ciccd console
 project = "ciccd-console"
@@ -132,37 +131,56 @@ repo_branch_pattern = ".*"
 repo_regex = "^thdk"
 ```
 
-
-
-
 ### Let terraform create the required resources
 
 ```sh
 cd terraform
-terrafom init
+
+# initialize terraform by running...
+terraform init -backend-config=bucket=TERRAFORM_STATE_BUCKET 
+
+# ...or use the config.gcs.tfbackend file
+terraform init -backend-config=config.gcs.tfbackend
+
+terraform plan
+
 terraform apply
 ```
 
 ### Add values to the created secrets
 
-- github-token
+The easiest way to do this is by adding new versions for the listed secrets using the secret manager in gcp console.
+
+**github-token**
 
 ```
-GITHUB_ACCESS_TOKEN
+<GITHUB_ACCESS_TOKEN>
 ```
 
 
-- firebase-env
+**jira-user**
 
 ```
-    NEXT_PUBLIC_FIREBASE_API_KEY=
-    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-    NEXT_PUBLIC_FIREBASE_APP_ID=
+<JIRA_USER_NAME>
 ```
 
+
+**jira-password**
+
+```
+<JIRA_PASSWORD>
+```
+
+**firebase-env**
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=<FIREBASE_API_KEY>
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<FIREBASE_AUTH_DOMAIN>
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=<FIREBASE_PROJECT_ID>
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=<FIREBASE_STORAGE_BUCKET>
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<FIREBASE_MESSAGE_NDER_ID>
+NEXT_PUBLIC_FIREBASE_APP_ID=<FIREBASE_APP_ID>
+```
 
 ### Trigger initial cloud builds
 
