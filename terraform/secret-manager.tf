@@ -14,6 +14,9 @@ locals {
   forward_service_secrets = toset([
     "github-token",
   ])
+  ciccd_service_secrets = toset([
+    "github-token",
+  ])
 }
 
 resource "google_secret_manager_secret" "secrets" {
@@ -48,3 +51,14 @@ resource "google_secret_manager_secret_iam_member" "forward-service-secret-acces
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${module.forward-service.runtime_service_account}"
 }
+
+# Allow access to secrets by ciccd service runtime service account
+
+resource "google_secret_manager_secret_iam_member" "ciccd-service-secret-accessor" {
+  for_each  = local.ciccd_service_secrets
+  project   = google_secret_manager_secret.secrets[each.key].project
+  secret_id = google_secret_manager_secret.secrets[each.key].secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${module.ciccd-service.runtime_service_account}"
+}
+
