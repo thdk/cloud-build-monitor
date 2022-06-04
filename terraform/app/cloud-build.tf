@@ -36,12 +36,12 @@ resource "google_cloudbuild_trigger" "app-triggers" {
           "docker build",
           "-t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/app:$COMMIT_SHA",
           "-f packages/app/Dockerfile",
-          "--build-arg=GITHUB_TOKEN=$$GITHUB_TOKEN",
-          "--build-arg=JIRA_USER=$$JIRA_USER",
-          "--build-arg=JIRA_PASSWORD=$$JIRA_PASSWORD",
-          "--build-arg=REPO_REGEX=${var.repo_regex}",
-          "--build-arg=JIRA_HOST=${var.jira_host}",
-          "--build-arg=ISSUE_REGEX=${var.issue_regex}",
+          "--build-arg GITHUB_TOKEN=$$GITHUB_TOKEN",
+          "--build-arg JIRA_USER=$$JIRA_USER",
+          "--build-arg JIRA_PASSWORD=$$JIRA_PASSWORD",
+          "--build-arg REPO_REGEX=${var.repo_regex}",
+          "--build-arg JIRA_HOST=${var.jira_host}",
+          "--build-arg ISSUE_REGEX='${var.issue_regex}'",
           " ."
         ]),
       ]
