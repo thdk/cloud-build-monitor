@@ -38,6 +38,8 @@ module "app" {
   repo_owner          = var.repo_owner
   repo_name           = var.repo_name
   repo_regex          = var.repo_regex
+  issue_regex         = var.issue_regex
+  jira_host           = var.jira_host
 
   depends_on = [
     module.ciccd-service,

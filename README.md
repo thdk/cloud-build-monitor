@@ -129,7 +129,15 @@ repo_branch_pattern = ".*"
 
 # Repos listed in the app should match the repo_regex pattern else they wont be shown
 repo_regex = "^thdk"
+
+jira_host = "jira.domain.com"
+issue_regex = "[A-Z][A-Z0-9]+-[0-9]+"
 ```
+
+### Guarantee cloud-build topics exist
+
+Each project listed the `cloud_builds_project` variable should have a `cloud-builds` pub sub topic.
+If it does not exist yet, you must manually create it.
 
 ### Let terraform create the required resources
 
@@ -182,16 +190,6 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<FIREBASE_MESSAGE_NDER_ID>
 NEXT_PUBLIC_FIREBASE_APP_ID=<FIREBASE_APP_ID>
 ```
 
-### Trigger initial cloud builds
-
-```sh
-gcloud beta builds triggers run app-trigger-deploy --branch=main
-gcloud beta builds triggers run ciccd-service-trigger-deploy --branch=main
-gcloud beta builds triggers run forward-service-trigger-deploy --branch=main
-```
-
-Next builds will be automatically triggered by adding new commits to the main branch.
-
 ### Deploy firestore security rules
 
 Unfortuneatly, you cannot [yet](https://github.com/hashicorp/terraform-provider-google/issues/8263) setup firebase rules in terraform.
@@ -203,3 +201,12 @@ Therefor you must manually deploy the firestore rules.
 - `firebase use YOUR_PROJECT_ID`
 - `firebase deploy --only firestore:rules`
 
+### Trigger initial cloud builds
+
+```sh
+gcloud beta builds triggers run app-trigger-deploy --branch=main
+gcloud beta builds triggers run ciccd-service-trigger-deploy --branch=main
+gcloud beta builds triggers run forward-service-trigger-deploy --branch=main
+```
+
+Next builds will be automatically triggered by adding new commits to the main branch.
