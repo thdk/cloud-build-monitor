@@ -1,8 +1,7 @@
-import { query, collection, orderBy, limit, where, getDocs } from 'firebase/firestore';
+import { query, collection, orderBy, limit, where, getDocs, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { firestore } from '../../firebase/init-firebase';
 import { useRepo } from '../../github/repo-context';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 import { BuildListItems } from '../build-list-items';
@@ -15,7 +14,7 @@ export function BuildList() {
     replace,
   } = useRouter();
 
-  let baseQuery = query(collection(firestore, 'builds')
+  let baseQuery = query(collection(getFirestore(), 'builds')
     .withConverter(CICCDBuildConverter),
     orderBy("created", "desc"),
     limit(30));

@@ -1,8 +1,7 @@
-import { query, collection, where } from "firebase/firestore";
+import { query, collection, where, getFirestore } from "firebase/firestore";
 import Link from "next/link";
 import { Line } from "rc-progress";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { firestore } from "../../firebase/init-firebase";
 import { CICCDBuildConverter } from "../../interfaces/build";
 
 export function CommitChecks({
@@ -12,7 +11,7 @@ export function CommitChecks({
 }) {
     const [buildData] = useCollection(
         query(
-            collection(firestore, "builds")
+            collection(getFirestore(), "builds")
                 .withConverter(CICCDBuildConverter),
             where("commitSha", "==", sha),
         )

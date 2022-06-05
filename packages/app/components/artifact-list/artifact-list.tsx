@@ -1,8 +1,8 @@
 import { List } from "antd";
-import { collection, query, where } from "firebase/firestore";
+import { collection, getFirestore, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { artifactConverter } from "../../collections/artifacts/firestore-converter";
-import { firestore } from "../../firebase/init-firebase";
+
 import Mustache from "mustache";
 import { CICCDBuild } from "../../interfaces/build";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export function ArtifactList({
     const [data, isLoading] = useCollectionData(
         build
             ? query(
-                collection(firestore, "artifacts")
+                collection(getFirestore(), "artifacts")
                     .withConverter(artifactConverter),
                 where("triggerName", "==", build.name),
             )

@@ -1,6 +1,5 @@
-import { FirebaseOptions, getApp, initializeApp } from "firebase/app";
+import { FirebaseOptions, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 
 const config: FirebaseOptions = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,16 +10,6 @@ const config: FirebaseOptions = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-function createFirebaseApp(config: FirebaseOptions) {
-    try {
-        return getApp();
-    } catch {
-        return initializeApp(config);
-    }
-}
-
-const firebaseApp = createFirebaseApp(config);
-export const firebaseAuth = getAuth(firebaseApp);
-const firestore = getFirestore(firebaseApp);
+const firestore = getFirestore(initializeApp(config));
 
 export { firestore };
