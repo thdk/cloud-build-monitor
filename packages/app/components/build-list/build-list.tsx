@@ -45,17 +45,6 @@ export function BuildList() {
     );
   }
 
-  useEffect(() => {
-    getDocs(
-      query(baseQuery),
-    ).catch((e) => {
-      console.error(e);
-    }
-    )
-  },
-    [baseQuery]
-  )
-
   const [value, loading, error] = useCollection<CICCDBuild>(
     query(baseQuery),
     {
@@ -64,7 +53,9 @@ export function BuildList() {
   );
 
   useEffect(() => {
-    console.error(error);
+    if (error) {
+      console.error(error);
+    }
   }, [error]);
 
   return (
