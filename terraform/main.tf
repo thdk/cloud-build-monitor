@@ -48,6 +48,29 @@ module "app" {
   ]
 }
 
+module "gcr_cleaner" {
+  source  = "mirakl/gcr-cleaner/google"
+
+  # If you want to create your App Engine Application using terraform, uncomment the following
+  # create_app_engine_app = true
+
+  app_engine_application_location          = "europe-west1"
+  gcr_cleaner_image                        = "europe-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner:latest"
+  cloud_scheduler_job_schedule             = "0 2 * * 5"
+  cloud_scheduler_job_time_zone            = "Europe/Brussels"
+ 
+  gar_repositories = [
+    {
+      project_id = var.project
+      region     = "europe-west1"
+      name       = "docker-repository"
+      parameters = {
+        grace      = "180h"
+        keep       = 3
+      }
+    }
+  ]
+}
 #-----------------------------------------------#
 
 locals {
