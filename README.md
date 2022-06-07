@@ -185,8 +185,8 @@ terraform apply
 ```
 ### Deploy firestore security rules
 
-Unfortuneatly, you cannot [yet](https://github.com/hashicorp/terraform-provider-google/issues/8263) setup firebase rules in terraform.
-Therefor you must manually deploy the firestore rules.
+Unfortunately, you cannot [yet](https://github.com/hashicorp/terraform-provider-google/issues/8263) setup firebase rules in terraform.
+Therefore you must manually deploy the firestore rules.
 
 - install firebase tools
 - `cd packages/app`
