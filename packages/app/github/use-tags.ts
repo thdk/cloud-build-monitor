@@ -17,7 +17,16 @@ export function useTags() {
         ],
         () => fetch(
             `/api/github/repos/${owner}/${repo}/tags`,
-        ).then((response) => response.json()),
+        ).then(async (response) => {
+            const data = await response.json()
+            if (response.ok) {
+                return data;
+            }
+
+            return Promise.reject(
+                (data && data.message) || response.status,
+            );
+        }),
         {
             enabled: !!(owner && repo),
         },

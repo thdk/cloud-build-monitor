@@ -23,6 +23,7 @@ export async function getAllBranches({
         (response, done) => {
             count += response.data.length
             if (count >= 1000) {
+                console.warn(`${repo} has more than 1000 branches. Returning only 1000 branches.`)
                 done();
             }
             return response.data;
