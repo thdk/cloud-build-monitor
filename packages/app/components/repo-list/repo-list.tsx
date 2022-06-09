@@ -11,7 +11,18 @@ export function RepoList() {
         "repos",
         () => fetch(
             "/api/github/repos",
-        ).then<GetResponseDataTypeFromEndpointMethod<typeof octokit.repos.listForAuthenticatedUser>>((response) => response.json()),
+        ).then<GetResponseDataTypeFromEndpointMethod<typeof octokit.repos.listForAuthenticatedUser>>(
+            async (response) => {
+                const data = await response.json()
+                if (response.ok) {
+                    return data;
+                }
+
+                return Promise.reject(
+                    (data && data.message) || response.status,
+                );
+            },
+        ),
     );
 
     return data
