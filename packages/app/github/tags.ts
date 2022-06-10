@@ -1,4 +1,4 @@
-import { octokit } from "./octokit";
+import { createOctokit } from "./octokit";
 
 type Tag = {
     name: string;
@@ -20,6 +20,7 @@ export async function getAllTags({
     }
 
     let count = 0
+    const octokit = createOctokit();
     return octokit.paginate(
         octokit.repos.listTags,
         {

@@ -1,6 +1,7 @@
-import { octokit } from "./octokit";
+import { createOctokit } from "./octokit";
 
 export const getRepos = async () => {
+    const octokit = createOctokit();
     // TODO: allow user to choose to list only private, public, owner, repos
     // and fetch all of them (not only the first page)
     const repos = await octokit.repos.listForAuthenticatedUser({
@@ -20,6 +21,7 @@ export const getRepo = async ({
     repo: string;
     owner: string;
 }) => {
+    const octokit = createOctokit();
     const gitRepo = await octokit.repos.get({
         repo,
         owner,
