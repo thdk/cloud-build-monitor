@@ -1,5 +1,4 @@
 import { Octokit } from '@octokit/rest';
-import { config } from './config';
 
 export const getCommitInfo = async ({
   sha,
@@ -10,8 +9,13 @@ export const getCommitInfo = async ({
   repo: string;
   owner: string;
 }) => {
+
+  if (!process.env.GITHUB_TOKEN) {
+    throw new Error("GITHUB_TOKEN environment variable is not set");
+  }
+
   const octokit = new Octokit({
-    auth: config.GITHUB_TOKEN,
+    auth: process.env.GITHUB_TOKEN,
     repo,
     owner,
   });
@@ -21,10 +25,10 @@ export const getCommitInfo = async ({
     owner,
     commit_sha: sha,
   }).catch((e) => {
-    console.error(`Couldnt find commit for ${JSON.stringify({repo, owner, sha})}`)
+    console.error(`Couldnt find commit for ${JSON.stringify({ repo, owner, sha })}`)
     throw e;
 
-});
+  });
 
   return commit.data;
 };

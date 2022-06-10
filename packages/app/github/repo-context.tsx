@@ -39,8 +39,15 @@ export const RepoProvider = ({
     ],
         () => fetch(
             `/api/github/repos/${owner}/${repo}`,
-        ).then((response) => {
-            return response.json();
+        ).then(async (response) => {
+            const data = await response.json()
+                if (response.ok) {
+                    return data;
+                }
+
+                return Promise.reject(
+                    (data && data.message) || response.status,
+                );
         }),
         {
             enabled: !!(owner && repo),

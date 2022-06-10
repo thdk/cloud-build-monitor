@@ -7,9 +7,17 @@ export default async function getRepos(
     res: NextApiResponse<
         GetResponseDataTypeFromEndpointMethod<
             typeof octokit.repos.listForAuthenticatedUser
-        >
+        > | {
+            message: string;
+        }
     >
 ) {
+
+    if (!process.env.GITHUB_TOKEN) {
+        res.status(500).json({
+            message: "GITHUB_TOKEN environment variable is not set",
+        });
+    }
 
     const octokit = new Octokit({
         auth: process.env.GITHUB_TOKEN,

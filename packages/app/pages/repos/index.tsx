@@ -2,7 +2,7 @@ import { GetStaticProps, NextPage } from "next";
 import { Layout } from "../../components/layout";
 import { RepoList } from "../../components/repo-list";
 import { getRepos } from "../../github/repos";
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { dehydrate, QueryClient } from 'react-query';
 import { PageHeader } from "antd";
 
 

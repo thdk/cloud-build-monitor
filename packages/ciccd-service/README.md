@@ -1,6 +1,6 @@
-# ciccd-builds-sub-function
+# ciccd-service
 
-Handles CICCD pub sub messages to add build statuses to the dashboard database and sends notifications.
+Handles CICCD pub sub messages to add build statuses to the dashboard database.
 
 ## Pub sub message specifications
 

@@ -2,19 +2,19 @@ import { getDocs, collection, getFirestore } from "firebase/firestore";
 import { useQuery } from "react-query";
 
 export interface IConfigData {
-    issueTrackerUrl: string,
+    issueTrackerUrl?: string,
 }
 
 export const useConfig = () => {
-    const configQuery = useQuery(
+    const configQuery = useQuery<IConfigData>(
         ['config'],
         async () => {
             const snapshot = await getDocs(collection(getFirestore(), "config"));
 
-            return snapshot.docs.reduce((p, c) => {
+            return snapshot.docs.reduce<IConfigData>((p, c) => {
                 p[c.id as keyof IConfigData] = c.data().value;
                 return p;
-            }, {} as IConfigData);
+            }, {});
         },
         {},
     );

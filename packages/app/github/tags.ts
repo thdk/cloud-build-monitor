@@ -30,6 +30,7 @@ export async function getAllTags({
         (response, done) => {
             count += response.data.length
             if (count >= 1000) {
+                console.warn(`${repo} has more than 1000 tags. Returing only 1000 tags.`);
                 done();
             }
             return response.data;
@@ -45,8 +46,8 @@ export function getTagsGroupedByCommitSha(
     return tags.reduce<TagsDictionary>(
         (p, { commit: { sha }, name }) => {
 
-            p[sha] = [...(p[sha] || []), name,]
-                .filter((tagName) => !!tagName);
+            if (!name) return p;
+            p[sha] = [...(p[sha] || []), name];
 
             return p;
         },
