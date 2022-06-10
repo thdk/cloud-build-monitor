@@ -32,15 +32,13 @@ export async function getCommits({
         return [];
     }
 
-    const [commits] = await Promise.all([
-        octokit.repos.listCommits({
-            owner,
-            repo,
-            sha: ref,
-            per_page: 100,
-            since,
-        }),
-    ]);
+    const commits = await octokit.repos.listCommits({
+        owner,
+        repo,
+        sha: ref,
+        per_page: 100,
+        since,
+    });
 
     return Promise.all(
         commits.data.map(async (commit) => {

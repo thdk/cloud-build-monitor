@@ -10,16 +10,11 @@ type Error = {
 const repos = async (req: NextApiRequest, res: NextApiResponse<Data | Error>) => {
   const { key } = req.query;
   if (typeof key !== "string") {
-    res.status(500).send({
-      name: "Failed to fetch issue"
-    });
+    throw new Error("Exactly one issue key is required.")
   }
 
-  const issue = await jiraApi?.getIssue(key as string)
-    .catch((e) => {
-      console.error(e);
-      throw e;
-    });
+  const issue = await jiraApi?.getIssue(key as string);
+
   if (issue) {
     res.status(200).json(issue);
   } else {
