@@ -1,4 +1,4 @@
-import { octokit } from "./octokit";
+import { createOctokit } from "./octokit";
 
 export async function getAllBranches({
     owner,
@@ -13,6 +13,7 @@ export async function getAllBranches({
     }
 
     let count = 0
+    const octokit = createOctokit();
     return octokit.paginate(
         octokit.repos.listBranches,
         {

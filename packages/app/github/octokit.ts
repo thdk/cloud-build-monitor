@@ -1,11 +1,13 @@
 import { Octokit } from "@octokit/rest";
 
-const options = {
-    auth: process.env.GITHUB_TOKEN,
-};
+export function createOctokit() {
 
-if (!options.auth) {
-    throw new Error("Missing value for GITHUB_TOKEN");
+    const options = {
+        auth: process.env.GITHUB_TOKEN,
+    };
+
+    if (!options.auth) {
+        throw new Error("Missing value for GITHUB_TOKEN");
+    }
+    return new Octokit(options);
 }
-
-export const octokit = new Octokit(options);

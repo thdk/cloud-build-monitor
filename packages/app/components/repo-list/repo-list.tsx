@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
-import { octokit } from "../../github/octokit";
+import type { Octokit } from "@octokit/rest";
 
 export function RepoList() {
     const {
@@ -11,7 +11,7 @@ export function RepoList() {
         "repos",
         () => fetch(
             "/api/github/repos",
-        ).then<GetResponseDataTypeFromEndpointMethod<typeof octokit.repos.listForAuthenticatedUser>>(
+        ).then<GetResponseDataTypeFromEndpointMethod<Octokit["repos"]["listForAuthenticatedUser"]>>(
             async (response) => {
                 const data = await response.json()
                 if (response.ok) {

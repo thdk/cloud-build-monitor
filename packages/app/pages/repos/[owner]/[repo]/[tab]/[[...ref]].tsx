@@ -3,10 +3,10 @@ import React from "react";
 import { CommitsList } from "../../../../../components/commit-list";
 import { Layout } from "../../../../../components/layout";
 import { RepoProvider } from "../../../../../github/repo-context";
-import { octokit } from "../../../../../github/octokit";
 import { PageHeader, Tabs } from "antd";
 import { BuildList } from "../../../../../components/build-list";
 import { useRouter } from "next/router";
+import { createOctokit } from "../../../../../github/octokit";
 
 const {
     TabPane,
@@ -84,6 +84,7 @@ export const getStaticProps = async (context: GetStaticPropsContext<{
     const owner = context.params?.owner;
     const tab = context.params?.tab || "commits";
 
+    const octokit = createOctokit();
     if (!ref && repo && owner) {
         const gitRepo = await octokit.repos.get({
             owner,

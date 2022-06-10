@@ -1,4 +1,4 @@
-import { octokit } from "./octokit";
+import { createOctokit } from "./octokit";
 
 export async function getCommit({
     owner,
@@ -9,6 +9,7 @@ export async function getCommit({
     repo: string;
     ref: string;
 }) {
+    const octokit = createOctokit();
     return octokit.repos.getCommit({
         owner,
         repo,
@@ -32,6 +33,7 @@ export async function getCommits({
         return [];
     }
 
+    const octokit = createOctokit();
     const commits = await octokit.repos.listCommits({
         owner,
         repo,
