@@ -29,7 +29,7 @@ resource "google_firebase_project_location" "default" {
 resource "google_firebase_web_app" "ciccd-console" {
   provider = google-beta.impersonated
   project  = var.project
-  
+
   display_name = "ciccd-console app"
 
   depends_on = [google_firebase_project.default]

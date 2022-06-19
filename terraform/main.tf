@@ -62,6 +62,10 @@ locals {
     "roles/artifactregistry.writer",
     "roles/iam.serviceAccountUser",
     "roles/iam.serviceAccountTokenCreator",
+    "roles/appengine.deployer",
+    "roles/storage.admin",
+    "roles/cloudbuild.builds.editor",
+    "roles/appengine.serviceAdmin"
   ]
 }
 
