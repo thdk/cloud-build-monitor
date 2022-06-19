@@ -43,6 +43,12 @@ variable "cloud_build_projects" {
 
 # App
 
+variable "app_engine_service" {
+  type        = string
+  description = "Your first app engine service must be named 'default'. Choose another name if you have already an app engine service deployed with that name."
+  default     = "default"
+}
+
 variable "repo_regex" {
   default = ".*"
 }
@@ -56,4 +62,9 @@ variable "issue_regex" {
 variable "jira_host" {
   type = string
   default = ""
+}
+
+variable "use_app_engine" {
+  type = bool
+  default = true
 }

@@ -7,6 +7,9 @@ locals {
   ])
    builder_secrets = toset([
     "firebase-env",
+    "jira-user",
+    "jira-password",
+    "github-token",
   ])
   app_secrets = toset([
     "jira-user",
