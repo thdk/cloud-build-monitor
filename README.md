@@ -63,7 +63,7 @@ This section will describe the require actions to setup everything in a new GCP 
 
 ```sh
 gcloud auth login
-gcloud auth aplication-default login
+gcloud auth application-default login
 gcloud config set project YOUR-GCP_PROJECT
 ```
 ### Create a service account that will be used to create all required resources
