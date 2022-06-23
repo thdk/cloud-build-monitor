@@ -67,16 +67,20 @@ resource "google_cloudbuild_trigger" "app-triggers-app-engine" {
         "-c",
         join(" && ", [
           "sed -i 's/APP_ENGINE_SERVICE_VALUE/${var.app_engine_service}/g' app.yaml",
-          "sed -i 's/GITHUB_TOKEN_VALUE/$$GITHUB_TOKEN/g' app.yaml",
-          "sed -i 's/JIRA_USER_VALUE/$$JIRA_USER/g' app.yaml",
-          "sed -i 's/JIRA_PASSWORD_VALUE/$$JIRA_PASSWORD/g' app.yaml",
           "sed -i 's/JIRA_HOST_VALUE/${var.jira_host}/g' app.yaml"
         ])
       ]
+    }
+    step {
+      name       = "gcr.io/google.com/cloudsdktool/cloud-sdk"
+      entrypoint = "bash"
+      dir        = "./packages/app"
+      args = [
+        "-c",
+          "sed -i 's/GITHUB_TOKEN_VALUE/$$GITHUB_TOKEN/g' app.yaml",
+      ]
       secret_env = [
         "GITHUB_TOKEN",
-        "JIRA_USER",
-        "JIRA_PASSWORD",
       ]
     }
     step {
