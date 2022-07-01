@@ -26,10 +26,12 @@ const handleCloudBuildPubSubMessage = async ({
   });
 
   if (!buildId) {
+    console.error(`Missing required attribute 'buildId'`);
     return;
   }
 
   if (!status) {
+    console.error(`Missing required attribute 'status'`);
     return;
   }
 
