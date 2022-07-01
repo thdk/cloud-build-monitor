@@ -39,4 +39,4 @@ yarn-error.log*
 .env
 .env*
 
-firebase-admin.json
+.firebaserc
