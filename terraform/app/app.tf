@@ -8,7 +8,6 @@ resource "google_service_account" "run-service-account" {
 # Cloud run services
 
 resource "google_cloud_run_service" "app" {
-  count    = var.use_app_engine ? 0 : 1
   name     = "app"
   location = var.region
   project  = var.project
