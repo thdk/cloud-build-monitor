@@ -23,6 +23,7 @@ variable "gcp_service_list" {
     "iam.googleapis.com",
     "iap.googleapis.com",
     "firebase.googleapis.com",
+    "pubsub.googleapis.com",
   ]
 }
 
