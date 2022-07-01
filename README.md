@@ -15,7 +15,7 @@ A tool to get an overview of your different CI/CD workflows. Whether they run on
 
 ## CICCD Dashboard
 
-The dashboard runs on nextjs and is deployed on Google App Engine.
+The dashboard runs on nextjs and is deployed on Google Cloud Run.
 
 See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
 

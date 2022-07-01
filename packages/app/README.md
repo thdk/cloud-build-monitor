@@ -1,34 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CICCD app - Your cicd dashboard
 
-## Getting Started
+## Setup for local development
 
-First, run the development server:
+This is a [Next.js](https://nextjs.org/) app. 
+If you haven't used Nextjs yet, checkout [their docs](https://nextjs.org/docs).
 
-```bash
-npm run dev
-# or
+### Setup your environment
+
+Add a `.env` file
+
+```
+NEXT_PUBLIC_FIREBASE_API_KEY=xxxxxx
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=xxxxxx
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=xxxxxx
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=xxxxxx
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxxxxx
+NEXT_PUBLIC_FIREBASE_APP_ID=xxxxxx
+NEXT_PUBLIC_REPO_REGEX=xxxxxx
+JIRA_USER=xxxxxx
+JIRA_PASSWORD=xxxxxx
+JIRA_HOST=xxxxxx
+GITHUB_TOKEN=xxxxxx
+```
+
+Note: you can get the firebase values in your firebase console or using **firebase-tools**.
+
+```sh
+npm i -g firebase-tools # only if you haven't installed firebase-tools yet
+firebase login
+firebase use YOUR-FIREBASE-PROJECT
+firebase apps:sdkconfig # this one will print the values you need
+```
+
+### Install dependencies
+
+```sh
+yarn install
+```
+
+### Run the development server
+
+```sh
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Open the app
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+[http://localhost:3000](http://localhost:3000)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
