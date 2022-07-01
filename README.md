@@ -27,7 +27,7 @@ See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
 
 - [forward-service](packages/forward-service/README.md)
   
-  optional: converts 'cloud-builds' pub sub messages send by Google Cloud Build to CICCD messages
+  optional: converts 'cloud-builds' pub sub messages sent by Google Cloud Build to CICCD messages
 
 - [report-service](packages/ciccd-service/README.md)
 
@@ -36,7 +36,7 @@ See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
 
 ## Setup
 
-This section will describe the require actions to setup everything in a new GCP project.
+This section will describe the required actions to setup everything in a new GCP project.
 
 ## Instructions to create resources with terraform
 
