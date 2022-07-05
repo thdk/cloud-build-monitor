@@ -8,6 +8,8 @@ data "google_service_account" "invoker" {
   account_id = "invoker"
 }
 
+data "google_project" "current-project" {}
+
 resource "google_service_account" "run-service-account" {
   account_id   = "forward-service-runtime"
   display_name = "forward-service"
@@ -77,8 +79,36 @@ resource "google_cloud_run_service_iam_binding" "service-invoker-binding" {
 
 # Pub sub
 
-## push subscription for cloud-builds topic in listed gcp projects
 
+resource "google_pubsub_topic" "dead-letter-topic" {
+  name = "forward-service-cloud-builds-dead-letter"
+}
+
+## Allow pubsub to publish dead-lettered messages to the dead letter topic
+resource "google_pubsub_topic_iam_member" "member" {
+  project = var.project
+  topic   = google_pubsub_topic.dead-letter-topic.name
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:service-${data.google_project.current-project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+}
+
+# Add pub sub subscription to dead letter topic else those messages are lost
+resource "google_pubsub_subscription" "dead-letter-subscription" {
+  name  = "dead-letter-subscription-cloud-builds"
+  topic = google_pubsub_topic.dead-letter-topic.name
+
+  retain_acked_messages = false
+
+  ack_deadline_seconds = 20
+  retry_policy {
+    minimum_backoff = "10s"
+    maximum_backoff = "600s"
+  }
+
+  enable_message_ordering = true
+}
+
+## push subscription for cloud-builds topic in listed gcp projects
 resource "google_pubsub_subscription" "cloud-build" {
   for_each = toset(var.cloud_build_projects)
   name     = "cloud-builds-subscription-${each.key}"
@@ -93,5 +123,22 @@ resource "google_pubsub_subscription" "cloud-build" {
     }
   }
 
+  retry_policy {
+    maximum_backoff = "600s"
+    minimum_backoff = "10s"
+  }
+  dead_letter_policy {
+    dead_letter_topic     = google_pubsub_topic.dead-letter-topic.id
+    max_delivery_attempts = 5
+  }
   enable_message_ordering = true
+}
+
+## Allow pubsub to forward messages from subscriptions to the dead letter topic.
+
+resource "google_pubsub_subscription_iam_member" "editor" {
+  for_each     = toset(var.cloud_build_projects)
+  subscription = google_pubsub_subscription.cloud-build[each.key].name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:service-${data.google_project.current-project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }

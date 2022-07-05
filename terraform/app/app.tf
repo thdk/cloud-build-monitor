@@ -13,7 +13,7 @@ resource "google_cloud_run_service" "app" {
   project  = var.project
 
   autogenerate_revision_name = true
-
+  
   template {
     spec {
       containers {
