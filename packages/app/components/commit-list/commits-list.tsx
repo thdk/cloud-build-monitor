@@ -30,7 +30,7 @@ function CommitListGroupedByDayTitle({
 
 function getListCommitsByIssueGroupKey(commit: Commit) {
     if (!process.env.NEXT_PUBLIC_ISSUE_REGEX) {
-        return commit.sha;        
+        return commit.sha;
     }
 
     const issueRegex = new RegExp(process.env.NEXT_PUBLIC_ISSUE_REGEX)
@@ -82,7 +82,7 @@ export function CommitsList() {
         process.env.NEXT_PUBLIC_ISSUE_REGEX
             ? "issue"
             : "date"
-        );
+    );
 
     const [since, setSince] = useState<string | undefined>();
 
@@ -176,23 +176,23 @@ export function CommitsList() {
                         <div
                             className="flex pl-4"
                         >
-                                <FormControl>
-                                    <InputLabel id="group-select-label">Group by</InputLabel>
-                                    <Select
-                                        autoWidth
-                                        size="small"
-                                        labelId="group-select-label"
-                                        value={groupBy}
-                                        label="Group by"
-                                        onChange={(e) => {
-                                            setGroupBy(e.target.value as any);
-                                        }}
-                                    >
-                                        <MenuItem value="none">None</MenuItem>
-                                        <MenuItem value="date">Date</MenuItem>
-                                        {process.env.NEXT_PUBLIC_ISSUE_REGEX && <MenuItem value="issue">Issue</MenuItem>}
-                                    </Select>
-                                </FormControl>
+                            <FormControl>
+                                <InputLabel id="group-select-label">Group by</InputLabel>
+                                <Select
+                                    autoWidth
+                                    size="small"
+                                    labelId="group-select-label"
+                                    value={groupBy}
+                                    label="Group by"
+                                    onChange={(e) => {
+                                        setGroupBy(e.target.value as any);
+                                    }}
+                                >
+                                    <MenuItem value="none">None</MenuItem>
+                                    <MenuItem value="date">Date</MenuItem>
+                                    {process.env.NEXT_PUBLIC_ISSUE_REGEX && <MenuItem value="issue">Issue</MenuItem>}
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
                     <div>

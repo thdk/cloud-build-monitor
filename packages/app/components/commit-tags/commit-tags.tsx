@@ -42,7 +42,7 @@ export function CommitTags({
                 {commitTags.map((tag) => (
                     <Link
                         key={tag}
-                        href={`/repos/${owner}/${repo}/${tag}`}
+                        href={`/repos/${owner}/${repo}/commits/${tag}`}
                         passHref
                     >
                         <Tag
