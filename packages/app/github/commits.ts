@@ -23,7 +23,7 @@ export async function getCommits({
     owner,
     since,
 }: {
-    /* branch or sh */
+    /* branch or sha */
     ref?: string;
     repo?: string;
     owner?: string;
