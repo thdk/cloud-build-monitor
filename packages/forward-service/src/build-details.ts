@@ -4,23 +4,19 @@ import { CloudBuildClient } from '@google-cloud/cloudbuild';
 const cb = new CloudBuildClient();
 
 export const getBuild = async (build: any) => {
-  // const [build] = await cb
-  //   .getBuild({
-  //     id,
-  //   })
-  //   .catch(error => {
-  //     console.error(`Failed to get build: ${id} in project ${projectId}`);
-  //     throw error;
-  //   });
-
   const projectId = build.projectId;
-  const id = build.id;
+
+  // use name instead of id to allow to fetch build / trigger from non global region
+  // example build name: projects/902089564156/locations/europe-west1/builds/d41db8f6-687a-4fc7-b082-f4995ef83770
+  const triggerName = `${build.name
+    .substr(0, build.name.lastIndexOf("/") +1)
+    .replace("builds", "triggers")}${build.buildTriggerId}`;
 
   const [trigger] =
     (build.buildTriggerId &&
       (await cb
         .getBuildTrigger({
-          triggerId: build.buildTriggerId,
+          name: triggerName,
           projectId: projectId,
         })
         .catch(error => {
