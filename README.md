@@ -2,6 +2,8 @@
 
 A tool to get an overview of your different CI/CD workflows. Whether they run on some cloud platform or on premises.
 
+Demo application with my own gcp-projects and github repos: [https://app-crtmi2bbra-ew.a.run.app/](https://app-crtmi2bbra-ew.a.run.app/)
+
 ## Features
 
 - Send email notifications for failed / successful builds
