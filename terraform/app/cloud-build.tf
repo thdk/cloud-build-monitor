@@ -13,6 +13,7 @@ data "google_secret_manager_secret" "jira-password" {
 resource "google_cloudbuild_trigger" "app-triggers" {
   provider = google-beta
   name     = "app-trigger-deploy"
+  location = var.region
 
   project = var.project
 

@@ -244,9 +244,9 @@ Note that you must list each project in the `cloud_build_projects` property of y
 ### Trigger initial cloud builds
 
 ```sh
-gcloud beta builds triggers run app-trigger-deploy --branch=main
-gcloud beta builds triggers run ciccd-service-trigger-deploy --branch=main
-gcloud beta builds triggers run forward-service-trigger-deploy --branch=main
+gcloud beta builds triggers run app-trigger-deploy --branch=main --region=europe-west1
+gcloud beta builds triggers run ciccd-service-trigger-deploy --branch=main --region=europe-west1
+gcloud beta builds triggers run forward-service-trigger-deploy --branch=main --region=europe-west1
 ```
 
 Next builds will be automatically triggered by adding new commits to the main branch.

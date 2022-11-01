@@ -13,6 +13,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
   for_each = toset(local.services)
   provider = google-beta
   name     = "${each.key}-trigger-deploy"
+  location = var.region
 
   project = var.project
 
