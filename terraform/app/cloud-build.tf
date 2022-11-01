@@ -49,7 +49,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
           "docker build",
           "-t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/app:$COMMIT_SHA",
           "-f packages/app/Dockerfile",
-          "--build-arg REPO_REGEX=${var.repo_regex}",
+          "--build-arg REPO_REGEX='${var.repo_regex}'",
           "--build-arg ISSUE_REGEX='${var.issue_regex}'",
           " ."
         ]),
