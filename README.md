@@ -235,6 +235,11 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<FIREBASE_MESSAGE_NDER_ID>
 NEXT_PUBLIC_FIREBASE_APP_ID=<FIREBASE_APP_ID>
 ```
 
+### Allow forward-service service account to view cloud builds from your gcp projects
+
+For each gcp project you wish to subscribe to cloud builds statuses, you must give the `Cloud Build Viewer` role to `forward-service-runtime@[GCP_PROJECT_ID].iam.gserviceaccount.com`.
+
+Note that you must list each project in the `cloud_build_projects` property of your terraform config and run `terraform apply` if you haven't done this yet to setup the required pub sub resources.
 
 ### Trigger initial cloud builds
 
