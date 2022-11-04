@@ -7,7 +7,7 @@ resource "google_app_engine_application" "app" {
 }
 
 resource "google_firebase_project" "default" {
-  provider = google-beta.impersonated
+  provider = google-beta
   project  = var.project
 
   depends_on = [
@@ -16,7 +16,7 @@ resource "google_firebase_project" "default" {
 }
 
 resource "google_firebase_project_location" "default" {
-  provider = google-beta.impersonated
+  provider = google-beta
   project  = var.project
 
   location_id = var.location
@@ -27,7 +27,7 @@ resource "google_firebase_project_location" "default" {
 }
 
 resource "google_firebase_web_app" "ciccd-console" {
-  provider = google-beta.impersonated
+  provider = google-beta
   project  = var.project
 
   display_name = "ciccd-console app"
