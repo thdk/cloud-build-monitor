@@ -96,9 +96,55 @@ gcloud projects add-iam-policy-binding YOUR_GCP_PROJECT \
     --role="roles/serviceusage.serviceUsageAdmin"
 ```
 
-### Make sure you have the Service Account Token Creator role
+### Create a bucket to store terraform state
 
-The user, group or service account which will invoke the terraform commands will need the Service Account Token Creator role. Either on project level or on service account level.
+```sh
+# example: gsutil mb -c standard -l europe-west1 gs://ciccd-console-terraform-state
+gsutil mb -c <storage-class> -l <region> gs://<bucket-name>
+
+# example: gsutil versioning set on gs://ciccd-console-terraform-state
+gsutil versioning set on gs://<bucket-name>
+```
+
+### Apply terraform resources
+
+Whoever wants to apply terraform changes must have:
+ - Service Account Token Creator role for the terraform@GCP_PROJECT.iam.gserviceaccount.com
+ - Access to the terraform remote state bucket
+
+#### Apply terraform resources using ci/cd pipelines (recommended)
+
+Personally I am using the free plan of [env0](https://www.env0.com/) for IaC pipelines.
+
+Create a service account that will be used by the cicd pipeline to trigger `terraform plan` and `terraform apply`:
+
+```sh
+gcloud iam service-accounts create terraform-cicd
+```
+
+Give the Service Account Token Creator role to the service account that is used by your pipeline:
+
+```sh
+# Allow the service account used by env0 to create access token for the terraform service account
+gcloud iam service-accounts add-iam-policy-binding \
+  terraform@[GCP_PROJECT].iam.gserviceaccount.com \
+  --member='serviceAccount:terraform-cicd@[GCP_PROJECT].iam.gserviceaccount.com' \
+  --role='roles/iam.serviceAccountTokenCreator'
+```
+
+Give the service account access to the gcp bucket containing terraform state:
+
+```
+gsutil iam ch serviceAccount:terraform-cicd@[GCP_PROJECT].iam.gserviceaccount.com:roles/storage.admin gs://[GCP_STATE_BUCKET]
+```
+
+
+Note: if all is set up correctly, no human should ever have this role.
+
+#### Apply terraform resources manually (room for human errors)
+
+
+Give a user or group the Service Account Token Creator role. Either on project level or on service account level.
 
 ```sh
 # Allow users in the dev ops group to create access token for the terraform service account
@@ -109,14 +155,11 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 ```
 
-### Create a bucket to store terraform state
 
-```sh
-# example: gsutil mb -c standard -l europe-west1 gs://ciccd-console-terraform-state
-gsutil mb -c <storage-class> -l <region> gs://<bucket-name>
+Give the user or group access to the gcp bucket containing terraform state:
 
-# example: gsutil versioning set on gs://ciccd-console-terraform-state
-gsutil versioning set on gs://<bucket-name>
+```
+gsutil iam ch group:dev-ops@example.com:roles/storage.admin gs://[GCP_STATE_BUCKET]
 ```
 
 ### Create terraform backend config file
