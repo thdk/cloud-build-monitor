@@ -43,6 +43,11 @@ variable "cloud_build_projects" {
 }
 
 # App
+
+variable "allowed_http_viewers" {
+  default = []
+  type = list(string)  
+}
 variable "repo_regex" {
   default = ".*"
 }

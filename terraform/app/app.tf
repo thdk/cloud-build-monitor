@@ -13,7 +13,7 @@ resource "google_cloud_run_service" "app" {
   project  = var.project
 
   autogenerate_revision_name = true
-  
+
   template {
     spec {
       containers {
@@ -37,4 +37,13 @@ resource "google_cloud_run_service" "app" {
   #   depends_on = [
   #     google_project_service.services
   #   ]
+}
+
+resource "google_cloud_run_service_iam_binding" "binding" {
+  count    = length(var.allowed_http_viewers)
+  location = google_cloud_run_service.app.location
+  project  = google_cloud_run_service.app.project
+  service  = google_cloud_run_service.app.name
+  role     = "roles/run.invoker"
+  members  = var.allowed_http_viewers
 }

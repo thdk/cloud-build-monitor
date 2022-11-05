@@ -47,15 +47,16 @@ module "ciccd-service" {
 }
 
 module "app" {
-  source              = "./app"
-  project             = var.project
-  region              = var.region
-  repo_branch_pattern = var.repo_branch_pattern
-  repo_owner          = var.repo_owner
-  repo_name           = var.repo_name
-  repo_regex          = var.repo_regex
-  issue_regex         = var.issue_regex
-  jira_host           = var.jira_host
+  source               = "./app"
+  project              = var.project
+  region               = var.region
+  repo_branch_pattern  = var.repo_branch_pattern
+  repo_owner           = var.repo_owner
+  repo_name            = var.repo_name
+  repo_regex           = var.repo_regex
+  issue_regex          = var.issue_regex
+  jira_host            = var.jira_host
+  allowed_http_viewers = var.allowed_http_viewers
   service_account_builder = {
     email = google_service_account.builder.email
     name  = google_service_account.builder.name

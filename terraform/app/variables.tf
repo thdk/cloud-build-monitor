@@ -14,6 +14,11 @@ variable "cloud-build-projects" {
   ]
 }
 
+variable "allowed_http_viewers" {
+  type = list(string)
+  default = []
+}
+
 variable "repo_owner" {}
 
 variable "repo_name" {}
