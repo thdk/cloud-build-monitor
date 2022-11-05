@@ -29,7 +29,7 @@ resource "google_cloudbuild_trigger" "app-triggers" {
 
   included_files = ["packages/app/**"]
 
-  service_account = "projects/${var.project}/serviceAccounts/${"builder@${var.project}.iam.gserviceaccount.com"}"
+  service_account = var.service_account_builder.name
 
   build {
     step {

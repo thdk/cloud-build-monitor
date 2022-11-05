@@ -20,6 +20,14 @@ variable "repo_name" {}
 
 variable "repo_branch_pattern" {}
 
+variable "service_account_builder" {
+  type = object({
+    name      = string
+    email  = string
+  })
+  description = "Service account that will be used by google cloud build to build and deploy app" 
+}
+
 output "runtime_service_account" {
   value = google_service_account.run-service-account.email
 }

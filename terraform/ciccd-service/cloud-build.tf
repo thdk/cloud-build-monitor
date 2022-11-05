@@ -29,7 +29,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
 
   included_files = ["packages/${each.key}/**"]
 
-  service_account = "projects/${var.project}/serviceAccounts/${data.google_service_account.builder.email}"
+  service_account = var.service_account_builder.name
 
   build {
     step {

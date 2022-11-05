@@ -4,7 +4,7 @@ module "forward-service" {
   depends_on = [
     module.ciccd-service,
     google_project_service.services,
-    google_artifact_registry_repository.docker-repo
+    google_artifact_registry_repository.docker-repo,
   ]
 
   cloud_build_projects = var.cloud_build_projects
@@ -13,6 +13,14 @@ module "forward-service" {
   repo_branch_pattern  = var.repo_branch_pattern
   repo_owner           = var.repo_owner
   repo_name            = var.repo_name
+  service_account_builder = {
+    email = google_service_account.builder.email
+    name  = google_service_account.builder.name
+  }
+  service_account_invoker = {
+    email = google_service_account.invoker.email
+    name  = google_service_account.invoker.name
+  }
 }
 
 module "ciccd-service" {
@@ -22,6 +30,14 @@ module "ciccd-service" {
   repo_branch_pattern = var.repo_branch_pattern
   repo_owner          = var.repo_owner
   repo_name           = var.repo_name
+  service_account_builder = {
+    email = google_service_account.builder.email
+    name  = google_service_account.builder.name
+  }
+  service_account_invoker = {
+    email = google_service_account.invoker.email
+    name  = google_service_account.invoker.name
+  }
 
   depends_on = [
     google_project_service.services,
@@ -40,11 +56,15 @@ module "app" {
   repo_regex          = var.repo_regex
   issue_regex         = var.issue_regex
   jira_host           = var.jira_host
+  service_account_builder = {
+    email = google_service_account.builder.email
+    name  = google_service_account.builder.name
+  }
 
   depends_on = [
     module.ciccd-service,
     google_project_service.services,
-    google_artifact_registry_repository.docker-repo
+    google_artifact_registry_repository.docker-repo,
   ]
 }
 

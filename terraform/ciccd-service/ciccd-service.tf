@@ -1,13 +1,3 @@
-# Service accounts
-
-data "google_service_account" "builder" {
-  account_id = "builder"
-}
-
-data "google_service_account" "invoker" {
-  account_id = "invoker"
-}
-
 data "google_project" "current-project" {}
 
 resource "google_service_account" "run-service-account" {
@@ -58,7 +48,7 @@ resource "google_cloud_run_service_iam_binding" "service-invoker-binding" {
   service  = google_cloud_run_service.ciccd-service.name
   role     = "roles/run.invoker"
   members = [
-    "serviceAccount:${data.google_service_account.invoker.email}",
+    "serviceAccount:${var.service_account_invoker.email}",
   ]
 }
 
@@ -114,7 +104,7 @@ resource "google_pubsub_subscription" "ciccd-build" {
   push_config {
     push_endpoint = google_cloud_run_service.ciccd-service.status[0].url
     oidc_token {
-      service_account_email = data.google_service_account.invoker.email
+      service_account_email = var.service_account_invoker.email
     }
   }
 
