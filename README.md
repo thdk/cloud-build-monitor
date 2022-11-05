@@ -77,18 +77,21 @@ gcloud iam service-accounts create terraform
 ```
 
 You must create this service account manually and give it the following permissions:
-| Role name | Role           |
-| ----------| -----          |
+| Role name | Role           | Reason |
+| ----------| -----          | ---- |
+| Browser | roles/browser | Read information about the current project. Ex. to get project number for given project.|
 | App Engine Admin | roles/appengine.appAdmin |
-| Artifact Registry Administrator | roles/artifactregistry.admin1 |
+| Artifact Registry Administrator | roles/artifactregistry.admin |
 | Cloud Build Editor | roles/cloudbuild.builds.editor |
 | Cloud Run Admin | roles/run.admin |
-| Project IAM Admin | roles/resourcemanager.projectIamAdmin |
 | Pub/Sub Admin | roles/pubsub.admin  |
 | Secret Manager Admin | roles/secretmanager.admin |
 | Storage Admin | roles/storage.admin |
 | Firebase Admin | roles/firebase.admin |
+| Service Account Creator | roles/iam.serviceAccountAdmin | Create, delete, update... service accounts |
+| Project IAM Admin | roles/resourcemanager.projectIamAdmin | Bind iam roles to service accounts |
 | Service Usage Admin | roles/serviceusage.serviceUsageAdmin |
+| Service Account User | roles/iam.serviceAccountUser | Allow to 'act as' other service accounts |
 
 ```sh
 gcloud projects add-iam-policy-binding YOUR_GCP_PROJECT \
