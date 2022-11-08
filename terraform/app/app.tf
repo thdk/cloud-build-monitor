@@ -34,6 +34,12 @@ resource "google_cloud_run_service" "app" {
     ]
   }
 
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = var.allowed_ingress
+    }
+  }
+
   #   depends_on = [
   #     google_project_service.services
   #   ]

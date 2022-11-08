@@ -57,6 +57,8 @@ module "app" {
   issue_regex          = var.issue_regex
   jira_host            = var.jira_host
   allowed_http_viewers = var.allowed_http_viewers
+  allowed_ingress      = var.allowed_ingress
+
   service_account_builder = {
     email = google_service_account.builder.email
     name  = google_service_account.builder.name
