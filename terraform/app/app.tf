@@ -31,6 +31,9 @@ resource "google_cloud_run_service" "app" {
     ignore_changes = [
       template[0].spec[0].containers[0].image,
       template[0].spec[0].containers[0].env,
+      metadata[0].annotations["client.knative.dev/user-image"],
+      metadata[0].annotations["run.googleapis.com/client-name"],
+      metadata[0].annotations["run.googleapis.com/client-version"],
     ]
   }
 
