@@ -200,6 +200,9 @@ repo_branch_pattern = "main"
 
 # app settings
 
+# List the specific users (user:name@example.com), groups (group:viewers@example.com) which are allowed access to your app. Use "allUsers" if you either want to allow public access or if you are using an external load balancer with IAP.
+allowed_http_viewers = [ "allUsers"]
+
 # Repos listed in the app should match the repo_regex pattern else they wont be shown
 repo_regex = "^thdk"
 
@@ -279,7 +282,7 @@ NEXT_PUBLIC_FIREBASE_API_KEY=<FIREBASE_API_KEY>
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<FIREBASE_AUTH_DOMAIN>
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=<FIREBASE_PROJECT_ID>
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=<FIREBASE_STORAGE_BUCKET>
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<FIREBASE_MESSAGE_NDER_ID>
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<FIREBASE_MESSAGE_SENDER_ID>
 NEXT_PUBLIC_FIREBASE_APP_ID=<FIREBASE_APP_ID>
 ```
 

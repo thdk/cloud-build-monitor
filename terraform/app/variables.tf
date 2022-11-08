@@ -17,6 +17,7 @@ variable "cloud-build-projects" {
 variable "allowed_http_viewers" {
   type = list(string)
   default = []
+  description = "List users (user:name@example.com), groups (group:viewers@example.com) or add 'allUsers' if you either want to allow public access or if you are using an external load balancer with IAP."
 }
 
 variable "repo_owner" {}
