@@ -48,6 +48,15 @@ variable "allowed_http_viewers" {
   default = []
   type = list(string)  
 }
+
+# see https://cloud.google.com/sdk/gcloud/reference/run/deploy#--ingress
+variable "allowed_ingress" {
+  type = string
+  default = "all"
+  description = "'all' | 'internal' | 'internal-and-cloud-load-balancing'"
+}
+
+
 variable "repo_regex" {
   default = ".*"
 }
