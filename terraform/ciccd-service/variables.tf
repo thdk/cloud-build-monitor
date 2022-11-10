@@ -26,6 +26,12 @@ variable "service_account_invoker" {
   description = "Service account that will be used by pub sub to invoke the service"
 }
 
+variable "ciccd-builds-publishers" {
+  description = "List of service accounts of other gcp projects who need permission to publish to the ciccd-builds topic manually. Usually to push build status from non GCP builds."
+  type = list(string)
+  default = []
+}
+
 output "runtime_service_account" {
   value = google_service_account.run-service-account.email
 }

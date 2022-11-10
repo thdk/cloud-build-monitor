@@ -24,12 +24,13 @@ module "forward-service" {
 }
 
 module "ciccd-service" {
-  source              = "./ciccd-service"
-  project             = var.project
-  region              = var.region
-  repo_branch_pattern = var.repo_branch_pattern
-  repo_owner          = var.repo_owner
-  repo_name           = var.repo_name
+  source                  = "./ciccd-service"
+  project                 = var.project
+  region                  = var.region
+  repo_branch_pattern     = var.repo_branch_pattern
+  repo_owner              = var.repo_owner
+  repo_name               = var.repo_name
+  ciccd-builds-publishers = var.ciccd-builds-publishers
   service_account_builder = {
     email = google_service_account.builder.email
     name  = google_service_account.builder.name

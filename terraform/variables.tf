@@ -42,6 +42,13 @@ variable "cloud_build_projects" {
   ]
 }
 
+# Cloud run ciccd service
+variable "ciccd-builds-publishers" {
+  description = "List of service accounts of other gcp projects who need permission to publish to the ciccd-builds topic manually. Usually to push build status from non GCP builds."
+  type = list(string)
+  default = []
+}
+
 # App
 
 variable "allowed_http_viewers" {

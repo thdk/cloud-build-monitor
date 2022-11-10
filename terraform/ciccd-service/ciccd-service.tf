@@ -125,3 +125,13 @@ resource "google_pubsub_subscription_iam_member" "editor" {
   role         = "roles/pubsub.subscriber"
   member       = "serviceAccount:service-${data.google_project.current-project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
+
+## Allow service accounts from other GCP projects to publish messages for the ciccd-builds topic
+
+resource "google_pubsub_topic_iam_member" "ciccd-publishers" {
+  for_each = toset(var.ciccd-builds-publishers)
+  project  = google_pubsub_topic.ciccd-builds.project
+  topic    = google_pubsub_topic.ciccd-builds.name
+  role     = "roles/pubsub.publisher"
+  member   = each.key
+}
