@@ -66,7 +66,22 @@ export function BuildListItem({
             <div
               className=''
             >
-              {name}
+              <a
+                className='underline'
+                onClick={e => {
+                  e.stopPropagation();
+
+                  replace({
+                    pathname,
+                    query: {
+                      ...query,
+                      trigger: name,
+                    }
+                  });
+                }}
+              >
+                {name}
+              </a>
               <span
                 className='px-2 text-slate-600'>
                 for

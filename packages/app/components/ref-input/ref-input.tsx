@@ -1,9 +1,9 @@
 import { useTags } from "../../github/use-tags";
 
 import AutoComplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import { useBranches } from "../../github/use-branches";
 import { ComponentProps } from "react";
+import { FilterInput } from "../filter-input";
 
 export function RefInput({
     value,
@@ -22,20 +22,12 @@ export function RefInput({
 
     return tags
         ? (
-            <AutoComplete
+            <FilterInput
                 {...autoCompleteProps}
+                onChange={onChange}
+                value={value}
+                label={label}
                 options={[...(noBranches ? [] : branches), ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
-                renderInput={(params) => (
-                    <TextField {...params} label={label} size="small" />
-                )}
-                freeSolo
-                onChange={(_, value) => {
-                    onChange(value || undefined);
-                }}
-                value={value || ""}
-                sx={{
-                    width: 300,
-                }}                
             />
         )
         : null;

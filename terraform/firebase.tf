@@ -47,11 +47,11 @@ resource "google_firestore_index" "builds-1" {
   query_scope = "COLLECTION"
 
   fields {
-    field_path = "branch"
+    field_path = "branchName"
     order      = "ASCENDING"
   }
   fields {
-    field_path = "commitSha"
+    field_path = "name"
     order      = "ASCENDING"
   }
   fields {
@@ -79,24 +79,7 @@ resource "google_firestore_index" "builds-2" {
   }
 }
 
-resource "google_firestore_index" "builds-3" {
-  depends_on = [
-    google_app_engine_application.app
-  ]
-  project = var.project
 
-  collection  = "builds"
-  query_scope = "COLLECTION"
-
-  fields {
-    field_path = "branch"
-    order      = "ASCENDING"
-  }
-  fields {
-    field_path = "created"
-    order      = "DESCENDING"
-  }
-}
 
 resource "google_firestore_index" "builds-4" {
   depends_on = [
