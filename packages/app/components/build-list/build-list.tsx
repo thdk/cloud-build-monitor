@@ -1,10 +1,13 @@
-import { query, collection, orderBy, limit, where, getDocs, getFirestore } from 'firebase/firestore';
+import { FilterAltOff } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { query, collection, orderBy, limit, where, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useRepo } from '../../github/repo-context';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
 import { BuildListItems } from '../build-list-items';
+import { FilterInput } from '../filter-input';
 import { RefInput } from '../ref-input';
 
 export function BuildList() {
@@ -14,11 +17,6 @@ export function BuildList() {
     replace,
   } = useRouter();
 
-  let baseQuery = query(collection(getFirestore(), 'builds')
-    .withConverter(CICCDBuildConverter),
-    orderBy("created", "desc"),
-    limit(30));
-
   const {
     repo,
     owner,
@@ -27,23 +25,45 @@ export function BuildList() {
   const {
     commit,
     branch,
+    trigger,
   } = routerQuery;
 
-  if (commit) {
-    baseQuery = query(baseQuery, where("commitSha", "==", commit));
-  }
+  const baseQuery = useMemo(() => {
+    let baseQuery = query(collection(getFirestore(), 'builds')
+      .withConverter(CICCDBuildConverter),
+      orderBy("created", "desc"),
+      limit(30));
 
-  if (branch) {
-    baseQuery = query(baseQuery, where("branchName", "==", decodeURIComponent(branch as string)));
-  }
+    if (commit) {
+      baseQuery = query(baseQuery, where("commitSha", "==", commit));
+    }
 
-  if (repo && owner) {
-    baseQuery = query(
-      baseQuery,
-      where("githubRepoOwner", "==", owner),
-      where("repo", "==", repo),
-    );
-  }
+    if (branch) {
+      baseQuery = query(baseQuery, where("branchName", "==", decodeURIComponent(branch as string)));
+    }
+
+    if (trigger) {
+      baseQuery = query(baseQuery, where("name", "==", decodeURIComponent(trigger as string)));
+    }
+
+    if (repo && owner) {
+      baseQuery = query(
+        baseQuery,
+        where("githubRepoOwner", "==", owner),
+        where("repo", "==", repo),
+      );
+    }
+
+    return baseQuery;
+  },
+    [
+      owner,
+      repo,
+      commit,
+      branch,
+      trigger,
+    ],
+  );
 
   const [value, loading, error] = useCollection<CICCDBuild>(
     query(baseQuery),
@@ -58,10 +78,46 @@ export function BuildList() {
     }
   }, [error]);
 
+  const triggers = useMemo(() => {
+    const triggerSet = value?.docs.reduce((p, c) => {
+      const doc = c.data();
+      if (doc) {
+        p.add(doc.name);
+      }
+      return p;
+    },
+      new Set<string>()
+    ) || [];
+
+    return [...triggerSet];
+  },
+    [
+      value,
+    ],
+  );
+
+  const branches = useMemo(() => {
+    const branchSet = value?.docs.reduce((p, c) => {
+      const doc = c.data();
+      if (doc) {
+        p.add(doc.branchName);
+      }
+      return p;
+    },
+      new Set<string>()
+    ) || [];
+
+    return [...branchSet];
+  },
+    [
+      value,
+    ],
+  );
+
   return (
     <div className="flex -pl-32 flex-col">
       <div
-        className='mb-4 flex space-x-4'
+        className='mb-4 flex space-x-16'
       >
         <RefInput
           value={commit as string | undefined}
@@ -73,7 +129,6 @@ export function BuildList() {
             },
           })}
           label="Commit"
-          className="mr-4"
         />
 
         <RefInput
@@ -86,8 +141,38 @@ export function BuildList() {
             },
           })}
           label="Branch"
-          className="mr-4"
         />
+
+        <FilterInput
+          value={trigger as string | undefined}
+          onChange={(value) => replace({
+            pathname,
+            query: {
+              ...routerQuery,
+              trigger: value,
+            },
+          })}
+          label="Trigger"
+          options={trigger ? [] : triggers}
+        />
+        {
+          (branch || commit || trigger)
+            ? <IconButton color="primary" aria-label="upload picture" component="label"
+              onClick={() => {
+                replace({
+                  pathname,
+                  query: {
+                    ...routerQuery,
+                    trigger: null,
+                    branch: null,
+                    commit: null,
+                  },
+                });
+              }}>
+              <FilterAltOff />
+            </IconButton>
+            : null
+        }
       </div>
       <div>
         {error && <strong>Error: {JSON.stringify(error)}</strong>}

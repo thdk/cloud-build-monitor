@@ -1,16 +1,9 @@
 import { Octokit } from "@octokit/rest";
-import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function getRepos(
     req: NextApiRequest,
-    res: NextApiResponse<
-        GetResponseDataTypeFromEndpointMethod<
-            typeof octokit.repos.listForAuthenticatedUser
-        > | {
-            message: string;
-        }
-    >
+    res: NextApiResponse<unknown>
 ) {
 
     if (!process.env.GITHUB_TOKEN) {
