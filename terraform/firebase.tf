@@ -60,6 +60,25 @@ resource "google_firestore_index" "builds-1" {
   }
 }
 
+resource "google_firestore_index" "builds-2" {
+  depends_on = [
+    google_app_engine_application.app
+  ]
+  project = var.project
+
+  collection  = "builds"
+  query_scope = "COLLECTION"
+
+  fields {
+    field_path = "name"
+    order      = "ASCENDING"
+  }
+  fields {
+    field_path = "created"
+    order      = "DESCENDING"
+  }
+}
+
 resource "google_firestore_index" "builds-3" {
   depends_on = [
     google_app_engine_application.app
