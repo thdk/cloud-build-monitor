@@ -46,9 +46,10 @@ export const BuildArtifactList = ({
             }}
             onRow={(record, rowIndex) => {
                 return {
-                    onClick: () => onClick(record.key),
+                    onClick: () => onClick(record.id),
                 };
             }}
+            rowKey="id"
         />
     )
 };
