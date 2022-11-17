@@ -1,17 +1,15 @@
 import { Button, Drawer, PageHeader, Space } from "antd";
 import { Form } from "antd";
-import { NextPage } from "next";
-import { artifactConverter } from "../../collections/artifacts/firestore-converter";
-import { BuildArtifactList } from "../../components/build-artifact-list";
-import { BuildConfigForm } from "../../components/build-config-form";
-import { Layout } from "../../components/layout";
-import { useFirestoreCrud } from "../../firebase/use-firestore-crud";
+import { useFirestoreCrud } from "../../../../firebase/use-firestore-crud";
+import { CONFIG_COLLECTION, configConverter } from "../../firestore";
+import { ConfigForm } from "../config-form";
+import { ConfigList } from "../config-list";
 
 const {
     useForm,
 } = Form;
 
-const BuildsConfig: NextPage = () => {
+export const ConfigScreen = () => {
     const [form] = useForm();
 
     const {
@@ -22,36 +20,36 @@ const BuildsConfig: NextPage = () => {
         createDocument,
         setActiveDocumentId,
     } = useFirestoreCrud({
-        collectionPath: "artifacts",
-        converter: artifactConverter,
+        collectionPath: CONFIG_COLLECTION,
+        converter: configConverter,
     });
 
     return (
-        <Layout>
+        <>
             <PageHeader
                 className="site-page-header-responsive"
-                title="Artifact urls"
+                title="Configuration"
                 extra={[
                     <Button key="1" type="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
-                        New artifact url
+                        New config
                     </Button>
                 ]}
             >
             </PageHeader>
-            <BuildArtifactList
+            <ConfigList
                 onClick={setActiveDocumentId}
             />
 
             <Drawer
-                title={activeDocument ? "Edit artifact url" : "Add artifact url"}
+                title={activeDocument ? "Edit config" : "Add config"}
                 width={720}
                 visible={activeDocument !== null}
                 onClose={() => setActiveDocumentId(null)}
                 bodyStyle={{ paddingBottom: 80 }}
                 extra={
                     <Space>
-                         <Button onClick={() => {
+                        <Button onClick={() => {
                             deleteDocument();
                         }}>Delete</Button>
                         <Button onClick={() => {
@@ -65,16 +63,14 @@ const BuildsConfig: NextPage = () => {
                     </Space>
                 }
             >
-                {!isActiveDocumentLoading && <BuildConfigForm
+                {!isActiveDocumentLoading && <ConfigForm
                     form={form}
                     update={updateDocument}
                     create={createDocument}
-                    artifact={activeDocument?.data()}
+                    config={activeDocument?.data()}
                 />
                 }
             </Drawer>
-        </Layout>
+        </>
     );
 };
-
-export default BuildsConfig;

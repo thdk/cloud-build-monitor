@@ -1,4 +1,4 @@
-import { useIssueTracker } from "../../hooks/use-issue-tracker";
+import { useIssueTracker } from "../../features/configs/hooks/use-issue-tracker";
 import { CICCDBuild } from "../../interfaces/build";
 
 export function GithubLink({

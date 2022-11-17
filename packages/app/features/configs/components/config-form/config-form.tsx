@@ -1,20 +1,20 @@
 import { Form, FormInstance, Input } from "antd";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { useEffect } from "react";
-import { BuildArtifact } from "../../collections/artifacts/types";
+import { Config, ConfigSection } from "../../types";
 
-export function BuildConfigForm({
-    artifact,
+export function ConfigForm({
+    config,
     form,
     create,
     update,
 }: {
-    artifact?: BuildArtifact;
-    form: FormInstance<BuildArtifact>;
-    create: (artifact: BuildArtifact) => void;
-    update: (artifact: BuildArtifact) => void;
+    config?: Config;
+    form: FormInstance<Config>;
+    create: (artifact: Config) => void;
+    update: (artifact: Config) => void;
 }) {
-    const onFinish = (formValues: BuildArtifact) => {
+    const onFinish = (formValues: Config) => {
         if (formValues.id) {
             update(
                 formValues,
@@ -28,18 +28,18 @@ export function BuildConfigForm({
 
     useEffect(() => {
         form.setFieldsValue(
-            artifact || { 
-                artifactUrl: "",
-                triggerName: "",
-                title: "",
-                id: "",
+            config || { 
+                description: "",
+                section: ConfigSection.General,
+                value: "",
+                name: "",
             })
     }, [
-        artifact,
+        config,
         form,
     ]);
 
-    const onFinishFailed = (errorInfo: ValidateErrorEntity<BuildArtifact>) => {
+    const onFinishFailed = (errorInfo: ValidateErrorEntity<Config>) => {
         console.log('Failed:', errorInfo);
     };
 
@@ -52,11 +52,11 @@ export function BuildConfigForm({
             wrapperCol={{
                 span: 16,
             }}
-            initialValues={artifact}
+            initialValues={config}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-        >
+        >           
             <Form.Item
                 hidden
                 name="id"
@@ -64,12 +64,12 @@ export function BuildConfigForm({
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Trigger name"
-                name="triggerName"
+                label="Config name"
+                name="name"
                 rules={[
                     {
                         required: true,
-                        message: 'Please add trigger name',
+                        message: 'Please add config name',
                     },
                 ]}
             >
@@ -77,12 +77,12 @@ export function BuildConfigForm({
             </Form.Item>
 
             <Form.Item
-                label="Artifact title"
-                name="title"
+                label="Config value"
+                name="value"
                 rules={[
                     {
                         required: true,
-                        message: 'Please add trigger title',
+                        message: 'Please add a config value',
                     },
                 ]}
             >
@@ -90,14 +90,8 @@ export function BuildConfigForm({
             </Form.Item>
 
             <Form.Item
-                label="Artifact url"
-                name="artifactUrl"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please add artifact url',
-                    },
-                ]}
+                label="Description"
+                name="description"
             >
                 <Input />
             </Form.Item>

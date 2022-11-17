@@ -15,7 +15,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
     "@octokit/rest": "^18.12.0",
-    "antd": "^4.19.5",
+    "antd": "^4.24.2",
     "classnames": "^2.3.1",
     "express": "5.0.0-beta.1",
     "firebase": "^9.6.3",

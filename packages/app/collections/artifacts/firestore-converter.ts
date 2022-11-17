@@ -3,14 +3,14 @@ import { BuildArtifact } from "./types";
 
 export const artifactConverter = {
     toFirestore: (appData: BuildArtifact) => {
-        delete (appData as any).key;
+        delete (appData as any).id;
 
         return appData;
     },
     fromFirestore: (docData: QueryDocumentSnapshot<BuildArtifact>) => {
         return {
             ...docData.data(),
-            key: docData.id,
+            id: docData.id,
         } as unknown as BuildArtifact;
     },
 };
