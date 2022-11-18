@@ -69,6 +69,7 @@ module "app" {
     module.ciccd-service,
     google_project_service.services,
     google_artifact_registry_repository.docker-repo,
+    google_app_engine_application.app,
   ]
 }
 
