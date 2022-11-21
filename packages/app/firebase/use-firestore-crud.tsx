@@ -7,8 +7,6 @@ import {
     FirestoreDataConverter,
     getFirestore,
     setDoc,
-    UpdateData,
-    updateDoc,
 } from "firebase/firestore";
 
 export function useFirestoreCrud<T>({
@@ -71,8 +69,8 @@ export function useFirestoreCrud<T>({
     );
 
     const updateDocument = useCallback(
-        (data: UpdateData<T>) => {
-            activeDocumentId && updateDoc(
+        (data: Partial<T>) => {
+            activeDocumentId && setDoc(
                 doc(
                     collection(
                         getFirestore(),
@@ -81,6 +79,9 @@ export function useFirestoreCrud<T>({
                     activeDocumentId,
                 ),
                 data,
+                {
+                    merge: true,
+                }
             ).then(() => {
                 setActiveDocumentId(null);
             });
