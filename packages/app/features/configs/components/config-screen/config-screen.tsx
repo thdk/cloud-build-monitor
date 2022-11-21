@@ -1,7 +1,7 @@
 import { Button, Drawer, PageHeader, Space } from "antd";
 import { Form } from "antd";
 import { useFirestoreCrud } from "../../../../firebase/use-firestore-crud";
-import { CONFIG_COLLECTION, configConverter } from "../../firestore";
+import { configConverter, CONFIG_COLLECTION } from "../../firestore";
 import { ConfigForm } from "../config-form";
 import { ConfigList } from "../config-list";
 

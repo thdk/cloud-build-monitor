@@ -9,5 +9,5 @@ export interface Config {
     id: string;
     name: string;
     description?: string;
-    section: ConfigSection;
+    section?: ConfigSection;
 }
