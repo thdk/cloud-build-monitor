@@ -6,11 +6,18 @@ export const CONFIG_COLLECTION = "configs" as const;
 export const configConverter = {
     toFirestore: (appData: Config) => {
         delete (appData as any).id;
+        if (appData.section === undefined) delete appData.section;
         return appData;
     },
     fromFirestore: (docData: QueryDocumentSnapshot<Config>) => {
+        const {
+            section = undefined,
+            ...rest
+        } = docData.data();
+
         return {
-            ...docData.data(),
+            section,
+            ...rest,
             id: docData.id,
         } as unknown as Config;
     },

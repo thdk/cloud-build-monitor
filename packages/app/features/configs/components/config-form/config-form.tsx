@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { useEffect } from "react";
 import { Config, ConfigSection } from "../../types";
@@ -28,12 +28,13 @@ export function ConfigForm({
 
     useEffect(() => {
         form.setFieldsValue(
-            config || { 
+            config || {
                 description: "",
-                section: ConfigSection.General,
+                section: undefined,
                 value: "",
                 name: "",
-            })
+                id: undefined,
+            });
     }, [
         config,
         form,
@@ -56,7 +57,7 @@ export function ConfigForm({
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-        >           
+        >
             <Form.Item
                 hidden
                 name="id"
@@ -94,6 +95,25 @@ export function ConfigForm({
                 name="description"
             >
                 <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Section"
+                name="section"
+            >
+                <Select
+                    options={[
+                        {
+                            label: "Jira",
+                            value: "jira",
+                        },
+                        {
+                            label: "Github",
+                            value: "github"
+                        },
+                    ]}
+
+                />
             </Form.Item>
         </Form>
     )
