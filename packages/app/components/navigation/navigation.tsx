@@ -20,8 +20,12 @@ const items: MenuProps['items'] = [
         icon: <Settings />,
         children: [
             {
-                label: 'Builds',
-                key: '/config/builds',
+                label: 'Build artifacts',
+                key: '/config/build-artifacts',
+            },
+            {
+                label: 'Build notifications',
+                key: '/config/build-notifications',
             },
             {
                 label: 'General',
