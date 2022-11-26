@@ -94,6 +94,6 @@ resource "google_cloudbuild_trigger" "app-triggers" {
     options {
       logging = "CLOUD_LOGGING_ONLY"
     }
-    timeout = "900s"
+    timeout = "1500s"
   }
 }
