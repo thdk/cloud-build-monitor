@@ -1,4 +1,4 @@
-FROM node:16-alpine as dependencies
+FROM node:18-alpine as dependencies
 
 WORKDIR /workspace
 

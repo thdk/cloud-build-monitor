@@ -26,3 +26,18 @@ export async function addOrUpdateCICCDBuild(data: CICCDBuild) {
             updated: FieldValue.serverTimestamp(),
         });
 }
+
+export async function getChatNotification(
+    trigger: string,
+) {
+    const chatNotificationsCollectionRef = db.collection('chat-notifications');
+
+    const chatNotificationsForBuild = await chatNotificationsCollectionRef
+        .where(
+            "buildTrigger",
+            "==",
+            trigger,
+        ).get();
+
+    return chatNotificationsForBuild;
+}
