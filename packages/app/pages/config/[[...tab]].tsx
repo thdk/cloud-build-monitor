@@ -10,7 +10,7 @@ const ConfigPage: NextPage<{ tab: string }> = ({
         <Layout>
            
             {
-                tab === "builds"
+                tab === "build-artifacts"
                     ? <ArtifactScreen />
                     : <ConfigScreen />
             }
@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps = ({ params: { tab } = {} }) => {
 export const getStaticPaths: GetStaticPaths<{ tab?: string[] }> = () => {
     return {
         paths: [
-            { params: { tab: ["builds"] } },
+            { params: { tab: ["build-artifacts"] } },
             { params: { tab: ["general"] } },
         ],
         fallback: true,
