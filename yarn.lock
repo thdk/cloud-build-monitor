@@ -1853,6 +1853,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mustache@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@types/mustache@npm:4.2.2"
+  checksum: 1fa67a519f4302c96615524be4c8248067da02ca047bae9d4c4bb79977135ac7c15dcc388e7c70b8a817b9497004d5ca5c77a155dcb096bea16d53d4cdbe75d2
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:17.0.8, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0":
   version: 17.0.8
   resolution: "@types/node@npm:17.0.8"
@@ -2912,10 +2919,12 @@ __metadata:
     "@google-cloud/pubsub": ^2.18.4
     "@octokit/rest": ^18.12.0
     "@sendgrid/mail": ^7.6.0
+    "@types/mustache": ^4.2.2
     concurrently: ^7.1.0
     dotenv: ^16.0.1
     express: ^4.18.1
     firebase-admin: ^10.0.1
+    mustache: ^4.2.0
     nodemon: ^2.0.16
     typescript: ^4.5.4
   languageName: unknown

@@ -5,6 +5,7 @@ import { addOrUpdateCICCDBuild, getChatNotification } from './firestore';
 
 import express from "express";
 import { sendGoogleChat } from './google-chat';
+import Mustache from 'mustache';
 
 const dotenv = require('dotenv');
 
@@ -17,89 +18,102 @@ app.use(express.json());
 const handleCloudBuildPubSubMessage = async ({
   attributes,
 }: PubsubMessage) => {
-    const {
-        id,
-        name,
-        status,
-        commitSha,
-        branchName,
-        origin,
-        repo,
-        githubRepoOwner,
-        logUrl = null,
-        startTime,
-        finishTime,
-    } = attributes || {};
+  const {
+    id,
+    name,
+    status,
+    commitSha,
+    branchName,
+    origin,
+    repo,
+    githubRepoOwner,
+    logUrl = null,
+    startTime,
+    finishTime,
+  } = attributes || {};
 
-    console.log({
-      attributes,
-    });
+  console.log({
+    attributes,
+  });
 
-    if (!id) {
-        throw new Error("'id' is missing in message attributes");
-    }
+  if (!id) {
+    throw new Error("'id' is missing in message attributes");
+  }
 
-    const commit = await getCommitInfo({
-        sha: commitSha,
-        repo,
-        owner: githubRepoOwner,
+  const commit = await getCommitInfo({
+    sha: commitSha,
+    repo,
+    owner: githubRepoOwner,
+  }).catch((e) => {
+    console.error(e);
+    throw e;
+  });
+
+  // TODO: move into seperate notification service
+  const sendNotification = () => {
+    return getChatNotification(name)
+      .then((notifications) => {
+        return Promise.all(
+          notifications.docs.map((notification) => {
+            const {
+              message,
+              webhookUrl,
+            } = notification.data() as unknown as {
+              message: string;
+              buildTrigger: string;
+              webhookUrl: string;
+            };
+
+            const mustacheData = {
+              trigger: name,
+              sha: commitSha,
+              branch: branchName,
+              status,
+              logUrl,
+              repo: `${githubRepoOwner}/${repo}`,
+            };
+
+            return sendGoogleChat(
+              Mustache.render(message, mustacheData),
+              webhookUrl,
+            );
+          })
+        )
+      })
+      .catch((e) => {
+        // chat notification is optional (for this service) and pub sub message
+        // should not be retried when notification delivery fails.
+        console.error(e);
+      });
+  }
+
+  await Promise.all([
+    sendNotification(),
+    addOrUpdateCICCDBuild({
+      branchName,
+      commitSha,
+      commitAuthor: commit.author.name,
+      commitSubject: commit.message.split('\n')[0],
+      name,
+      origin,
+      repo,
+      status,
+      id,
+      githubRepoOwner,
+      logUrl,
+      issueNr: null, // todo: remove?
+      startTime: startTime
+        ? new Date(startTime)
+        : null,
+      finishTime: finishTime
+        ? new Date(finishTime)
+        : null,
     }).catch((e) => {
+      console.error("Failed to insert build status in firestore databse");
       console.error(e);
       throw e;
-    });
-
-    // TODO: move into seperate notification service
-    const sendNotification = () => {
-       return getChatNotification(name)
-        .then((notifications) => {
-            return Promise.all(
-              notifications.docs.map((notification) => {
-                const {
-                  message,
-                  webhookUrl,
-                } = notification.data() as unknown as {
-                  message: string;
-                  buildTrigger: string;
-                  webhookUrl: string;
-              };
-                return sendGoogleChat(message, webhookUrl);
-              })
-            )
-        })
-        .catch((e) => {
-          // chat notification is optional (for this service) and pub sub message
-          // should not be retried when notification delivery fails.
-          console.error(e);
-        });
-    }
-
-     await Promise.all([
-        sendNotification(),
-        addOrUpdateCICCDBuild({
-            branchName,
-            commitSha,
-            commitAuthor: commit.author.name,
-            commitSubject: commit.message.split('\n')[0],
-            name,
-            origin,
-            repo,
-            status,
-            id,
-            githubRepoOwner,
-            logUrl,
-            issueNr: null, // todo: remove?
-            startTime: startTime
-                ? new Date(startTime)
-                : null,
-            finishTime: finishTime
-                ? new Date(finishTime)
-                : null,
-        }).catch((e) => {
-          console.error("Failed to insert build status in firestore databse");
-          console.error(e);
-          throw e;
-        }),
-    ]);
+    }),
+  ]);
 };
 
 // express routes
