@@ -1,6 +1,6 @@
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import { ColumnType } from "antd/lib/table";
-import { ChatNotification } from "../../../../collections/chat-notifications/types";
+import { BuildStatus, ChatNotification } from "../../../../collections/chat-notifications/types";
 import { useChatNotifications } from "../../hooks/use-chat-notifications";
 
 const columns: ColumnType<ChatNotification>[] = [
@@ -12,8 +12,14 @@ const columns: ColumnType<ChatNotification>[] = [
     {
         title: 'Message',
         dataIndex: 'message',
-        render: (text: string) => <span>{text}</span>,
+        render: (text: string) => <pre style={{display: "flex", alignContent: "center"}}>{text}</pre>,
         width: 600,
+    },
+    {
+        title: 'Statuses',
+        dataIndex: 'statuses',
+        render: (statuses: BuildStatus[]) => statuses?.map((s) => <Tag key={s}>{s}</Tag>),
+        width: 320,
     },
     {
         title: 'Webhook url',

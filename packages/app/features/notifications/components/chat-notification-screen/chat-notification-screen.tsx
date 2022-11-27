@@ -36,6 +36,12 @@ export const ChatNotificationScreen = () => {
                     </Button>
                 ]}
             >
+                <div>
+                    <p>
+                        Configure google chat notifications for your CI/CD pipelines.
+                    </p>
+                   
+                </div>
             </PageHeader>
             <ChatNotificationList
                 onClick={setActiveDocumentId}

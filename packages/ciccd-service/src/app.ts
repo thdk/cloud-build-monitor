@@ -51,7 +51,7 @@ const handleCloudBuildPubSubMessage = async ({
 
   // TODO: move into seperate notification service
   const sendNotification = () => {
-    return getChatNotification(name)
+    return getChatNotification(name, status)
       .then((notifications) => {
         return Promise.all(
           notifications.docs.map((notification) => {
@@ -65,6 +65,7 @@ const handleCloudBuildPubSubMessage = async ({
             };
 
             const mustacheData = {
+              id,
               trigger: name,
               sha: commitSha,
               branch: branchName,
@@ -74,7 +75,10 @@ const handleCloudBuildPubSubMessage = async ({
             };
 
             return sendGoogleChat(
-              Mustache.render(message, mustacheData),
+              Mustache.render(
+                message,
+                mustacheData,
+              ),
               webhookUrl,
             );
           })

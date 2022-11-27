@@ -1,7 +1,17 @@
-import { Form, FormInstance, Input } from "antd";
+import { Checkbox, Form, FormInstance, Input } from "antd";
+import TextArea from "antd/lib/input/TextArea";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { useEffect } from "react";
 import { ChatNotification } from "../../../../collections/chat-notifications/types";
+
+const options = [
+    { label: 'Success', value: 'success' },
+    { label: 'Failure', value: 'failure' },
+    { label: 'Timeout', value: 'timeout' },
+    { label: 'Cancelled', value: 'cancelled' },
+    { label: 'Working', value: 'working' },
+    { label: 'Queued', value: 'queued' },
+];
 
 export function ChatNotificationForm({
     notification,
@@ -32,6 +42,8 @@ export function ChatNotificationForm({
                 buildTrigger: "",
                 message: "",
                 webhookUrl: "",
+                statuses: ["success", "failure"],
+                id: undefined,
             });
     }, [
         notification,
@@ -85,7 +97,17 @@ export function ChatNotificationForm({
                     },
                 ]}
             >
-                <Input />
+                <TextArea
+                    rows={6}
+                />
+            </Form.Item>
+            <Form.Item
+                label="Enabled statuses"
+                name="statuses"
+            >
+                <Checkbox.Group
+                    options={options}
+                />
             </Form.Item>
 
             <Form.Item

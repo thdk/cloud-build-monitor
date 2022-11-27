@@ -29,6 +29,7 @@ export async function addOrUpdateCICCDBuild(data: CICCDBuild) {
 
 export async function getChatNotification(
     trigger: string,
+    status: string,
 ) {
     const chatNotificationsCollectionRef = db.collection('chat-notifications');
 
@@ -37,7 +38,9 @@ export async function getChatNotification(
             "buildTrigger",
             "==",
             trigger,
-        ).get();
+        )
+        .where("statuses", "array-contains", status)
+        .get();
 
     return chatNotificationsForBuild;
 }
