@@ -1,20 +1,26 @@
-import { useQuery } from "react-query";
-import { getAllConfigs } from "../firestore";
+import { useQuery, UseQueryResult } from "react-query";
+import { getConfigById } from "../firestore";
 
 export interface IConfigData {
-    issueTrackerUrl?: string,
+    value: string,
 }
 
-export const useConfig = () => {
-    const configQuery = useQuery<IConfigData>(
-        ['config'],
+export function useConfig(id: string): UseQueryResult<IConfigData>;
+export function useConfig(id: string, throwOnError: false): UseQueryResult<IConfigData | undefined>;
+export function useConfig(id: string, throwOnError = true): UseQueryResult<IConfigData | undefined>  {
+    const configQuery = useQuery<typeof throwOnError extends true ? IConfigData : IConfigData | undefined >(
+        [
+            'config',
+            id,
+        ],
         async () => {
-            const snapshot = await getAllConfigs();
-
-            return snapshot.docs.reduce<IConfigData>((p, c) => {
-                p[c.id as keyof IConfigData] = c.data().value;
-                return p;
-            }, {});
+            const snapshot = await getConfigById(id);
+            const data = snapshot.data();
+            if (!data && throwOnError) {
+                throw new Error(`Config with key ${id} does not exist`);
+            } else {
+                return data as unknown as IConfigData;
+            }
         },
         {},
     );
