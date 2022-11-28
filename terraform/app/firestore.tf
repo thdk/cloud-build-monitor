@@ -1,3 +1,4 @@
+## Firestore default data
 locals {
   configs = tomap({
     issueTrackerUrl = ""
@@ -17,3 +18,28 @@ resource "google_firestore_document" "config" {
     ]
   }
 }
+
+## Firestore rules
+data "local_file" "firestore-rules" {
+    filename = "${path.module}/firestore.rules"
+}
+resource "google_firebaserules_ruleset" "default" {
+  source {
+    files {
+      content = data.local_file.firestore-rules.content
+      name    = "firestore.rules"
+    }
+  }
+
+  project = var.project
+}
+
+resource "google_firebaserules_release" "default" {
+  name         = "production"
+  ruleset_name = "projects/${var.project}/rulesets/${google_firebaserules_ruleset.default.name}"
+  project      = var.project
+  depends_on = [
+    google_firebaserules_ruleset.default,
+  ]
+}
+
