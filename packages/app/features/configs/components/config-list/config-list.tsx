@@ -5,19 +5,18 @@ import { Config } from "../../types";
 
 const columns: ColumnType<Config>[] = [
     {
-        title: 'Section',
-        dataIndex: 'section',
-    },
-    {
         title: 'Key',
-        dataIndex: 'name',
-        render: (text: string) => <a>{text}</a>,
+        dataIndex: 'id',
         width: 200,
     },
     {
         title: 'Value',
         dataIndex: 'value',
         width: 320,
+    },
+    {
+        title: 'Section',
+        dataIndex: 'section',
     },
 ];
 
