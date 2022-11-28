@@ -1,10 +1,10 @@
-import { Table, Row, Col } from "antd";
+import { Table } from "antd";
 import { ColumnType } from "antd/lib/table";
 import { collection, getFirestore } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { artifactConverter } from "../../collections/artifacts/firestore-converter";
 import { BuildArtifact } from "../../collections/artifacts/types";
-
+import antdStyles from "../../styles/antd.module.css";
 
 const columns: ColumnType<BuildArtifact>[] = [
     {
@@ -37,6 +37,7 @@ export const BuildArtifactList = ({
     return (
 
         <Table
+            rowClassName={antdStyles.tableRowInteractive}
             className="m-4"
             size="large"
             columns={columns}

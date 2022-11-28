@@ -2,6 +2,7 @@ import { Table, Tag } from "antd";
 import { ColumnType } from "antd/lib/table";
 import { BuildStatus, ChatNotification } from "../../../../collections/chat-notifications/types";
 import { useChatNotifications } from "../../hooks/use-chat-notifications";
+import antdStyles from "../../../../styles/antd.module.css";
 
 const columns: ColumnType<ChatNotification>[] = [
     {
@@ -12,7 +13,7 @@ const columns: ColumnType<ChatNotification>[] = [
     {
         title: 'Message',
         dataIndex: 'message',
-        render: (text: string) => <pre style={{display: "flex", alignContent: "center"}}>{text}</pre>,
+        render: (text: string) => <pre style={{ display: "flex", alignContent: "center" }}>{text}</pre>,
         width: 600,
     },
     {
@@ -39,6 +40,7 @@ export const ChatNotificationList = ({
         ? (
 
             <Table
+                rowClassName={antdStyles.tableRowInteractive}
                 className="m-4"
                 size="large"
                 columns={columns}

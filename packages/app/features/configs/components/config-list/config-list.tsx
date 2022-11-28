@@ -2,6 +2,7 @@ import { Table } from "antd";
 import { ColumnType } from "antd/lib/table";
 import { useConfigs } from "../../hooks/use-configs";
 import { Config } from "../../types";
+import antdStyles from "../../../../styles/antd.module.css";
 
 const columns: ColumnType<Config>[] = [
     {
@@ -31,6 +32,7 @@ export const ConfigList = ({
         ? (
 
             <Table
+                rowClassName={antdStyles.tableRowInteractive}
                 className="m-4"
                 size="large"
                 columns={columns}
