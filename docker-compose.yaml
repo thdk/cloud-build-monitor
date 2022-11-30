@@ -1,0 +1,24 @@
+services:
+  app:
+    image: ciccd/app
+    build:
+      context: ./
+      dockerfile: packages/app/Dockerfile
+      # these must be provided by setting a .env file in the root folder
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
+    
+    env_file: ./packages/app/.env
+    environment:
+      - GITHUB_TOKEN
+      - JIRA_USER
+      - JIRA_PASSWORD
+    
+    ports:
+      - "3000:3000"
+
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M

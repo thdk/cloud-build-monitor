@@ -48,3 +48,19 @@ yarn dev
 
 [http://localhost:3000](http://localhost:3000)
 
+
+## Run locally with docker
+
+In the root folder of this mono repo.
+
+Create a `.env` file contain build time environment variables:
+
+```
+GITHUB_TOKEN=xxxxxx
+```
+
+Now start the services: (currently only 'app')
+
+```
+docker compose up
+```
