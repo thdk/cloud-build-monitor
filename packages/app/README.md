@@ -16,7 +16,7 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=xxxxxx
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=xxxxxx
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=xxxxxx
 NEXT_PUBLIC_FIREBASE_APP_ID=xxxxxx
-NEXT_PUBLIC_REPO_REGEX=xxxxxx
+REPO_REGEX=xxxxxx
 JIRA_USER=xxxxxx
 JIRA_PASSWORD=xxxxxx
 JIRA_HOST=xxxxxx
@@ -53,7 +53,7 @@ yarn dev
 
 In the root folder of this mono repo.
 
-Create a `.env` file contain build time environment variables:
+Create a `.env` file containing the build time environment variables:
 
 ```
 GITHUB_TOKEN=xxxxxx

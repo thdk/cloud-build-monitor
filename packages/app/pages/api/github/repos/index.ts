@@ -22,7 +22,7 @@ export default async function getRepos(
         per_page: 100,
     });
 
-    const repoRegex = new RegExp(process.env.NEXT_PUBLIC_REPO_REGEX || '.*');
+    const repoRegex = new RegExp(process.env.REPO_REGEX || '.*');
     const result = repos.data
         .filter((repo) => repoRegex.test(repo.full_name));
 
