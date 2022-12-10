@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import type { Octokit } from "@octokit/rest";
 
@@ -8,7 +8,7 @@ export function RepoList() {
     const {
         data,
     } = useQuery(
-        "repos",
+        ["repos"],
         () => fetch(
             "/api/github/repos",
         ).then<GetResponseDataTypeFromEndpointMethod<Octokit["repos"]["listForAuthenticatedUser"]>>(

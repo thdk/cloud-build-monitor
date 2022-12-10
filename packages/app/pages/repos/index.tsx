@@ -2,7 +2,7 @@ import { GetStaticProps, NextPage } from "next";
 import { Layout } from "../../components/layout";
 import { RepoList } from "../../components/repo-list";
 import { getRepos } from "../../github/repos";
-import { dehydrate, QueryClient } from 'react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { PageHeader } from "antd";
 
 
@@ -28,7 +28,7 @@ const ReposPage: NextPage = () => {
 export const getStaticProps: GetStaticProps = async () => {
     const queryClient = new QueryClient()
 
-    await queryClient.prefetchQuery('repos', getRepos);
+    await queryClient.prefetchQuery(['repos'], getRepos);
 
     return {
         props: {

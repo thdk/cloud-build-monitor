@@ -1,6 +1,6 @@
 import { CommitListItem } from "../commit-list-item";
 import { Commit } from "../../github/types";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { RefInput } from "../ref-input";
 import { useRepo } from "../../github/repo-context";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";

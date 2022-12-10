@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const RepoContext = createContext<{
     repo: string | undefined,
