@@ -75,7 +75,7 @@ resource "google_pubsub_topic_iam_member" "member" {
 
 # Add pub sub subscription to dead letter topic else those messages are lost
 resource "google_pubsub_subscription" "dead-letter-subscription" {
-  name  = "dead-letter-subscription-ciccd-builds"
+  name  = "dead-letter-subscription-ciccd-builds-notification-service"
   topic = google_pubsub_topic.dead-letter-topic.name
 
   retain_acked_messages = false
