@@ -28,6 +28,7 @@ resource "google_firebaserules_ruleset" "default" {
     files {
       content = data.local_file.firestore-rules.content
       name    = "firestore.rules"
+      fingerprint = sha1(data.local_file.firestore-rules.content)
     }
   }
 
@@ -35,7 +36,7 @@ resource "google_firebaserules_ruleset" "default" {
 }
 
 resource "google_firebaserules_release" "default" {
-  name         = "production"
+  name         = "cloud.firestore"
   ruleset_name = "projects/${var.project}/rulesets/${google_firebaserules_ruleset.default.name}"
   project      = var.project
   depends_on = [
