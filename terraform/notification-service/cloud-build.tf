@@ -1,7 +1,7 @@
 
 locals {
   services = [
-    "ciccd-service", 
+    "notification-service", 
   ]
 }
 
@@ -50,7 +50,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
       entrypoint = "gcloud"
       args = ["run",
         "deploy",
-        google_cloud_run_service.ciccd-service.name,
+        google_cloud_run_service.notification-service.name,
         "--image",
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
         "--region",

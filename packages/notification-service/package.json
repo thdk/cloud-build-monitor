@@ -1,5 +1,5 @@
 {
-  "name": "ciccd-service",
+  "name": "notification-service",
   "packageManager": "yarn@3.1.1",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,6 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@octokit/rest": "^18.12.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "firebase-admin": "^10.0.1",

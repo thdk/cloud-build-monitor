@@ -55,8 +55,6 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
         "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA",
         "--region",
         var.region,
-        "--set-env-vars",
-        "HOSTNAME=${google_cloud_run_service.forward-service.status[0].url},GCP_PROJECT=${var.project}",
         "--service-account",
         google_service_account.run-service-account.email
       ]

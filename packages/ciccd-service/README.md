@@ -1,7 +1,7 @@
 # ciccd-service
 
 Handles CICCD pub sub messages to add build statuses to the dashboard database.
-These messages are usually sent by the [forward-service](../ciccd-service/README.md). However, you can also manually publish these.
+These messages are usually sent by the [forward-service](../forward-service/README.md). However, you can also manually publish these.
 
 ## Pub sub message specifications
 
@@ -19,7 +19,7 @@ name             |     x      | The name of the trigger/pipeline
 origin           |     x      | The original CI/CD platform which triggerd the build event. Ex. 'google-cloud' or 'gocd'
 repo             |     x      | The name of the github repo
 startTime        |            | Time in seconds since 1/1/1970   
-status           |     x      | [success, failure, cancelled, queued]
+status           |     x      | success, failure, cancelled, queued, timeout
 
 ## Manually publish messages to the ciccd-builds topic
 

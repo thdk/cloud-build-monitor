@@ -72,8 +72,6 @@ resource "google_cloudbuild_trigger" "app-triggers" {
         var.region,
         "--set-env-vars",
         join(",", [
-          "HOSTNAME=${google_cloud_run_service.app.status[0].url}",
-          "GCP_PROJECT=${var.project}",
           "JIRA_HOST=${var.jira_host}",
         ]),
         "--set-secrets",

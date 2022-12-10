@@ -47,6 +47,30 @@ module "ciccd-service" {
   ]
 }
 
+module "notification-service" {
+  source                  = "./notification-service"
+  project                 = var.project
+  region                  = var.region
+  repo_branch_pattern     = var.repo_branch_pattern
+  repo_owner              = var.repo_owner
+  repo_name               = var.repo_name
+  service_account_builder = {
+    email = google_service_account.builder.email
+    name  = google_service_account.builder.name
+  }
+  service_account_invoker = {
+    email = google_service_account.invoker.email
+    name  = google_service_account.invoker.name
+  }
+
+  depends_on = [
+    module.ciccd-service,
+    google_project_service.services,
+    google_artifact_registry_repository.docker-repo,
+    google_secret_manager_secret.secrets,
+  ]
+}
+
 module "app" {
   source               = "./app"
   project              = var.project

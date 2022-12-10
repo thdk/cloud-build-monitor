@@ -1,7 +1,6 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
-import { getCommitInfo } from './git';
-import { addOrUpdateCICCDBuild, getChatNotification } from './firestore';
+import { getChatNotification } from './firestore';
 
 import express from "express";
 import { sendGoogleChat } from './google-chat';
@@ -16,7 +15,7 @@ export const app = express();
 
 app.use(express.json());
 
-const handleCloudBuildPubSubMessage = async ({
+const handleCiccdBuildPubSubMessage = async ({
   attributes,
 }: PubsubMessage) => {
   const {
@@ -25,12 +24,9 @@ const handleCloudBuildPubSubMessage = async ({
     status,
     commitSha,
     branchName,
-    origin,
     repo,
     githubRepoOwner,
     logUrl = null,
-    startTime,
-    finishTime,
   } = attributes as Record<keyof CICCDBuild, string> || {};
 
   console.log({
@@ -41,16 +37,6 @@ const handleCloudBuildPubSubMessage = async ({
     throw new Error("'id' is missing in message attributes");
   }
 
-  const commit = await getCommitInfo({
-    sha: commitSha,
-    repo,
-    owner: githubRepoOwner,
-  }).catch((e) => {
-    console.error(e);
-    throw e;
-  });
-
-  // TODO: move into seperate notification service
   const sendNotification = () => {
     return getChatNotification(name, status)
       .then((notifications) => {
@@ -84,40 +70,11 @@ const handleCloudBuildPubSubMessage = async ({
             );
           })
         )
-      })
-      .catch((e) => {
-        // chat notification is optional (for this service) and pub sub message
-        // should not be retried when notification delivery fails.
-        console.error(e);
       });
   }
 
   await Promise.all([
     sendNotification(),
-    addOrUpdateCICCDBuild({
-      branchName,
-      commitSha,
-      commitAuthor: commit.author.name,
-      commitSubject: commit.message.split('\n')[0],
-      name,
-      origin,
-      repo,
-      status,
-      id,
-      githubRepoOwner,
-      logUrl,
-      issueNr: null, // todo: remove?
-      startTime: startTime
-        ? new Date(startTime)
-        : null,
-      finishTime: finishTime
-        ? new Date(finishTime)
-        : null,
-    }).catch((e) => {
-      console.error("Failed to insert build status in firestore databse");
-      console.error(e);
-      throw e;
-    }),
   ]);
 };
 
@@ -138,7 +95,7 @@ app.post('/', async (req, res) => {
 
   const pubSubMessage = req.body.message;
 
-  await handleCloudBuildPubSubMessage(pubSubMessage);
+  await handleCiccdBuildPubSubMessage(pubSubMessage);
 
   res.status(204).send();
 });

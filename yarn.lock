@@ -1670,35 +1670,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@sendgrid/client@npm:7.6.0"
-  dependencies:
-    "@sendgrid/helpers": ^7.6.0
-    axios: ^0.21.4
-  checksum: 657ab7297a7e74193be4b8b46ba63d8d41121f3ccf091a2a587d0daf6d58b1987829212a6a4f11ea4ed6d22064a8d5d27e54c84e33c49cdbb29ab61a0a4855c9
-  languageName: node
-  linkType: hard
-
-"@sendgrid/helpers@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@sendgrid/helpers@npm:7.6.0"
-  dependencies:
-    deepmerge: ^4.2.2
-  checksum: 8a5166a3072d518e0b805ebf25bddaf3a605526ba2d16d9b65679271593e901f4d398857bf7c3e31f258403e430055114f5ed7b0e4f15459dfff7ae1cfe5a9d7
-  languageName: node
-  linkType: hard
-
-"@sendgrid/mail@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@sendgrid/mail@npm:7.6.0"
-  dependencies:
-    "@sendgrid/client": ^7.6.0
-    "@sendgrid/helpers": ^7.6.0
-  checksum: ac531fc8b8dfad66b3598e549a0fa3aedeff60e4dfd16d2f06bf5103741639bb87c20b25510d369d5701f7446c9d3144037171a8af75dcad014c816739fba0d1
-  languageName: node
-  linkType: hard
-
 "@sindresorhus/is@npm:^0.14.0":
   version: 0.14.0
   resolution: "@sindresorhus/is@npm:0.14.0"
@@ -2526,15 +2497,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.4":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: ^1.14.0
-  checksum: 44245f24ac971e7458f3120c92f9d66d1fc695e8b97019139de5b0cc65d9b8104647db01e5f46917728edfc0cfd88eb30fc4c55e6053eef4ace76768ce95ff3c
-  languageName: node
-  linkType: hard
-
 "axobject-query@npm:^2.2.0":
   version: 2.2.0
   resolution: "axobject-query@npm:2.2.0"
@@ -2915,10 +2877,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ciccd-service@workspace:packages/ciccd-service"
   dependencies:
-    "@google-cloud/cloudbuild": ^2.6.0
     "@google-cloud/pubsub": ^2.18.4
     "@octokit/rest": ^18.12.0
-    "@sendgrid/mail": ^7.6.0
     "@types/mustache": ^4.2.2
     concurrently: ^7.1.0
     dotenv: ^16.0.1
@@ -3388,13 +3348,6 @@ __metadata:
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
   checksum: edb65dd0d7d1b9c40b2f50219aef30e116cedd6fc79290e740972c132c09106d2e80aa0bc8826673dd5a00222d4179c84b36a790eef63a4c4bca75a37ef90804
-  languageName: node
-  linkType: hard
-
-"deepmerge@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "deepmerge@npm:4.2.2"
-  checksum: a8c43a1ed8d6d1ed2b5bf569fa4c8eb9f0924034baf75d5d406e47e157a451075c4db353efea7b6bcc56ec48116a8ce72fccf867b6e078e7c561904b5897530b
   languageName: node
   linkType: hard
 
@@ -4364,16 +4317,6 @@ __metadata:
   version: 3.2.4
   resolution: "flatted@npm:3.2.4"
   checksum: 7d33846428ab337ec81ef9b8b9103894c1c81f5f67feb32bd4ed106fbc47da60d56edb42efd36c9f1f30a010272aeccd34ec1ffacfe9dfdff19673b1d4df481b
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.14.0":
-  version: 1.14.7
-  resolution: "follow-redirects@npm:1.14.7"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
   languageName: node
   linkType: hard
 
@@ -6499,6 +6442,22 @@ __metadata:
   checksum: 9a9dee01df02ad23e171171893e56e22d752f7cff86fb96aafeae074819b572ea655b60f8302e2d85dbb834dc885c972cc1c573892fea24df46b2765065dd05a
   languageName: node
   linkType: hard
+
+"notification-service@workspace:packages/notification-service":
+  version: 0.0.0-use.local
+  resolution: "notification-service@workspace:packages/notification-service"
+  dependencies:
+    "@google-cloud/pubsub": ^2.18.4
+    "@types/mustache": ^4.2.2
+    concurrently: ^7.1.0
+    dotenv: ^16.0.1
+    express: ^4.18.1
+    firebase-admin: ^10.0.1
+    mustache: ^4.2.0
+    nodemon: ^2.0.16
+    typescript: ^4.5.4
+  languageName: unknown
+  linkType: soft
 
 "npmlog@npm:^4.0.1":
   version: 4.1.2
