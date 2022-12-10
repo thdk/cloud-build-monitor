@@ -37,7 +37,7 @@ resource "google_firebaserules_ruleset" "default" {
 
 resource "google_firebaserules_release" "default" {
   name         = "cloud.firestore"
-  ruleset_name = "projects/${var.project}/rulesets/${google_firebaserules_ruleset.default.name}"
+  ruleset_name = google_firebaserules_ruleset.default.id
   project      = var.project
   depends_on = [
     google_firebaserules_ruleset.default,
