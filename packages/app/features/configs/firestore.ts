@@ -23,14 +23,12 @@ export const configConverter = {
     },
 };
 
-export const getAllConfigsQuery = collection(getFirestore(), CONFIG_COLLECTION);
-
-export const getAllConfigs = () => getDocs(getAllConfigsQuery);
+export const createGetAllConfigsQuery = () => collection(getFirestore(), CONFIG_COLLECTION);
 
 export const getConfigById = (id: string) => getDoc(doc(getFirestore(), `${CONFIG_COLLECTION}/${id}`))
 
 export const createFindConfigsBySectionQuery = (section?: ConfigSection) => {
-    let baseQuery = query(getAllConfigsQuery);
+    let baseQuery = query(createGetAllConfigsQuery());
     
     if (section) {
         baseQuery = query(baseQuery, where("section", "==", section));

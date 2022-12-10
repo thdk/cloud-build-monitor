@@ -1,10 +1,11 @@
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { chatNotificationConverter, getAllChatNotificationsQuery } from "../firestore";
+import { ChatNotification } from "../../../collections/chat-notifications/types";
+import { chatNotificationConverter, createGetAllChatNotificationsQuery } from "../firestore";
 
 export const useChatNotifications = () => {
 
-    return useCollectionData(
-        getAllChatNotificationsQuery
+    return useCollectionData<ChatNotification>(
+        createGetAllChatNotificationsQuery()
             .withConverter(chatNotificationConverter),
     );
 };

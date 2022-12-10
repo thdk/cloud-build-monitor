@@ -20,6 +20,6 @@ export const chatNotificationConverter:FirestoreDataConverter<ChatNotification> 
     },
 };
 
-export const getAllChatNotificationsQuery = collection(getFirestore(), CHAT_NOTIFICATION_COLLECTION);
+export const createGetAllChatNotificationsQuery = () => collection(getFirestore(), CHAT_NOTIFICATION_COLLECTION);
 
-export const getAllChatNotifications = () => getDocs(getAllChatNotificationsQuery);
+export const getAllChatNotifications = () => getDocs(createGetAllChatNotificationsQuery());
