@@ -8,7 +8,7 @@ export function Foldable({
     open,
 }: {
     content: ReactNode;
-    Header: ComponentType<{open: boolean}>;
+    Header: ComponentType<{ open: boolean }>;
     open?: boolean;
 }) {
     const [isOpen, setIsOpen] = useState(open || false);
@@ -24,6 +24,9 @@ export function Foldable({
             <div
                 className={styles}
                 onClick={() => setIsOpen(!isOpen)}
+                style={{
+                    cursor: "pointer"
+                }}
             >
                 {isOpen
                     ? <ChevronDownIcon className="h-5 w-5 mr-2" />

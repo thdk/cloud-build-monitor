@@ -1,26 +1,19 @@
+import { List, Table } from 'antd';
 import { CICCDBuild } from '../../interfaces/build';
 import { BuildListItem } from '../build-list-item';
+import antdStyles from "../../styles/antd.module.css";
 
 export function BuildListItems({
   builds,
 }: {
-  builds: readonly (CICCDBuild & { id: string })[];
+  builds: (CICCDBuild & { id: string })[];
 }) {
 
   return (
-    <div
-      className='border rounded-lg'
+    <List
+      dataSource={builds}
+      renderItem={BuildListItem}
     >
-      {
-        builds.map((data) => {
-          return (
-            <BuildListItem
-              {...data}
-              key={data.id}
-            />
-          );
-        })
-      }
-    </div>
+    </List>
   );
 }
