@@ -9,3 +9,7 @@ html {
 .ant-tabs-top > .ant-tabs-nav::before, .ant-tabs-bottom > .ant-tabs-nav::before, .ant-tabs-top > div > .ant-tabs-nav::before, .ant-tabs-bottom > div > .ant-tabs-nav::before {
   border-bottom: 1px solid #cdcdcd;
 }
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+    background: rgb(219 234 254) !important;
+}

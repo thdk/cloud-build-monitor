@@ -43,7 +43,7 @@ export function BuildListItem({
 
   return (
     <div
-      className='flex border justify-between hover:bg-slate-100'
+      className='flex border justify-between hover:bg-blue-100'
       onClick={() => push(`/builds/${id}`)}
       style={{
         cursor: "pointer"
