@@ -147,6 +147,7 @@ export function ChatNotificationForm({
                             <li>{"{{{repo}}}"}: git repo</li>
                             <li>{"{{{branch}}}"}: if applicable, the git branch name which was used to run the build from</li>
                             <li>{"{{{sha}}}"}: git commit sha</li>
+                            <li>{"{{{commitAuthor}}}"}: git commit author</li>
                         </ul>
                         <a 
                             href="https://developers.google.com/chat/api/guides/message-formats/text"

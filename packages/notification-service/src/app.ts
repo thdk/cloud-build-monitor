@@ -1,11 +1,12 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
-import { getChatNotification } from './firestore';
+import { getChatNotifications } from './firestore';
 
 import express from "express";
 import { sendGoogleChat } from './google-chat';
 import Mustache from 'mustache';
 import { CICCDBuild } from './interfaces';
+import { getCommitInfo } from './git';
 
 const dotenv = require('dotenv');
 
@@ -70,6 +71,7 @@ const handleCiccdBuildPubSubMessage = async ({
               status,
               logUrl,
               repo: `${githubRepoOwner}/${repo}`,
+              commitAuthor,
             };
 
             return sendGoogleChat(
@@ -84,9 +86,10 @@ const handleCiccdBuildPubSubMessage = async ({
       });
   }
 
-  await Promise.all([
-    sendNotification(),
-  ]);
+  await sendNotification().catch((error) => {
+    console.error(`Failed to send notification for build ${id} (status: ${status})`);
+    throw error;
+  });
 };
 
 // express routes

@@ -1,11 +1,9 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
 import { getCommitInfo } from './git';
-import { addOrUpdateCICCDBuild, getChatNotification } from './firestore';
+import { addOrUpdateCICCDBuild } from './firestore';
 
 import express from "express";
-import { sendGoogleChat } from './google-chat';
-import Mustache from 'mustache';
 import { CICCDBuild } from './interfaces';
 
 const dotenv = require('dotenv');
@@ -50,50 +48,7 @@ const handleCloudBuildPubSubMessage = async ({
     throw e;
   });
 
-  // TODO: move into seperate notification service
-  const sendNotification = () => {
-    return getChatNotification(name, status)
-      .then((notifications) => {
-        return Promise.all(
-          notifications.docs.map((notification) => {
-            const {
-              message,
-              webhookUrl,
-            } = notification.data() as unknown as {
-              message: string;
-              buildTrigger: string;
-              webhookUrl: string;
-            };
-
-            const mustacheData = {
-              id,
-              trigger: name,
-              sha: commitSha,
-              branch: branchName,
-              status,
-              logUrl,
-              repo: `${githubRepoOwner}/${repo}`,
-            };
-
-            return sendGoogleChat(
-              Mustache.render(
-                message,
-                mustacheData,
-              ),
-              webhookUrl,
-            );
-          })
-        )
-      })
-      .catch((e) => {
-        // chat notification is optional (for this service) and pub sub message
-        // should not be retried when notification delivery fails.
-        console.error(e);
-      });
-  }
-
   await Promise.all([
-    sendNotification(),
     addOrUpdateCICCDBuild({
       branchName,
       commitSha,
