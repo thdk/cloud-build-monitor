@@ -39,7 +39,7 @@ export function ArtifactList({
                     <List.Item
                         actions={[
                             <Link
-                                href="/config/builds"
+                                href="/config/build-artifacts"
                                 key="list-loadmore-edit"
                             >
                                 <a>edit</a>

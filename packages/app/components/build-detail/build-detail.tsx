@@ -1,3 +1,4 @@
+import { EditFilled } from "@ant-design/icons";
 import { Descriptions, Layout, PageHeader, Tag, Typography } from "antd";
 import Link from "next/link";
 import { CICCDBuild } from "../../interfaces/build";
@@ -109,11 +110,32 @@ export function BuildDetail({
             <Layout.Content
                 className="p-8"
             >
-                <Title
-                    level={5}
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",                        
+                        fontSize: "16px",
+                    }}
                 >
-                    Build artifacts
-                </Title>
+
+                    <Title
+                        level={5}
+                    >
+                        Build artifacts
+                    </Title>
+                    <Link
+                        href="/config/build-artifacts"
+                    >
+                        <a
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginLeft: "1em",
+                                marginBottom: "0.5em",
+                            }}
+                        ><EditFilled /> edit</a>
+                    </Link>
+                </div>
                 <ArtifactList
                     build={build}
                 />
