@@ -29,19 +29,30 @@ const handleCiccdBuildPubSubMessage = async ({
     logUrl = null,
   } = attributes as Record<keyof CICCDBuild, string> || {};
 
-  console.log({
-    attributes,
-  });
-
-  if (!id) {
+   if (!id) {
     throw new Error("'id' is missing in message attributes");
   }
 
+  const commit = await getCommitInfo({
+    sha: commitSha,
+    owner: githubRepoOwner,
+    repo,
+  }).catch(() => {
+    console.error(`Failed to fetch git commit: ${githubRepoOwner}/${repo}@${commitSha}`);
+    return undefined;
+  });
+
+  const {
+    author: {
+      name: commitAuthor,
+    }
+  } = commit || { author: {}};
+
   const sendNotification = () => {
-    return getChatNotification(name, status)
+    return getChatNotifications(name, status, branchName)
       .then((notifications) => {
         return Promise.all(
-          notifications.docs.map((notification) => {
+          notifications.map((notification) => {
             const {
               message,
               webhookUrl,

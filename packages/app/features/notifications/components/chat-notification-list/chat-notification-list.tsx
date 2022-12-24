@@ -8,24 +8,25 @@ const columns: ColumnType<ChatNotification>[] = [
     {
         title: 'Trigger',
         dataIndex: 'buildTrigger',
-        width: 200,
-    },
-    {
-        title: 'Message',
-        dataIndex: 'message',
-        render: (text: string) => <pre style={{ display: "flex", alignContent: "center" }}>{text}</pre>,
-        width: 600,
+        width: 100,
     },
     {
         title: 'Statuses',
         dataIndex: 'statuses',
         render: (statuses: BuildStatus[]) => statuses?.map((s) => <Tag key={s}>{s}</Tag>),
-        width: 320,
+        width: 100,
     },
     {
-        title: 'Webhook url',
-        dataIndex: 'webhookUrl',
-        width: 320,
+        title: 'Message',
+        dataIndex: 'message',
+        render: (text: string) => <code style={{ display: "block", alignContent: "center" }}>{text}</code>,
+        width: 500,
+    },
+    
+    {
+        title: 'Branch filter',
+        dataIndex: 'branchFilterRegex',
+        width: 200,
     },
 ];
 

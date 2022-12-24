@@ -44,6 +44,8 @@ export function ChatNotificationForm({
                 webhookUrl: "",
                 statuses: ["success", "failure"],
                 id: undefined,
+                description: "",
+                branchFilterRegex: "",
             });
     }, [
         notification,
@@ -83,24 +85,26 @@ export function ChatNotificationForm({
                         message: 'Please add a build trigger name',
                     },
                 ]}
+                help="Hint: find the correct trigger name on the builds page"
             >
                 <Input />
             </Form.Item>
 
             <Form.Item
-                label="Message"
-                name="message"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please add a message',
-                    },
-                ]}
+                label="Description"
+                name="description"
             >
-                <TextArea
-                    rows={6}
-                />
+                <Input />
             </Form.Item>
+
+            <Form.Item
+                label="Branch filter"
+                name="branchFilterRegex"
+                help="Only send message when branch name matches regex"
+            >
+                <Input />
+            </Form.Item>
+
             <Form.Item
                 label="Enabled statuses"
                 name="statuses"
@@ -122,6 +126,43 @@ export function ChatNotificationForm({
             >
                 <Input />
             </Form.Item>
+
+            <Form.Item
+                label="Message"
+                name="message"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please add a message',
+                    },
+                ]}
+                help={
+                    <div>
+                        <p>You can use the following placeholders:</p>
+                        <ul>
+                            <li>{"{{{id}}}"}: the unique identifier for the build</li>
+                            <li>{"{{{status}}}"}: the build status</li>
+                            <li>{"{{{trigger}}}"}: the name of the trigger that caused the build</li>
+                            <li>{"{{{logUrl}}}"}: link to the build logs</li>
+                            <li>{"{{{repo}}}"}: git repo</li>
+                            <li>{"{{{branch}}}"}: if applicable, the git branch name which was used to run the build from</li>
+                            <li>{"{{{sha}}}"}: git commit sha</li>
+                        </ul>
+                        <a 
+                            href="https://developers.google.com/chat/api/guides/message-formats/text"
+                            >
+                                Click to learn which syntax you can use to format your chat messages.
+                            </a>
+                    </div>
+                }
+            >
+                <TextArea
+                    rows={6}
+                />
+            </Form.Item>
+            
+
+
         </Form>
     )
 }
