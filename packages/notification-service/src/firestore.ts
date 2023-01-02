@@ -1,5 +1,6 @@
 import { initializeApp, applicationDefault, } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { ChatNotification, ChatNotificationFirestoreData } from './interfaces';
 
 initializeApp(
     {
@@ -23,6 +24,20 @@ export async function getChatNotifications(
             trigger,
         )
         .where("statuses", "array-contains", status)
+        .withConverter<ChatNotification>(({
+            toFirestore: (v: ChatNotification) => v,
+            fromFirestore: (docData: QueryDocumentSnapshot<ChatNotificationFirestoreData>) => {
+                const {
+                    threadKey,
+                    ...rest
+                } = docData.data();
+
+                return {
+                    threadId: threadKey || undefined,
+                    ...rest,
+                };
+            },
+        }))
         .get();
 
     if (!chatNotificationsForBuild.size) {

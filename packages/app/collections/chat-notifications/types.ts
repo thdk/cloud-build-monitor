@@ -8,4 +8,5 @@ export type ChatNotification = {
     buildTrigger: string;
     id: string;
     statuses: BuildStatus[];
+    threadKey?: string;
 }

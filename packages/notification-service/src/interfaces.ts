@@ -14,3 +14,21 @@ export interface CICCDBuild {
     readonly startTime: Date | null;
     readonly finishTime: Date | null;
 }
+
+export interface ChatNotification {
+    readonly message: string;
+    readonly buildTrigger: string;
+    readonly webhookUrl: string;
+    readonly threadKey?: ThreadKey;
+    readonly branchFilterRegex?: string;
+}
+
+export interface ChatNotificationFirestoreData {
+    readonly message: string;
+    readonly buildTrigger: string;
+    readonly webhookUrl: string;
+    readonly threadKey?: ThreadKey | null;
+    readonly branchFilterRegex?: string;
+}
+
+export type ThreadKey = "author" | "branch" | "sha" | "status";

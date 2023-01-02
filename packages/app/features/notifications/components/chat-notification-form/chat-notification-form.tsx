@@ -1,16 +1,23 @@
-import { Checkbox, Form, FormInstance, Input } from "antd";
+import { Checkbox, Form, FormInstance, Input, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { useEffect } from "react";
 import { ChatNotification } from "../../../../collections/chat-notifications/types";
 
-const options = [
+const statusOptions = [
     { label: 'Success', value: 'success' },
     { label: 'Failure', value: 'failure' },
     { label: 'Timeout', value: 'timeout' },
     { label: 'Cancelled', value: 'cancelled' },
     { label: 'Working', value: 'working' },
     { label: 'Queued', value: 'queued' },
+];
+
+const threadOptions = [
+    { label: 'Author', value: 'author' },
+    { label: 'Sha', value: 'commit sha' },
+    { label: 'Branch', value: 'branch' },
+    { label: 'Status', value: 'status' },
 ];
 
 export function ChatNotificationForm({
@@ -46,6 +53,7 @@ export function ChatNotificationForm({
                 id: undefined,
                 description: "",
                 branchFilterRegex: "",
+                threadKey: undefined,
             });
     }, [
         notification,
@@ -110,7 +118,17 @@ export function ChatNotificationForm({
                 name="statuses"
             >
                 <Checkbox.Group
-                    options={options}
+                    options={statusOptions}
+                />
+            </Form.Item>
+
+            <Form.Item
+                label="Group notifications in threads by"
+                name="threadKey"
+            >
+                <Select
+                    options={threadOptions}
+                    allowClear
                 />
             </Form.Item>
 

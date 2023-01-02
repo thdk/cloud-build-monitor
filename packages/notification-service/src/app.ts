@@ -5,7 +5,7 @@ import { getChatNotifications } from './firestore';
 import express from "express";
 import { sendGoogleChat } from './google-chat';
 import Mustache from 'mustache';
-import { CICCDBuild } from './interfaces';
+import { CICCDBuild, ThreadKey } from './interfaces';
 import { getCommitInfo } from './git';
 
 const dotenv = require('dotenv');
@@ -16,6 +16,32 @@ export const app = express();
 
 app.use(express.json());
 
+const getThreadId = (
+  threadKey: undefined | ThreadKey,
+  {
+commitSha,
+commitAuthor,
+branchName,
+status,
+}: {
+  commitSha: string;
+  branchName: string;
+  commitAuthor?: string;
+  status: string;
+}) => {
+  switch (threadKey) {
+    case "author":
+      return commitAuthor || undefined;
+    case "branch":
+      return branchName;
+    case "sha":
+      return commitSha;
+    case "status":
+      return status;
+    default:
+      return undefined;   
+  }
+}
 const handleCiccdBuildPubSubMessage = async ({
   attributes,
 }: PubsubMessage) => {
@@ -57,11 +83,8 @@ const handleCiccdBuildPubSubMessage = async ({
             const {
               message,
               webhookUrl,
-            } = notification.data() as unknown as {
-              message: string;
-              buildTrigger: string;
-              webhookUrl: string;
-            };
+              threadKey,
+            } = notification.data();
 
             const mustacheData = {
               id,
@@ -73,6 +96,16 @@ const handleCiccdBuildPubSubMessage = async ({
               repo: `${githubRepoOwner}/${repo}`,
               commitAuthor,
             };
+            
+            const threadId = getThreadId(
+              threadKey,
+              {
+                commitSha,
+                commitAuthor,
+                branchName,
+                status,
+              },
+            );
 
             return sendGoogleChat(
               Mustache.render(
@@ -80,6 +113,9 @@ const handleCiccdBuildPubSubMessage = async ({
                 mustacheData,
               ),
               webhookUrl,
+              {
+                threadId,
+              },
             );
           })
         )

@@ -1,0 +1,15 @@
+{
+    "message": {
+        "attributes": {
+            "name": "foobar",
+            "commitSha": "d519204d641ce3924223d929a2fba5c51885bdec",
+            "branchName": "foo",
+            "repo": "cloud-build-monitor",
+            "githubRepoOwner": "thdk",
+            "id": "99e538ed-f651-41c8-b928-305c3bb781e3",
+            "status": "failure"
+        },
+        "data": "SGVsbG8gQ2xvdWQgUHViL1N1YiEgSGVyZSBpcyBteSBtZXNzYWdlIQ==",
+        "messageId": "136969346945"
+    }
+}

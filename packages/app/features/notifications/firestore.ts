@@ -3,10 +3,17 @@ import { ChatNotification } from "../../collections/chat-notifications/types";
 
 export const CHAT_NOTIFICATION_COLLECTION = 'chat-notifications';
 
-export const chatNotificationConverter:FirestoreDataConverter<ChatNotification> = {
-    toFirestore: (appData) => {
+export const chatNotificationConverter: FirestoreDataConverter<ChatNotification> = {
+    toFirestore: ({
+        threadKey = null,
+        ...appData
+    }) => {
         delete (appData as any).id;
-        return appData;
+
+        return {
+            ...appData,
+            threadKey,
+        };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<ChatNotification>) => {
         const {
