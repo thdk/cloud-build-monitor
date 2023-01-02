@@ -22,7 +22,7 @@ export function CommitsListGrouped({
             (p, commit) => {
                 const key = groupKey(commit);
 
-                p[key] = [...p[key] || [], commit];
+                p[key] = [...(p[key] || []), commit];
 
                 return p;
             },

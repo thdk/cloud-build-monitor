@@ -135,24 +135,22 @@ export function BuildListItem({
                     </span>
                     <Link
                       href={`repos/${githubRepoOwner}/${repo}/builds`}
-                    >
-                      <a
-                        className='underline'
-                        onClick={e => {
-                          e.stopPropagation();
+                      className='underline'
+                      onClick={e => {
+                        e.stopPropagation();
 
-                          replace({
-                            pathname,
-                            query: {
-                              ...query,
-                              repo,
-                              owner: githubRepoOwner,
-                            }
-                          });
-                        }}
-                      >
-                        {`${githubRepoOwner}/${repo}`}
-                      </a>
+                        replace({
+                          pathname,
+                          query: {
+                            ...query,
+                            repo,
+                            owner: githubRepoOwner,
+                          }
+                        });
+                      }}>
+
+                      {`${githubRepoOwner}/${repo}`}
+
                     </Link>
                   </>
                 )

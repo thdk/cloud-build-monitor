@@ -8,14 +8,10 @@ export function NavigationLink({
     label: string;
 }) {
     return (
-        <Link
-            href={href}
-        >
-            <a
-                className="px-8 py-4 underline"
-            >
-                {label}
-            </a>
-        </Link>
+        (<Link href={href} className="px-8 py-4 underline">
+
+            {label}
+
+        </Link>)
     );
 }

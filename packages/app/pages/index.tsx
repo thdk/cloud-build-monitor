@@ -22,23 +22,23 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
-          <Link href="/builds">
-            <a className={styles.card}>
-              <h2>Builds &rarr;</h2>
-              <p>Go to your dashboard and start monitoring your CI/CD builds.</p>
-            </a>
+          <Link href="/builds" className={styles.card}>
+
+            <h2>Builds &rarr;</h2>
+            <p>Go to your dashboard and start monitoring your CI/CD builds.</p>
+
           </Link>
-          <Link href="/repos">
-            <a className={styles.card}>
-              <h2>Repos &rarr;</h2>
-              <p>See what is happening in your source repositories.</p>
-            </a>
+          <Link href="/repos" className={styles.card}>
+
+            <h2>Repos &rarr;</h2>
+            <p>See what is happening in your source repositories.</p>
+
           </Link>
-          <Link href="/config/builds">
-            <a className={styles.card}>
-              <h2>Config &rarr;</h2>
-              <p>Customise your ciccd experience.</p>
-            </a>
+          <Link href="/config/builds" className={styles.card}>
+
+            <h2>Config &rarr;</h2>
+            <p>Customise your ciccd experience.</p>
+
           </Link>
           <a
             href="https://github.com/thdk/cloud-build-monitor"
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-  )
+  );
 }
 
 export default Home

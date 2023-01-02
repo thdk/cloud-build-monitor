@@ -63,13 +63,17 @@ export function BuildDetail({
                             {githubRepoOwner}/{repo}
                         </Descriptions.Item>
                         <Descriptions.Item label="Branch">
-                            <Link href={`/repos/${githubRepoOwner}/${repo}/${branchName}`}>
-                                <a className="underline">{branchName}</a>
+                            <Link
+                                href={`/repos/${githubRepoOwner}/${repo}/${branchName}`}
+                                className="underline">
+                                {branchName}
                             </Link>
                         </Descriptions.Item>
                         <Descriptions.Item label="Commit">
-                            <Link href={`/repos/${githubRepoOwner}/${repo}/${commitSha}`}>
-                                <a className="underline">{commitSha}</a>
+                            <Link
+                                href={`/repos/${githubRepoOwner}/${repo}/${commitSha}`}
+                                className="underline">
+                                {commitSha}
                             </Link>
                         </Descriptions.Item>
                         <Descriptions.Item label="Started on">
@@ -125,15 +129,13 @@ export function BuildDetail({
                     </Title>
                     <Link
                         href="/config/build-artifacts"
-                    >
-                        <a
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginLeft: "1em",
-                                marginBottom: "0.5em",
-                            }}
-                        ><EditFilled /> edit</a>
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginLeft: "1em",
+                            marginBottom: "0.5em",
+                        }}>
+                        <EditFilled />edit
                     </Link>
                 </div>
                 <ArtifactList
@@ -141,5 +143,5 @@ export function BuildDetail({
                 />
             </Layout.Content>
         </Layout>
-    )
+    );
 };

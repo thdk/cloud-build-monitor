@@ -42,7 +42,7 @@ export function ArtifactList({
                                 href="/config/build-artifacts"
                                 key="list-loadmore-edit"
                             >
-                                <a>edit</a>
+                                edit
 
                             </Link>
                         ]}

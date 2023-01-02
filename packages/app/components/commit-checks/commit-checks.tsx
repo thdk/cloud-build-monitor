@@ -26,19 +26,17 @@ export function CommitChecks({
         >
             {total && <Link
                 href={`/builds?commit=${sha}`}
-            >
-                <a
-                    title="Show all builds for this commit"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <Line
-                        percent={total ? success / total * 100 : 0}
-                        strokeWidth={8}
-                        strokeColor="green"
-                        trailColor="red"
-                        trailWidth={8}
-                    />
-                </a>
+                title="Show all builds for this commit"
+                onClick={(e) => e.stopPropagation()}>
+
+                <Line
+                    percent={total ? success / total * 100 : 0}
+                    strokeWidth={8}
+                    strokeColor="green"
+                    trailColor="red"
+                    trailWidth={8}
+                />
+
             </Link>}
         </div>
     );

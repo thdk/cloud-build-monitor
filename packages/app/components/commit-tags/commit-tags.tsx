@@ -44,7 +44,7 @@ export function CommitTags({
                         key={tag}
                         href={`/repos/${owner}/${repo}/commits/${tag}`}
                         passHref
-                    >
+                        legacyBehavior>
                         <Tag
                             name={tag}
                         />

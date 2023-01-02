@@ -38,12 +38,10 @@ export function RepoList() {
                             >
                                 <Link
                                     href={`/repos/${repo.owner.login.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
-                                >
-                                    <a
-                                        className="p-4 underline border"
-                                    >
-                                        {repo.owner.login}/{repo.name}
-                                    </a>
+                                    className="p-4 underline border">
+
+                                    {repo.owner.login}/{repo.name}
+
                                 </Link>
                             </Fragment>
                         );
