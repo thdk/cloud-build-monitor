@@ -3,6 +3,7 @@
 const path = require("path");
 
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
   images: {
     domains: [
@@ -10,7 +11,6 @@ const nextConfig = {
     ],
   },
   experimental: {
-    outputStandalone: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
 };
