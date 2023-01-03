@@ -13,3 +13,11 @@ html {
 .ant-table-tbody > tr.ant-table-row:hover > td {
     background: rgb(219 234 254) !important;
 }
+
+button.primary {
+  background-color: #1677ff;
+}
+
+a {
+  color: #1677ff;
+}

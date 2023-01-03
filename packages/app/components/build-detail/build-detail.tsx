@@ -1,5 +1,6 @@
 import { EditFilled } from "@ant-design/icons";
-import { Descriptions, Layout, PageHeader, Tag, Typography } from "antd";
+import { Descriptions, Layout, Tag, Typography } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 import Link from "next/link";
 import { CICCDBuild } from "../../interfaces/build";
 import { ArtifactList } from "../artifact-list";

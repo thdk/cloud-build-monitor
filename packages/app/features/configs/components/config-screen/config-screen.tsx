@@ -1,4 +1,5 @@
-import { Button, Drawer, PageHeader, Space } from "antd";
+import { Button, Drawer, Space } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 import { Form } from "antd";
 import { useFirestoreCrud } from "../../../../firebase/use-firestore-crud";
 import { configConverter, CONFIG_COLLECTION } from "../../firestore";
@@ -57,7 +58,9 @@ export const ConfigScreen = () => {
                         }}>Cancel</Button>
                         <Button onClick={() => {
                             form.submit();
-                        }} type="primary">
+                        }} type="primary"
+                            className="primary"
+                        >
                             Submit
                         </Button>
                     </Space>

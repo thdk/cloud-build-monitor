@@ -1,4 +1,4 @@
-import { PageHeader } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 import { NextPage } from "next";
 import { BuildList } from "../../components/build-list/build-list";
 import { Layout } from "../../components/layout";

@@ -3,7 +3,7 @@ import { Layout } from "../../components/layout";
 import { RepoList } from "../../components/repo-list";
 import { getRepos } from "../../github/repos";
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { PageHeader } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 
 
 

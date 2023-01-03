@@ -5,7 +5,6 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import NextNProgress from 'nextjs-progressbar';
 import { useState } from 'react';
 
-import 'antd/dist/antd.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { intitializeFirebase } from '../firebase/init-firebase';
 

@@ -1,4 +1,5 @@
-import { Button, Drawer, PageHeader, Space } from "antd";
+import { Button, Drawer, Space } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 import { Form } from "antd";
 import { artifactConverter } from "../../collections/artifacts/firestore-converter";
 import { BuildArtifactList } from "../../components/build-artifact-list";
@@ -30,7 +31,7 @@ export const ArtifactScreen = () => {
                 className="site-page-header-responsive"
                 title="Artifact urls"
                 extra={[
-                    <Button key="1" type="primary"
+                    <Button key="1" type="primary" className="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
                         New artifact url
                     </Button>
@@ -57,7 +58,9 @@ export const ArtifactScreen = () => {
                         }}>Cancel</Button>
                         <Button onClick={() => {
                             form.submit();
-                        }} type="primary">
+                        }} type="primary"
+                        className="primary"
+                        >
                             Submit
                         </Button>
                     </Space>

@@ -1,5 +1,5 @@
-import { Button, Drawer, PageHeader, Space } from "antd";
-import { Form } from "antd";
+import { Button, Drawer, Space, Form } from "antd";
+import { PageHeader } from "@ant-design/pro-components";
 import { useFirestoreCrud } from "../../../../firebase/use-firestore-crud";
 import { chatNotificationConverter, CHAT_NOTIFICATION_COLLECTION } from "../../firestore"
 import { ChatNotificationForm } from "../chat-notification-form";
@@ -31,6 +31,7 @@ export const ChatNotificationScreen = () => {
                 title="Chat notifications"
                 extra={[
                     <Button key="1" type="primary"
+                    className="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
                         New chat notification
                     </Button>
@@ -63,7 +64,9 @@ export const ChatNotificationScreen = () => {
                         }}>Cancel</Button>
                         <Button onClick={() => {
                             form.submit();
-                        }} type="primary">
+                        }} type="primary"
+                         className="primary"
+                        >
                             Submit
                         </Button>
                     </Space>
