@@ -20,7 +20,6 @@ export async function sendGoogleChat(
         body: data,
     }).then((response) => {
         resp = response;
-        console.log(response);
     });
     return resp;
 }

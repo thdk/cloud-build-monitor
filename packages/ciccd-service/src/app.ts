@@ -39,6 +39,11 @@ const handleCloudBuildPubSubMessage = async ({
     throw new Error("'id' is missing in message attributes");
   }
 
+  if (!repo || !githubRepoOwner || !commitSha) {
+    console.log('Build was not triggered from a github repo.');
+    return;
+  }
+
   const commit = await getCommitInfo({
     sha: commitSha,
     repo,

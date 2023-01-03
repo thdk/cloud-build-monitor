@@ -19,18 +19,18 @@ app.use(express.json());
 const getThreadId = (
   threadKey: undefined | ThreadKey,
   {
-commitSha,
-commitAuthor,
-branchName,
-status,
-trigger,
-}: {
-  commitSha: string;
-  branchName: string;
-  commitAuthor?: string;
-  status: string;
-  trigger: string;
-}) => {
+    commitSha,
+    commitAuthor,
+    branchName,
+    status,
+    trigger,
+  }: {
+    commitSha: string;
+    branchName: string;
+    commitAuthor?: string;
+    status: string;
+    trigger: string;
+  }) => {
   switch (threadKey) {
     case "author":
       return commitAuthor || undefined;
@@ -43,7 +43,7 @@ trigger,
     case "trigger":
       return trigger;
     default:
-      return undefined;   
+      return undefined;
   }
 }
 const handleCiccdBuildPubSubMessage = async ({
@@ -60,9 +60,18 @@ const handleCiccdBuildPubSubMessage = async ({
     logUrl = null,
   } = attributes as Record<keyof CICCDBuild, string> || {};
 
-   if (!id) {
+  if (!id) {
     throw new Error("'id' is missing in message attributes");
   }
+
+  console.log({
+    trigger,
+    status,
+    commitSha,
+    branchName,
+    repo,
+    githubRepoOwner,
+  });
 
   const commit = await getCommitInfo({
     sha: commitSha,
@@ -77,18 +86,24 @@ const handleCiccdBuildPubSubMessage = async ({
     author: {
       name: commitAuthor,
     }
-  } = commit || { author: {}};
+  } = commit || { author: {} };
 
   const sendNotification = () => {
     return getChatNotifications(trigger, status, branchName)
       .then((notifications) => {
+        console.log(`Sending out ${notifications.length} notifications`);
         return Promise.all(
           notifications.map((notification) => {
             const {
               message,
               webhookUrl,
               threadKey,
+              description,
             } = notification.data();
+
+            if (description) {
+              console.log(`Sending chat with description: "${description}"`);
+            }
 
             const mustacheData = {
               id,
@@ -100,7 +115,7 @@ const handleCiccdBuildPubSubMessage = async ({
               repo: `${githubRepoOwner}/${repo}`,
               commitAuthor,
             };
-            
+
             const threadId = getThreadId(
               threadKey,
               {
@@ -121,6 +136,15 @@ const handleCiccdBuildPubSubMessage = async ({
               {
                 threadId,
               },
+            ).then(
+              () => {
+                console.log("Chat message delivered.");
+              },
+            ).catch(
+              (e) => {
+                console.log("Failed to send chat message.");
+                console.error(e);
+              }
             );
           })
         )

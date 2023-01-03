@@ -21,6 +21,7 @@ export interface ChatNotification {
     readonly webhookUrl: string;
     readonly threadKey?: ThreadKey;
     readonly branchFilterRegex?: string;
+    readonly description?: string;
 }
 
 export interface ChatNotificationFirestoreData {
@@ -29,6 +30,7 @@ export interface ChatNotificationFirestoreData {
     readonly webhookUrl: string;
     readonly threadKey?: ThreadKey | null;
     readonly branchFilterRegex?: string;
+    readonly description?: string;
 }
 
 export type ThreadKey = "author" | "branch" | "sha" | "status" | "trigger";
