@@ -17,6 +17,11 @@ const nextConfig = {
     "@ant-design/pro-descriptions",
     "@ant-design/pro-skeleton"
   ],
+  modularizeImports: {
+    '@ant-design/icons': {
+      transform: '@ant-design/icons/{{member}}',
+    },
+  },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
