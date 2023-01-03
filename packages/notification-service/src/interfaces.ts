@@ -31,4 +31,4 @@ export interface ChatNotificationFirestoreData {
     readonly branchFilterRegex?: string;
 }
 
-export type ThreadKey = "author" | "branch" | "sha" | "status";
+export type ThreadKey = "author" | "branch" | "sha" | "status" | "trigger";

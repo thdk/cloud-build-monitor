@@ -15,9 +15,10 @@ const statusOptions = [
 
 const threadOptions = [
     { label: 'Author', value: 'author' },
-    { label: 'Sha', value: 'commit sha' },
+    { label: 'Sha', value: 'sha' },
     { label: 'Branch', value: 'branch' },
     { label: 'Status', value: 'status' },
+    { label: 'Trigger', value: 'trigger' },
 ];
 
 export function ChatNotificationForm({

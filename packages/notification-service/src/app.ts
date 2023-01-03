@@ -23,11 +23,13 @@ commitSha,
 commitAuthor,
 branchName,
 status,
+trigger,
 }: {
   commitSha: string;
   branchName: string;
   commitAuthor?: string;
   status: string;
+  trigger: string;
 }) => {
   switch (threadKey) {
     case "author":
@@ -38,6 +40,8 @@ status,
       return commitSha;
     case "status":
       return status;
+    case "trigger":
+      return trigger;
     default:
       return undefined;   
   }
@@ -47,7 +51,7 @@ const handleCiccdBuildPubSubMessage = async ({
 }: PubsubMessage) => {
   const {
     id,
-    name,
+    name: trigger,
     status,
     commitSha,
     branchName,
@@ -76,7 +80,7 @@ const handleCiccdBuildPubSubMessage = async ({
   } = commit || { author: {}};
 
   const sendNotification = () => {
-    return getChatNotifications(name, status, branchName)
+    return getChatNotifications(trigger, status, branchName)
       .then((notifications) => {
         return Promise.all(
           notifications.map((notification) => {
@@ -88,7 +92,7 @@ const handleCiccdBuildPubSubMessage = async ({
 
             const mustacheData = {
               id,
-              trigger: name,
+              trigger,
               sha: commitSha,
               branch: branchName,
               status,
@@ -104,6 +108,7 @@ const handleCiccdBuildPubSubMessage = async ({
                 commitAuthor,
                 branchName,
                 status,
+                trigger,
               },
             );
 
