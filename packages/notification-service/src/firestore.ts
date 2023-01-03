@@ -33,7 +33,7 @@ export async function getChatNotifications(
                 } = docData.data();
 
                 return {
-                    threadId: threadKey || undefined,
+                    threadKey: threadKey || undefined,
                     ...rest,
                 };
             },

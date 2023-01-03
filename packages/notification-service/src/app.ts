@@ -101,10 +101,6 @@ const handleCiccdBuildPubSubMessage = async ({
               description,
             } = notification.data();
 
-            if (description) {
-              console.log(`Sending chat with description: "${description}"`);
-            }
-
             const mustacheData = {
               id,
               trigger,
@@ -126,6 +122,8 @@ const handleCiccdBuildPubSubMessage = async ({
                 trigger,
               },
             );
+
+            console.log(`Sending chat with description: "${description || "n/a"}" to thread ${threadId ? threadId : "no-thread"}`);
 
             return sendGoogleChat(
               Mustache.render(
