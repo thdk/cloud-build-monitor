@@ -15,7 +15,6 @@
     "@mui/material": "^5.10.13",
     "@octokit/rest": "^18.12.0",
     "@tanstack/react-query": "^4.19.1",
-    "@tanstack/react-query-devtools": "^4.19.1",
     "antd": "^4.24.2",
     "classnames": "^2.3.1",
     "express": "5.0.0-beta.1",
@@ -32,6 +31,7 @@
   },
   "devDependencies": {
     "@octokit/types": "^6.34.0",
+    "@tanstack/react-query-devtools": "^4.19.1",
     "@types/jira-client": "^7.1.4",
     "@types/mustache": "^4.1.2",
     "@types/node": "17.0.8",
