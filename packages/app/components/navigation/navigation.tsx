@@ -1,4 +1,4 @@
-import { Build, Settings, Source } from "@mui/icons-material";
+import { BuildOutlined, GithubOutlined, SettingOutlined } from "@ant-design/icons";
 import { Menu, MenuProps } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -7,17 +7,17 @@ const items: MenuProps['items'] = [
     {
         label: 'Builds',
         key: '/builds',
-        icon: <Build />
+        icon: <BuildOutlined />
     },
     {
         label: 'Repos',
         key: '/repos',
-        icon: <Source />
+        icon: <GithubOutlined />
     },
     {
         key: '/config',
         label: 'Config',
-        icon: <Settings />,
+        icon: <SettingOutlined />,
         children: [
             {
                 label: 'Build artifacts',

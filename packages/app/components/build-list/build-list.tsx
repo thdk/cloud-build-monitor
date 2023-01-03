@@ -1,4 +1,4 @@
-import { FilterAltOff } from '@mui/icons-material';
+import { StopOutlined } from '@ant-design/icons';
 import { IconButton } from '@mui/material';
 import { query, collection, orderBy, limit, where, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
@@ -169,7 +169,7 @@ export function BuildList() {
                   },
                 });
               }}>
-              <FilterAltOff />
+              <StopOutlined />
             </IconButton>
             : null
         }
