@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import { ComponentType, ReactNode, useState } from "react";
 
@@ -29,8 +29,8 @@ export function Foldable({
                 }}
             >
                 {isOpen
-                    ? <ChevronDownIcon className="h-5 w-5 mr-2" />
-                    : <ChevronRightIcon className="h-5 w-5 mr-2" />
+                    ? <DownOutlined className="mr-2" />
+                    : <RightOutlined className="mr-2" />
                 }
                 <Header open={isOpen} />
             </div>
