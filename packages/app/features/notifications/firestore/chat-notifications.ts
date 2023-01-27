@@ -1,5 +1,5 @@
 import { collection, FirestoreDataConverter, getDocs, getFirestore, QueryDocumentSnapshot } from "firebase/firestore";
-import { ChatNotification } from "../../collections/chat-notifications/types";
+import { ChatNotification } from "../../../collections/chat-notifications/types";
 
 export const CHAT_NOTIFICATION_COLLECTION = 'chat-notifications';
 

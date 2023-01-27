@@ -2,7 +2,7 @@ import { Tabs, TabsProps } from "antd";
 import { NextPage } from "next";
 import { Layout } from "../../components/layout";
 import { ChatNotificationScreen } from "../../features/notifications/components/chat-notification-screen";
-import { GoogleChatWebhooksScreen } from "../../features/notifications/components/google-chat-webhooks-screen";
+import { ChatWebhooksScreen } from "../../features/notifications/components/chat-webhooks-screen";
 
 const items: TabsProps['items'] = [
     {
@@ -13,7 +13,7 @@ const items: TabsProps['items'] = [
     {
         key: 'webhooks',
         label: `Webhooks`,
-        children: <GoogleChatWebhooksScreen />,
+        children: <ChatWebhooksScreen />,
     },
 ];
 
