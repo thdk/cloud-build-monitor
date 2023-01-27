@@ -20,5 +20,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+
+    match /chat-webhooks/{web-hook} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    match /chat-webhook-urls/{web-hook-url} {
+      allow write: if true;
+    }
   }
 }
