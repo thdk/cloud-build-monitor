@@ -11,3 +11,23 @@ These messages are usually sent by the [forward-service](../forward-service/READ
 - github checks: planned
 - github comments: planned
 - email (using sendgrid api): planned
+
+## Run locally
+
+Add a `.local.env` file containing your github token.
+
+```
+GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Next build and start the server:
+
+```sh
+yarn install
+yarn build
+yarn dev
+```
+
+Edit the file in `./tests/pub-sub-message.json` with the data you would like to test.
+
+Now run `./test/trigger.sh` from the `./tests` folder.

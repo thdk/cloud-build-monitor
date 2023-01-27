@@ -1,8 +1,9 @@
 import { Checkbox, Form, FormInstance, Input, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ChatNotification } from "../../../../collections/chat-notifications/types";
+import { useChatWebhooks } from "../../hooks/use-chat-webhooks";
 
 const statusOptions = [
     { label: 'Success', value: 'success' },
@@ -32,6 +33,8 @@ export function ChatNotificationForm({
     create: (artifact: ChatNotification) => void;
     update: (artifact: ChatNotification) => void;
 }) {
+    const [webhooks] = useChatWebhooks();
+
     const onFinish = (formValues: ChatNotification) => {
         if (formValues.id) {
             update(
@@ -44,12 +47,39 @@ export function ChatNotificationForm({
         }
     };
 
+    // remove values in reference fields that still point to deleted data
+    const validNotificationData = useMemo(
+        () => {
+            if (!notification) {
+                return undefined;
+            }
+
+            const{
+                webhooks: selectedWebHooks,
+                ...rest
+            } = notification;
+
+            return {
+                webhooks: webhooks 
+                    ? selectedWebHooks
+                        .filter((hookId) => !!webhooks.find((hook) => hook.id === hookId))
+                    : undefined,
+                ...rest,
+            };
+        },
+        [
+            webhooks,
+            notification,
+        ],
+    );
+
     useEffect(() => {
+        validNotificationData
         form.setFieldsValue(
-            notification || {
+            validNotificationData || {
                 buildTrigger: "",
                 message: "",
-                webhookUrl: "",
+                webhooks: [],
                 statuses: ["success", "failure"],
                 id: undefined,
                 description: "",
@@ -57,7 +87,7 @@ export function ChatNotificationForm({
                 threadKey: undefined,
             });
     }, [
-        notification,
+        validNotificationData,
         form,
     ]);
 
@@ -74,7 +104,6 @@ export function ChatNotificationForm({
             wrapperCol={{
                 span: 16,
             }}
-            initialValues={notification}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -134,6 +163,22 @@ export function ChatNotificationForm({
             </Form.Item>
 
             <Form.Item
+                label="Webhooks"
+                help="You can add new webhooks from the `Webhooks` tab"
+                required
+                name="webhooks"
+            >
+                <Select
+                    
+                    mode="multiple"
+                    options={webhooks?.map(({id, name}) => ({
+                        label: name,
+                        value: id
+                    })) || []}
+                />
+            </Form.Item>
+
+            <Form.Item
                 label="Webhook url"
                 name="webhookUrl"
                 rules={[
@@ -142,6 +187,7 @@ export function ChatNotificationForm({
                         message: 'Please add a google chat webhook url',
                     },
                 ]}
+                help={"DEPRECATED: Use the new webhooks field above so your webhook urls are not exposed for everyone"}
             >
                 <Input />
             </Form.Item>

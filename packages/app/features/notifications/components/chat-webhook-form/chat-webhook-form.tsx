@@ -11,7 +11,7 @@ export function ChatWebhookForm({
     create,
     update,
 }: {
-    hook?: ChatWebhook;
+    hook: ChatWebhook | null | undefined;
     form: FormInstance<ChatWebhookFormFields>;
     create: (hook: ChatWebhookFormFields) => void;
     update: (hook: ChatWebhookFormFields) => void;
@@ -53,11 +53,18 @@ export function ChatWebhookForm({
             wrapperCol={{
                 span: 16,
             }}
-            initialValues={hook}
+            initialValues={hook || {}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
+            <Form.Item
+                hidden
+                name="id"
+            >
+                <Input />
+            </Form.Item>
+
             <Form.Item
                 label="Name"
                 name="name"
@@ -71,11 +78,15 @@ export function ChatWebhookForm({
                     name="url"
                     rules={[
                         {
-                            required: true,
+                            required: !hook?.id,
                             message: 'Please add a google chat webhook url',
                         },
                     ]}
-                    help={hook?.id ? "Leave blank to use previously saved webhook" : undefined}
+                    help={
+                        hook?.id
+                            ? "Leave blank to use previously saved webhook url"
+                            : undefined
+                    }
                 >
                     <Input />
                 </Form.Item>

@@ -1,6 +1,6 @@
 import { initializeApp, applicationDefault, } from 'firebase-admin/app';
 import { getFirestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
-import { ChatNotification, ChatNotificationFirestoreData } from './interfaces';
+import { ChatNotification, ChatNotificationFirestoreData, ChatWebhook } from './interfaces';
 
 initializeApp(
     {
@@ -60,4 +60,16 @@ export async function getChatNotifications(
             return regex.test(branchName);
         }
     )
+}
+
+export async function getWebhooksByIds(webhookIds: string[]) {
+    return Promise.all(
+        webhookIds.map(async (id) => {
+            const doc = await db.collection('chat-webhook-urls')
+                .doc(id)
+                .get();
+
+            return doc.data() as ChatWebhook;
+        }),
+    );
 }
