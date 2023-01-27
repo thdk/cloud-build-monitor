@@ -1,11 +1,11 @@
 import type { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 
-import { getChatNotifications } from './firestore';
+import { getChatNotifications, getWebhooksByIds } from './firestore';
 
 import express from "express";
 import { sendGoogleChat } from './google-chat';
 import Mustache from 'mustache';
-import { CICCDBuild, ThreadKey } from './interfaces';
+import { ChatWebhook, CICCDBuild, ThreadKey } from './interfaces';
 import { getCommitInfo } from './git';
 
 const dotenv = require('dotenv');
@@ -93,10 +93,11 @@ const handleCiccdBuildPubSubMessage = async ({
       .then((notifications) => {
         console.log(`Sending out ${notifications.length} notifications`);
         return Promise.all(
-          notifications.map((notification) => {
+          notifications.map(async (notification) => {
             const {
               message,
               webhookUrl,
+              webhooks: webhookIds,
               threadKey,
               description,
             } = notification.data();
@@ -112,6 +113,18 @@ const handleCiccdBuildPubSubMessage = async ({
               commitAuthor,
             };
 
+            const webhooks = [
+              webhookUrl
+                ? {
+                  url: webhookUrl,
+                  name: "unnamed webhook (deprecated)",
+                }
+                : undefined,
+              ...webhookIds
+                ? await getWebhooksByIds(webhookIds)
+                : [],
+            ].filter<ChatWebhook>((v): v is ChatWebhook => !!v);
+
             const threadId = getThreadId(
               threadKey,
               {
@@ -125,24 +138,26 @@ const handleCiccdBuildPubSubMessage = async ({
 
             console.log(`Sending chat with description: "${description || "n/a"}" to thread ${threadId ? threadId : "no-thread"}`);
 
-            return sendGoogleChat(
-              Mustache.render(
-                message,
-                mustacheData,
-              ),
-              webhookUrl,
-              {
-                threadId,
-              },
-            ).then(
-              () => {
-                console.log("Chat message delivered.");
-              },
-            ).catch(
-              (e) => {
-                console.log("Failed to send chat message.");
-                console.error(e);
-              }
+            return Promise.all(
+              webhooks.map(({ url, name }) => sendGoogleChat(
+                Mustache.render(
+                  message,
+                  mustacheData,
+                ),
+                url,
+                {
+                  threadId,
+                },
+              ).then(
+                () => {
+                  console.log(`Chat message delivered to ${name}`);
+                },
+              ).catch(
+                (e) => {
+                  console.log(`Failed to send chat message to ${name}.`);
+                  console.error(e);
+                }
+              ))
             );
           })
         )

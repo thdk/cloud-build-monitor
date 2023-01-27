@@ -49,13 +49,14 @@ export function useFirestoreCrud<T>({
     );
 
     const createDocument = useCallback(
-        (data: T) => {
+        (data: T, id?: string) => {
             setDoc(
                 doc(
                     collection(
                         getFirestore(),
                         collectionPath,
                     ).withConverter(converter),
+                    id,
                 ),
                 data,
             ).then(() => {

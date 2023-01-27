@@ -1,24 +1,34 @@
 import { PropsWithChildren } from "react";
 import { Navigation } from "../navigation";
-import { Col, Layout as AntLayout, Row } from "antd";
-const { Sider } = AntLayout;
+import { ConfigProvider, Layout as AntLayout } from "antd";
+const { Header, Content } = AntLayout;
+
+const headerStyle: React.CSSProperties = {
+    paddingInline: 0,
+    justifyContent: "center",
+};
 
 export function Layout({
     children,
 }: PropsWithChildren<unknown>) {
     return (
-        <AntLayout style={{ minHeight: '100vh' }}
-            hasSider
+        <ConfigProvider
+            theme={{
+                token: {
+                    borderRadius: 2,
+                    // colorBgLayout: '#00b96b',
+                },
+            }}
         >
-            <Sider
-                style={{ background: "inherit" }}
-            >
-                <Navigation />
-            </Sider>
-            <AntLayout
-            >
-                {children}
+            <AntLayout style={{ minHeight: '100vh' }}>
+                <Header style={headerStyle}>
+                    <Navigation />
+                </Header>
+                <Content
+                >
+                    {children}
+                </Content>
             </AntLayout>
-        </AntLayout>
+        </ConfigProvider>
     );
 }

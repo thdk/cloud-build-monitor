@@ -1,7 +1,7 @@
 {
     "message": {
         "attributes": {
-            "name": "foobar",
+            "name": "test",
             "commitSha": "d519204d641ce3924223d929a2fba5c51885bdec",
             "branchName": "foo",
             "repo": "cloud-build-monitor",

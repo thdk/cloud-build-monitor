@@ -28,30 +28,25 @@ export const ChatNotificationScreen = () => {
         <>
             <PageHeader
                 className="site-page-header-responsive"
-                title="Chat notifications"
+                // title="Chat alerts"
+                subTitle="Configure chat alerts for your CI/CD pipelines."
                 extra={[
                     <Button key="1" type="primary"
                     className="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
-                        New chat notification
+                        New chat alert
                     </Button>
                 ]}
             >
-                <div>
-                    <p>
-                        Configure google chat notifications for your CI/CD pipelines.
-                    </p>
-                   
-                </div>
             </PageHeader>
             <ChatNotificationList
                 onClick={setActiveDocumentId}
             />
 
             <Drawer
-                title={activeDocument ? "Edit chat notification" : "Add chat notification"}
+                title={activeDocument ? "Edit chat alert" : "Add chat alert"}
                 width={720}
-                visible={activeDocument !== null}
+                open={activeDocument !== null}
                 onClose={() => setActiveDocumentId(null)}
                 bodyStyle={{ paddingBottom: 80 }}
                 extra={
