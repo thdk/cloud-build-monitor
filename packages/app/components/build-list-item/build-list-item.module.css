@@ -1,0 +1,60 @@
+.root {
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-bottom: 2px solid rgb(229, 231, 235);
+}
+
+.root:hover {
+    background-color: rgb(219, 234, 254);
+}
+
+.left {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.status {
+    padding: 1em;
+    display: flex;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.firstRow {
+    /* background: red; */
+    display: flex;
+}
+
+.secondRow {
+    display: flex;
+    /* background-color: green; */
+}
+
+.right {
+    display: flex;
+    flex: auto;
+    justify-content: right;
+    align-items: center;
+}
+
+.meta {
+    width: 200px;
+}
+
+.actions {
+    display: flex;
+    padding: 1em;
+    width: 100px;
+    justify-content: space-around;
+}

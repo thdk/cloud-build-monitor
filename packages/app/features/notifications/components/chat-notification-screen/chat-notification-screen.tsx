@@ -28,8 +28,8 @@ export const ChatNotificationScreen = () => {
         <>
             <PageHeader
                 className="site-page-header-responsive"
-                // title="Chat alerts"
-                subTitle="Configure chat alerts for your CI/CD pipelines."
+                title="Chat alerts"
+                subTitle="messages"
                 extra={[
                     <Button key="1" type="primary"
                     className="primary"

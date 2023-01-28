@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Fragment } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetResponseDataTypeFromEndpointMethod } from "@octokit/types";
 import type { Octokit } from "@octokit/rest";
+import { List } from "antd";
 
 export function RepoList() {
     const {
@@ -27,26 +27,27 @@ export function RepoList() {
 
     return data
         ? (
-            <div
-                className="flex flex-col m-4 border rounded-lg"
-            >
-                {
-                    data.map((repo) => {
-                        return (
-                            <Fragment
-                                key={`${repo.owner.login}${repo.name}`}
-                            >
-                                <Link
-                                    href={`/repos/${repo.owner.login.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
-                                    className="p-4 underline border">
+            <div>
+                <List>
+                    {
+                        data.map((repo) => {
+                            return (
+                                <List.Item
+                                    key={`${repo.owner.login}${repo.name}`}
+                                >
+                                    <Link
+                                        href={`/repos/${repo.owner.login.toLowerCase()}/${repo.name.toLowerCase()}/commits`}
+                                    >
 
-                                    {repo.owner.login}/{repo.name}
+                                        {repo.owner.login}/{repo.name}
 
-                                </Link>
-                            </Fragment>
-                        );
-                    })
-                }
+                                    </Link>
+                                </List.Item>
+                            );
+                        })
+                    }
+
+                </List>
             </div>
         )
         : (

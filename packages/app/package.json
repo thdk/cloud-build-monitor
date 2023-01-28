@@ -6,7 +6,8 @@
     "build": "next build && cp -r ./public ./.next/standalone/packages/app/public && mkdir -p ./.next/standalone/packages/app/.next && cp -r ./.next/static ./.next/standalone/packages/app/.next/static",
     "start": "next start -p 8080",
     "lint": "next lint",
-    "deploy": "gcloud --quiet app deploy"
+    "deploy": "gcloud --quiet app deploy",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
@@ -30,6 +31,7 @@
     "react-firebase-hooks": "^5.0.3"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.1.6",
     "@octokit/types": "^6.34.0",
     "@tanstack/react-query-devtools": "^4.19.1",
     "@types/jira-client": "^7.1.4",

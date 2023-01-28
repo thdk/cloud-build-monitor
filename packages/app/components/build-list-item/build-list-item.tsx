@@ -1,3 +1,4 @@
+import { style } from '@mui/system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useRepo } from '../../github/repo-context';
@@ -5,6 +6,8 @@ import { CICCDBuild } from '../../interfaces/build';
 import { BuildStatusIcon } from '../build-status-icon/build-status-icon';
 import { CommitLinks } from '../commit-links';
 import { Timer } from '../timer';
+
+import styles from './build-list-item.module.css';
 
 export function BuildListItem({
   status,
@@ -42,18 +45,14 @@ export function BuildListItem({
   } as const;
 
   return (
-    <div
-      className='flex border justify-between hover:bg-blue-100'
+    <div className={styles.root}
       onClick={() => push(`/builds/${id}`)}
-      style={{
-        cursor: "pointer"
-      }}
     >
       <div
-        className='flex'
+        className={styles.left}
       >
         <div
-          className='flex items-center m-4 ml-8'
+          className={styles.status}
         >
           <BuildStatusIcon
             status={status}
@@ -61,10 +60,10 @@ export function BuildListItem({
         </div>
         <div
           key={id}
-          className='flex flex-col m-4'
+          className={styles.main}
         >
           <div
-            className='first-row'
+            className={styles.firstRow}
           >
             <div
               className=''
@@ -83,11 +82,11 @@ export function BuildListItem({
                   });
                 }}
               >
-                {name}
+                {name}{' '}
               </a>
               <span
                 className='px-2 text-slate-600'>
-                for
+                for{' '}
               </span>
               <a
                 className='underline'
@@ -107,7 +106,7 @@ export function BuildListItem({
               </a>
               <span
                 className='px-2 text-slate-600'>
-                on
+                {' '}on{' '}
               </span>
               <a
                 className='underline'
@@ -129,9 +128,8 @@ export function BuildListItem({
                 (contextRepo !== repo && contextOwner != githubRepoOwner) && (
 
                   <>
-                    <span
-                      className='px-2 text-slate-600'>
-                      in
+                    <span>
+                      {' '}in{' '}
                     </span>
                     <Link
                       href={`repos/${githubRepoOwner}/${repo}/builds`}
@@ -158,15 +156,14 @@ export function BuildListItem({
             </div>
           </div>
           <div
-            className='second-row flex align-center'
+            className={styles.secondRow}
           >
             <div
               className=''
             >
               {commitAuthor}
-              <span
-                className='px-2 text-slate-600'>
-                committed
+              <span>
+              {' '}committed{' '}
               </span>
               {commitSubject}
             </div>
@@ -174,10 +171,10 @@ export function BuildListItem({
         </div>
       </div>
       <div
-        className='flex m-4'
+        className={styles.right}
       >
         <div
-          className='flex flex-col px-4  text-slate-600 pr-16'
+          className={styles.meta}
         >
           <div>
             {new Intl.DateTimeFormat('default', options).format(created)}
@@ -189,7 +186,7 @@ export function BuildListItem({
           />
         </div>
         <div
-          className='flex items-center align-center w-32 justify-center mr-8'
+          className={styles.actions}
         >
           <CommitLinks
             commitSha={commitSha}

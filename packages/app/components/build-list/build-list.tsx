@@ -1,14 +1,17 @@
 import { StopOutlined } from '@ant-design/icons';
 import { IconButton } from '@mui/material';
+import { Col, Row } from 'antd';
 import { query, collection, orderBy, limit, where, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useRepo } from '../../github/repo-context';
 import { CICCDBuild, CICCDBuildConverter } from '../../interfaces/build';
-import { BuildListItems } from '../build-list-items';
+import { BuildListItem } from '../build-list-item';
 import { FilterInput } from '../filter-input';
 import { RefInput } from '../ref-input';
+
+import styles from "./build-list.module.css";
 
 export function BuildList() {
   const {
@@ -115,72 +118,85 @@ export function BuildList() {
   );
 
   return (
-    <div className="flex -pl-32 flex-col">
-      <div
-        className='mb-4 flex space-x-16'
+    <div
+      className={styles.root}
+    >
+      <Row
+        className={styles.filters}
+        justify="start"
+        gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 10]}
       >
-        <RefInput
-          value={commit as string | undefined}
-          onChange={(value) => replace({
-            pathname,
-            query: {
-              ...routerQuery,
-              commit: value,
-            },
-          })}
-          label="Commit"
-        />
+        <Col>
+          <RefInput
+            value={commit as string | undefined}
+            onChange={(value) => replace({
+              pathname,
+              query: {
+                ...routerQuery,
+                commit: value,
+              },
+            })}
+            label="Commit"
+          />
+        </Col>
+        <Col>
+          <RefInput
+            value={branch as string | undefined}
+            onChange={(value) => replace({
+              pathname,
+              query: {
+                ...routerQuery,
+                branch: value,
+              },
+            })}
+            label="Branch"
+          />
+        </Col>
+        <Col>
+          <FilterInput
+            value={trigger as string | undefined}
+            onChange={(value) => replace({
+              pathname,
+              query: {
+                ...routerQuery,
+                trigger: value,
+              },
+            })}
+            label="Trigger"
+            options={trigger ? [] : triggers}
+          />
+        </Col>
+        <Col>
 
-        <RefInput
-          value={branch as string | undefined}
-          onChange={(value) => replace({
-            pathname,
-            query: {
-              ...routerQuery,
-              branch: value,
-            },
-          })}
-          label="Branch"
-        />
-
-        <FilterInput
-          value={trigger as string | undefined}
-          onChange={(value) => replace({
-            pathname,
-            query: {
-              ...routerQuery,
-              trigger: value,
-            },
-          })}
-          label="Trigger"
-          options={trigger ? [] : triggers}
-        />
-        {
-          (branch || commit || trigger)
-            ? <IconButton color="primary" aria-label="upload picture" component="label"
-              onClick={() => {
-                replace({
-                  pathname,
-                  query: {
-                    ...routerQuery,
-                    trigger: null,
-                    branch: null,
-                    commit: null,
-                  },
-                });
-              }}>
-              <StopOutlined />
-            </IconButton>
-            : null
-        }
-      </div>
-      <div>
+          {
+            (branch || commit || trigger)
+              ? <IconButton color="primary" aria-label="upload picture" component="label"
+                onClick={() => {
+                  replace({
+                    pathname,
+                    query: {
+                      ...routerQuery,
+                      trigger: null,
+                      branch: null,
+                      commit: null,
+                    },
+                  });
+                }}>
+                <StopOutlined />
+              </IconButton>
+              : null
+          }
+        </Col>
+      </Row>
+      <div
+        className={styles.buildList}
+      >
         {error && <strong>Error: {JSON.stringify(error)}</strong>}
         {loading && <span>Loading...</span>}
         {value && (
-          <BuildListItems
-            builds={value.docs.map((doc) => ({ id: doc.id, ...doc.data() }))}
-          />
+            value.docs.map((doc) => (
+              <BuildListItem key={doc.id} id={doc.id} {...doc.data()} />
+            ))
         )}
       </div>
     </div>

@@ -78,7 +78,8 @@ export const ChatWebhooksScreen = () => {
         <>
             <PageHeader
                 className="site-page-header-responsive"
-                subTitle="Manage webhooks for your google chat spaces"
+                title="Chat alerts"
+                subTitle="webhooks"
                 extra={[
                     <Button key="1" type="primary"
                         className="primary"
