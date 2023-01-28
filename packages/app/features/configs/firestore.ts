@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, getFirestore, query, QueryDocumentSnapshot, where } from "firebase/firestore";
+import { collection, doc, getDoc, getFirestore, query, QueryDocumentSnapshot, where } from "firebase/firestore";
 import { Config, ConfigSection } from "./types";
 
 export const CONFIG_COLLECTION = "configs" as const;
