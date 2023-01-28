@@ -7,7 +7,7 @@ type Error = {
   error: string;
 }
 
-const repos = async (req: NextApiRequest, res: NextApiResponse<Data | Error>) => {
+const issue = async (req: NextApiRequest, res: NextApiResponse<Data | Error>) => {
   const { key } = req.query;
   if (typeof key !== "string") {
     throw new Error("Exactly one issue key is required.")
@@ -24,4 +24,4 @@ const repos = async (req: NextApiRequest, res: NextApiResponse<Data | Error>) =>
   }
 }
 
-export default repos;
+export default issue;

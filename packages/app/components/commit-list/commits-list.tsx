@@ -3,10 +3,10 @@ import { Commit } from "../../github/types";
 import { useQuery } from "@tanstack/react-query";
 import { RefInput } from "../ref-input";
 import { useRepo } from "../../github/repo-context";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import { CommitsListGrouped } from "../commit-list-grouped";
 import { getIssue } from "../../jira/issues";
+import { Select } from "antd";
 
 function getListCommitsByDayGroupKey(commit: Commit) {
     const commitedOnTime = new Date(commit.commit.committer?.date || 0);
@@ -54,6 +54,7 @@ function CommitListGroupedByIssueTitle({
         () => getIssue(issueId),
         {
             retry: false,
+            enabled: false,
         }
     );
 
@@ -159,40 +160,30 @@ export function CommitsList() {
                         className="mb-4 flex items-center space-x-4"
                     >
                         {repoRef !== null && <RefInput
-                            label="Head"
+                            placeholder="Head"
                             value={repoRef || defaultBranch}
                             onChange={(value) => setRepoRef(value!)}
-                            disableClearable
-                            className="mr-4"
                         />}
 
                         {repoRef !== null && <RefInput
-                            label="Since"
+                            placeholder="Since"
                             value={since}
                             onChange={setSince}
                             noBranches
-                            className="mr-4"
                         />}
                         <div
                             className="flex pl-4"
                         >
-                            <FormControl>
-                                <InputLabel id="group-select-label">Group by</InputLabel>
-                                <Select
-                                    autoWidth
-                                    size="small"
-                                    labelId="group-select-label"
-                                    value={groupBy}
-                                    label="Group by"
-                                    onChange={(e) => {
-                                        setGroupBy(e.target.value as any);
-                                    }}
-                                >
-                                    <MenuItem value="none">None</MenuItem>
-                                    <MenuItem value="date">Date</MenuItem>
-                                    {process.env.NEXT_PUBLIC_ISSUE_REGEX && <MenuItem value="issue">Issue</MenuItem>}
-                                </Select>
-                            </FormControl>
+                            <Select
+                                size="large"
+                                value={groupBy}
+                                onChange={setGroupBy}
+                                placeholder="Group by"
+                            >
+                                <Select.Option value="none">None</Select.Option>
+                                <Select.Option value="date">Date</Select.Option>
+                                {process.env.NEXT_PUBLIC_ISSUE_REGEX && <Select.Option value="issue">Issue</Select.Option>}
+                            </Select>
                         </div>
                     </div>
                     <div>

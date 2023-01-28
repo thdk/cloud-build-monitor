@@ -1,6 +1,5 @@
 import { StopOutlined } from '@ant-design/icons';
-import { IconButton } from '@mui/material';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { query, collection, orderBy, limit, where, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
@@ -99,24 +98,6 @@ export function BuildList() {
     ],
   );
 
-  const branches = useMemo(() => {
-    const branchSet = value?.docs.reduce((p, c) => {
-      const doc = c.data();
-      if (doc) {
-        p.add(doc.branchName);
-      }
-      return p;
-    },
-      new Set<string>()
-    ) || [];
-
-    return [...branchSet];
-  },
-    [
-      value,
-    ],
-  );
-
   return (
     <div
       className={styles.root}
@@ -136,7 +117,7 @@ export function BuildList() {
                 commit: value,
               },
             })}
-            label="Commit"
+            placeholder="Commit"
           />
         </Col>
         <Col>
@@ -149,7 +130,7 @@ export function BuildList() {
                 branch: value,
               },
             })}
-            label="Branch"
+            placeholder="Branch"
           />
         </Col>
         <Col>
@@ -162,7 +143,7 @@ export function BuildList() {
                 trigger: value,
               },
             })}
-            label="Trigger"
+            placeholder="Trigger"
             options={trigger ? [] : triggers}
           />
         </Col>
@@ -170,7 +151,12 @@ export function BuildList() {
 
           {
             (branch || commit || trigger)
-              ? <IconButton color="primary" aria-label="upload picture" component="label"
+              ? <Button type="default" icon={<StopOutlined />} size="large"
+                style={{
+                  "display": "flex",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                }}
                 onClick={() => {
                   replace({
                     pathname,
@@ -181,9 +167,7 @@ export function BuildList() {
                       commit: null,
                     },
                   });
-                }}>
-                <StopOutlined />
-              </IconButton>
+                }} />
               : null
           }
         </Col>
@@ -194,9 +178,9 @@ export function BuildList() {
         {error && <strong>Error: {JSON.stringify(error)}</strong>}
         {loading && <span>Loading...</span>}
         {value && (
-            value.docs.map((doc) => (
-              <BuildListItem key={doc.id} id={doc.id} {...doc.data()} />
-            ))
+          value.docs.map((doc) => (
+            <BuildListItem key={doc.id} id={doc.id} {...doc.data()} />
+          ))
         )}
       </div>
     </div>

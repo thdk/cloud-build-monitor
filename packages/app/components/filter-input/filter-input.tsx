@@ -1,36 +1,34 @@
-import AutoComplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+import { Select } from "antd";
 import { ComponentProps } from "react";
 
 export function FilterInput({
     value,
-    label,
-    noBranches,
     options,
     onChange,
-    ...autoCompleteProps
+    placeholder,
 }: {
     value: string | undefined;
-    noBranches?: boolean,
-    label: string;
     options: string[];
     onChange: (value: string | undefined) => void;
-} & Pick<ComponentProps<typeof AutoComplete>, "disableClearable" | "className">) {
+} & Pick<ComponentProps<typeof Select>, "placeholder" | "className">) {
     return (
-        <AutoComplete
-            {...autoCompleteProps}
-            options={options}
-            renderInput={(params) => (
-                <TextField {...params} label={label} size="small" />
-            )}
-            freeSolo
-            onChange={(_, value) => {
+        <Select
+            placeholder={placeholder}
+            options={options.map((key) => ({
+                label: key,
+                value: key,
+            }))}
+            
+            showSearch={false}
+            onChange={(value) => {
                 onChange(value || undefined);
             }}
-            value={value || ""}
-            sx={{
-                width: 300,
+            value={value}
+            style={{
+                width: "300px"
             }}
+            size="large"
+        
         />
     );
 }
