@@ -45,7 +45,12 @@ export function BuildListItem({
 
   return (
     <div className={styles.root}
-      onClick={() => push(`/builds/${id}`)}
+      onClick={() => {
+        const selection = window.getSelection();
+        if (selection?.toString().length === 0) {
+          push(`/builds/${id}`);
+        }
+      }}
     >
       <div
         className={styles.left}
@@ -162,7 +167,7 @@ export function BuildListItem({
             >
               {commitAuthor}
               <span>
-              {' '}committed{' '}
+                {' '}committed{' '}
               </span>
               {commitSubject}
             </div>

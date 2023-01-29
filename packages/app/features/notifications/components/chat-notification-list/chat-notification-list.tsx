@@ -73,7 +73,12 @@ export const ChatNotificationList = ({
                 }}
                 onRow={(record) => {
                     return {
-                        onClick: () => onClick(record.id),
+                        onClick: () => {
+                            const selection = window.getSelection();
+                            if (selection?.toString().length === 0) {
+                                onClick(record.id);
+                            }
+                        },
                     };
                 }}
                 rowKey="id"
