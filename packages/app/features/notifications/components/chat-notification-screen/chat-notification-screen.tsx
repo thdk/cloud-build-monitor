@@ -32,7 +32,7 @@ export const ChatNotificationScreen = () => {
                 subTitle="messages"
                 extra={[
                     <Button key="1" type="primary"
-                    className="primary"
+                        className="primary"
                         onClick={() => setActiveDocumentId(undefined)}>
                         New chat alert
                     </Button>
@@ -60,7 +60,7 @@ export const ChatNotificationScreen = () => {
                         <Button onClick={() => {
                             form.submit();
                         }} type="primary"
-                         className="primary"
+                            className="primary"
                         >
                             Submit
                         </Button>
@@ -71,7 +71,11 @@ export const ChatNotificationScreen = () => {
                     form={form}
                     update={updateDocument}
                     create={createDocument}
-                    notification={activeDocument?.data()}
+                    notification={activeDocument
+                        ? activeDocument.data()
+                        // undefined = create new document; null = no document selected
+                        : activeDocument
+                    }
                 />
                 }
             </Drawer>

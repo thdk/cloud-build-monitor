@@ -10,4 +10,5 @@ export type ChatNotification = {
     id: string;
     statuses: BuildStatus[];
     threadKey?: string;
+    name?: string;
 }

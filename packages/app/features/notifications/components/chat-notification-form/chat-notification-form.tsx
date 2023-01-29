@@ -28,7 +28,7 @@ export function ChatNotificationForm({
     create,
     update,
 }: {
-    notification?: ChatNotification;
+    notification?: ChatNotification | null | undefined;
     form: FormInstance<ChatNotification>;
     create: (artifact: ChatNotification) => void;
     update: (artifact: ChatNotification) => void;
@@ -54,13 +54,13 @@ export function ChatNotificationForm({
                 return undefined;
             }
 
-            const{
+            const {
                 webhooks: selectedWebHooks,
                 ...rest
             } = notification;
 
             return {
-                webhooks: webhooks 
+                webhooks: webhooks
                     ? selectedWebHooks
                         .filter((hookId) => !!webhooks.find((hook) => hook.id === hookId))
                     : undefined,
@@ -74,18 +74,13 @@ export function ChatNotificationForm({
     );
 
     useEffect(() => {
-        validNotificationData
-        form.setFieldsValue(
-            validNotificationData || {
-                buildTrigger: "",
-                message: "",
-                webhooks: [],
-                statuses: ["success", "failure"],
-                id: undefined,
-                description: "",
-                branchFilterRegex: "",
-                threadKey: undefined,
-            });
+        if (validNotificationData) {
+            form.setFieldsValue(
+                validNotificationData,
+            );
+        } else {
+            form.resetFields();
+        }
     }, [
         validNotificationData,
         form,
@@ -114,6 +109,29 @@ export function ChatNotificationForm({
             >
                 <Input />
             </Form.Item>
+
+            <Form.Item
+                label="Short name"
+                name="name"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please add a short descriptive name',
+                    },
+                ]}
+                help="A short but descriptive name used in notification overview table."
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Description"
+                name="description"
+                help="Explain the goal (or target audience) of this notification"
+            >
+                <Input />
+            </Form.Item>
+
             <Form.Item
                 label="Trigger"
                 name="buildTrigger"
@@ -128,12 +146,6 @@ export function ChatNotificationForm({
                 <Input />
             </Form.Item>
 
-            <Form.Item
-                label="Description"
-                name="description"
-            >
-                <Input />
-            </Form.Item>
 
             <Form.Item
                 label="Branch filter"
@@ -169,9 +181,9 @@ export function ChatNotificationForm({
                 name="webhooks"
             >
                 <Select
-                    
+
                     mode="multiple"
-                    options={webhooks?.map(({id, name}) => ({
+                    options={webhooks?.map(({ id, name }) => ({
                         label: name,
                         value: id
                     })) || []}
@@ -214,11 +226,11 @@ export function ChatNotificationForm({
                             <li>{"{{{sha}}}"}: git commit sha</li>
                             <li>{"{{{commitAuthor}}}"}: git commit author</li>
                         </ul>
-                        <a 
+                        <a
                             href="https://developers.google.com/chat/api/guides/message-formats/text"
-                            >
-                                Click to learn which syntax you can use to format your chat messages.
-                            </a>
+                        >
+                            Click to learn which syntax you can use to format your chat messages.
+                        </a>
                     </div>
                 }
             >
@@ -226,7 +238,7 @@ export function ChatNotificationForm({
                     rows={6}
                 />
             </Form.Item>
-            
+
 
 
         </Form>
