@@ -6,7 +6,7 @@ import { useRepo } from "../../github/repo-context";
 import { useState } from "react";
 import { CommitsListGrouped } from "../commit-list-grouped";
 import { getIssue } from "../../jira/issues";
-import { Select } from "antd";
+import { Form, Select } from "antd";
 
 function getListCommitsByDayGroupKey(commit: Commit) {
     const commitedOnTime = new Date(commit.commit.committer?.date || 0);
@@ -159,31 +159,48 @@ export function CommitsList() {
                     <div
                         className="mb-4 flex items-center space-x-4"
                     >
-                        {repoRef !== null && <RefInput
-                            placeholder="Head"
-                            value={repoRef || defaultBranch}
-                            onChange={(value) => setRepoRef(value!)}
-                        />}
-
-                        {repoRef !== null && <RefInput
-                            placeholder="Since"
-                            value={since}
-                            onChange={setSince}
-                            noBranches
-                        />}
-                        <div
-                            className="flex pl-4"
-                        >
-                            <Select
-                                size="large"
-                                value={groupBy}
-                                onChange={setGroupBy}
-                                placeholder="Group by"
+                        {repoRef !== null && (
+                            <Form.Item
+                                label="Head"
                             >
-                                <Select.Option value="none">None</Select.Option>
-                                <Select.Option value="date">Date</Select.Option>
-                                {process.env.NEXT_PUBLIC_ISSUE_REGEX && <Select.Option value="issue">Issue</Select.Option>}
-                            </Select>
+                                <RefInput
+                                    allowClear={false}
+                                    placeholder="Head"
+                                    value={repoRef || defaultBranch}
+                                    onChange={(value) => setRepoRef(value!)}
+                                />
+                            </Form.Item>
+                        )}
+
+                        {repoRef !== null && (
+                            <Form.Item
+                                label="Since"
+                            >
+                                <RefInput
+                                    placeholder="Since"
+                                    value={since}
+                                    onChange={setSince}
+                                    noBranches
+                                />
+                            </Form.Item>
+                        )}
+                        <div
+                            className="flex"
+                        >
+                            <Form.Item
+                                label="Group by"
+                            >
+
+                                <Select
+                                    value={groupBy}
+                                    onChange={setGroupBy}
+                                    placeholder="Group by"
+                                >
+                                    <Select.Option value="none">None</Select.Option>
+                                    <Select.Option value="date">Date</Select.Option>
+                                    {process.env.NEXT_PUBLIC_ISSUE_REGEX && <Select.Option value="issue">Issue</Select.Option>}
+                                </Select>
+                            </Form.Item>
                         </div>
                     </div>
                     <div>

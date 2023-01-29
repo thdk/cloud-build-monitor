@@ -7,13 +7,12 @@ import { FilterInput } from "../filter-input";
 export function RefInput({
     value,
     noBranches,
-    onChange,
     placeholder,
+    ...filterProps
 }: {
-    value: string | undefined;
+    value?: string | undefined;
     noBranches?: boolean,
-    onChange: (value: string | undefined) => void;
-} & Pick<ComponentProps<typeof FilterInput>, "placeholder">) {
+} & Omit<ComponentProps<typeof FilterInput>, "options">) {
     const tags = useTags();
     const branches = useBranches();
 
@@ -21,9 +20,9 @@ export function RefInput({
         ? (
             <FilterInput
                 placeholder={placeholder}
-                onChange={onChange}
-                value={undefined}
+                value={value}
                 options={[...(noBranches ? [] : branches), ...tags].filter((ref) => !!ref).map((tag) => tag.name)}
+                {...filterProps}
             />
         )
         : null;

@@ -28,6 +28,7 @@ export const RepoPage: NextPage<{
             query,
             replace,
         } = useRouter();
+
         return (
             <RepoProvider>
                 <Layout>
@@ -36,7 +37,7 @@ export const RepoPage: NextPage<{
                         title={ owner && repo ? `${owner} / ${repo}` : "/"}
                         footer={
                             <Tabs
-                                defaultActiveKey={tab}
+                                activeKey={tab}
                                 size="large"
                                 onChange={(value) => replace({
                                     pathname,
@@ -54,7 +55,7 @@ export const RepoPage: NextPage<{
 
                     </PageHeader>
                     <div
-                        className="mx-4 mb-8 mt-8"
+                        className="mx-4 mb-8"
                     >
                         {
                             tab === "commits" && (

@@ -9,7 +9,13 @@ const BuildsPage: NextPage = () => {
             <PageHeader
                 title="Builds"
             />
-            <BuildList />
+            <div
+                style={{
+                    padding: "1em"
+                }}
+            >
+                <BuildList />
+            </div>
         </Layout>
     );
 };
