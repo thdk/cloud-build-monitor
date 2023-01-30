@@ -55,13 +55,13 @@ export function ChatNotificationForm({
             }
 
             const {
-                webhooks: selectedWebHooks,
+                webhooks: selectedWebHooksIds,
                 ...rest
             } = notification;
 
             return {
                 webhooks: webhooks
-                    ? selectedWebHooks
+                    ? selectedWebHooksIds
                         .filter((hookId) => !!webhooks.find((hook) => hook.id === hookId))
                     : undefined,
                 ...rest,
