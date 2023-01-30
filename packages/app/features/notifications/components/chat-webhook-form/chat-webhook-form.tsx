@@ -68,6 +68,7 @@ export function ChatWebhookForm({
             <Form.Item
                 label="Name"
                 name="name"
+                required
             >
                 <Input />
             </Form.Item>

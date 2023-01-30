@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
 import {
     collection,
     deleteDoc,
     doc,
     FirestoreDataConverter,
+    FirestoreError,
     getFirestore,
     setDoc,
 } from "firebase/firestore";
@@ -21,6 +22,21 @@ export function useFirestoreCrud<T>({
         setActiveDocumentId,
     ] = useState<string | undefined | null>(null);
 
+    const collectionRef = useMemo(
+        () => (
+            collection(
+                getFirestore(),
+                collectionPath,
+            ).withConverter(converter)
+        ),
+        [
+            collectionPath,
+            converter,
+        ],
+    );
+
+    const [firestoreError, setFirestoreError] = useState<FirestoreError | undefined>();
+
     const [
         activeDocument,
         isActiveDocumentLoading,
@@ -28,10 +44,7 @@ export function useFirestoreCrud<T>({
     ] = useDocumentOnce(
         activeDocumentId
             ? doc(
-                collection(
-                    getFirestore(),
-                    collectionPath,
-                ).withConverter(converter),
+                collectionRef,
                 activeDocumentId,
             )
             : null,
@@ -39,33 +52,42 @@ export function useFirestoreCrud<T>({
 
     useEffect(
         () => {
-            if (error) {
-                console.error(error);
-            }
+            setFirestoreError(error);
         },
         [
             error,
         ],
     );
 
+    useEffect(
+        () => {
+            console.error(firestoreError);
+        },
+        [
+            firestoreError,
+        ],
+    );
+
     const createDocument = useCallback(
         (data: T, id?: string) => {
             setDoc(
-                doc(
-                    collection(
-                        getFirestore(),
-                        collectionPath,
-                    ).withConverter(converter),
-                    id,
-                ),
+                id
+                    ? doc(
+                        collectionRef,
+                        id,
+                    )
+                    : doc(collectionRef),
                 data,
             ).then(() => {
                 setActiveDocumentId(null);
+            }).catch((e) => {
+                setFirestoreError(e);
+                throw e;
             });
+
         },
         [
-            collectionPath,
-            converter,
+            collectionRef,
         ],
     );
 
@@ -73,10 +95,7 @@ export function useFirestoreCrud<T>({
         (data: Partial<T>) => {
             activeDocumentId && setDoc(
                 doc(
-                    collection(
-                        getFirestore(),
-                        collectionPath,
-                    ).withConverter(converter),
+                    collectionRef,
                     activeDocumentId,
                 ),
                 data,
@@ -89,8 +108,7 @@ export function useFirestoreCrud<T>({
         },
         [
             activeDocumentId,
-            collectionPath,
-            converter,
+            collectionRef,
         ],
     );
 
@@ -118,5 +136,6 @@ export function useFirestoreCrud<T>({
         isActiveDocumentLoading,
         updateDocument,
         setActiveDocumentId,
+        error: firestoreError,
     };
 }

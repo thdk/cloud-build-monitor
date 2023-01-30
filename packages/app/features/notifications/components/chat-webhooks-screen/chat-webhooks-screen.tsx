@@ -119,7 +119,8 @@ export const ChatWebhooksScreen = () => {
                     form={form}
                     update={updateWebHook}
                     create={saveNewWebhook}
-                    hook={activeDocument?.data()}
+                    // ChatWebHookForm runs a useEffect on value of hook prop so undefined !== null!!!
+                    hook={activeDocument ? activeDocument.data() : activeDocument}
                 />
                 }
             </Drawer>
