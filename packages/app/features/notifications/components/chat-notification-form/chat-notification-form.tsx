@@ -191,20 +191,6 @@ export function ChatNotificationForm({
             </Form.Item>
 
             <Form.Item
-                label="Webhook url"
-                name="webhookUrl"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please add a google chat webhook url',
-                    },
-                ]}
-                help={"DEPRECATED: Use the new webhooks field above so your webhook urls are not exposed for everyone"}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
                 label="Message"
                 name="message"
                 rules={[

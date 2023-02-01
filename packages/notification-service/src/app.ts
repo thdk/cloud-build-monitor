@@ -96,7 +96,6 @@ const handleCiccdBuildPubSubMessage = async ({
           notifications.map(async (notification) => {
             const {
               message,
-              webhookUrl,
               webhooks: webhookIds,
               threadKey,
               description,
@@ -113,17 +112,10 @@ const handleCiccdBuildPubSubMessage = async ({
               commitAuthor,
             };
 
-            const webhooks = [
-              webhookUrl
-                ? {
-                  url: webhookUrl,
-                  name: "unnamed webhook (deprecated)",
-                }
-                : undefined,
-              ...webhookIds
-                ? await getWebhooksByIds(webhookIds)
-                : [],
-            ].filter<ChatWebhook>((v): v is ChatWebhook => !!v);
+            const webhooks = webhookIds
+              ? (await getWebhooksByIds(webhookIds))
+                .filter((value): value is ChatWebhook => !!value)
+              : [];
 
             const threadId = getThreadId(
               threadKey,

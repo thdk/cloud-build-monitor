@@ -69,7 +69,9 @@ export async function getWebhooksByIds(webhookIds: string[]) {
                 .doc(id)
                 .get();
 
-            return doc.data() as ChatWebhook;
+            return doc.exists
+                ? doc.data() as ChatWebhook
+                : undefined;
         }),
     );
 }

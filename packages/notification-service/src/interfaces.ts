@@ -18,7 +18,6 @@ export interface CICCDBuild {
 export interface ChatNotification {
     readonly message: string;
     readonly buildTrigger: string;
-    readonly webhookUrl?: string;
     readonly webhooks?: string[];
     readonly threadKey?: ThreadKey;
     readonly branchFilterRegex?: string;
@@ -29,7 +28,6 @@ export interface ChatNotificationFirestoreData {
     readonly message: string;
     readonly buildTrigger: string;
     readonly webhooks?: string[];
-    readonly webhookUrl: string;
     readonly threadKey?: ThreadKey | null;
     readonly branchFilterRegex?: string;
     readonly description?: string;

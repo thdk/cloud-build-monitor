@@ -3,7 +3,6 @@ export type BuildStatus = "success" | "failure" | "working" | "queued" | "cancel
 export type ChatNotification = {
     description?: string;
     branchFilterRegex?: string;
-    webhookUrl?: string;
     webhooks: string[];
     message: string;
     buildTrigger: string;
