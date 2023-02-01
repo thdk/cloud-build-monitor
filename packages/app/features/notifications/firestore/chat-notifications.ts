@@ -11,8 +11,21 @@ export const chatNotificationConverter: FirestoreDataConverter<ChatNotification>
         if (appData.branchFilterRegex === undefined) delete appData.branchFilterRegex;
         if (appData.description === undefined) delete appData.description;
         if (appData.statuses === undefined) delete appData.statuses;
+        if (appData.name === undefined) delete appData.name;
 
-        return appData;
+        const caseInsensitiveName = appData.name
+            ? {
+                name_case_insensitive:
+                    typeof appData.name === "string"
+                        ? (appData.name || "n/a").toUpperCase()
+                        : appData.name,
+            }
+            : {};
+
+        return {
+            ...appData,
+            ...caseInsensitiveName,
+        };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<ChatNotification>) => {
         const {

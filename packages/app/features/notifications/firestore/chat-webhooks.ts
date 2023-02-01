@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, FirestoreDataConverter, getDoc, getDocs, getFirestore, QueryDocumentSnapshot, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, FirestoreDataConverter, getDoc, getDocs, getFirestore, orderBy, query, QueryDocumentSnapshot, setDoc } from "firebase/firestore";
 import { ChatWebhook, ChatWebhookUrl } from "../../../collections/chat-webhooks/types";
 
 export const CHAT_WEBHOOK_COLLECTION = 'chat-webhooks';
@@ -11,8 +11,18 @@ export const chatWebHookConverter: FirestoreDataConverter<ChatWebhook> = {
     }) => {
         delete (appData as any).id;
 
+        const caseInsensitiveName = appData.name
+            ? {
+                name_case_insensitive:
+                    typeof appData.name === "string"
+                        ? (appData.name || "n/a").toUpperCase()
+                        : appData.name,
+            }
+            : {};
+
         return {
             ...appData,
+            ...caseInsensitiveName,
         };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<ChatWebhook>) => {
@@ -27,7 +37,10 @@ export const chatWebHookConverter: FirestoreDataConverter<ChatWebhook> = {
     },
 };
 
-export const createGetAllChatWebhooksQuery = () => collection(getFirestore(), CHAT_WEBHOOK_COLLECTION);
+export const createGetAllChatWebhooksQuery = () => query(
+    collection(getFirestore(), CHAT_WEBHOOK_COLLECTION),
+    orderBy("name"),
+);
 
 export const getAllChatWebhooks = () => getDocs(createGetAllChatWebhooksQuery());
 
