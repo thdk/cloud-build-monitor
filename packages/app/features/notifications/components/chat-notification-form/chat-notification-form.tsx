@@ -51,7 +51,7 @@ export function ChatNotificationForm({
     const validNotificationData = useMemo(
         () => {
             if (!notification) {
-                return undefined;
+                return notification;
             }
 
             const {
