@@ -43,7 +43,7 @@ export const chatNotificationConverter: FirestoreDataConverter<ChatNotification>
 
 export const createGetAllChatNotificationsQuery = () => query(
     collection(getFirestore(), CHAT_NOTIFICATION_COLLECTION),
-    orderBy("name"),
+    orderBy("name_case_insensitive"),
 );
 
 export const getAllChatNotifications = () => getDocs(createGetAllChatNotificationsQuery());

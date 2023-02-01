@@ -39,7 +39,7 @@ export const chatWebHookConverter: FirestoreDataConverter<ChatWebhook> = {
 
 export const createGetAllChatWebhooksQuery = () => query(
     collection(getFirestore(), CHAT_WEBHOOK_COLLECTION),
-    orderBy("name"),
+    orderBy("name_case_insensitive"),
 );
 
 export const getAllChatWebhooks = () => getDocs(createGetAllChatWebhooksQuery());
