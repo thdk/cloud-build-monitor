@@ -16,8 +16,8 @@ const statusOptions = [
 
 const threadOptions = [
     { label: 'Author', value: 'author' },
-    { label: 'Sha', value: 'sha' },
     { label: 'Branch', value: 'branch' },
+    { label: 'Sha', value: 'sha' },
     { label: 'Status', value: 'status' },
     { label: 'Trigger', value: 'trigger' },
 ];
@@ -63,6 +63,18 @@ export function ChatNotificationForm({
                 webhooks: webhooks
                     ? selectedWebHooksIds
                         .filter((hookId) => !!webhooks.find((hook) => hook.id === hookId))
+                        .sort((a, b,) => {
+                            const webhookA = webhooks.find((hook) => hook.id === a);
+                            const webhookB = webhooks.find((hook) => hook.id === b);
+
+                            return (
+                                (webhookA!.name < webhookB!.name)
+                                    ? -1
+                                    : (webhookA!.name > webhookB!.name)
+                                        ? 1
+                                        : 0
+                            );
+                        })
                     : undefined,
                 ...rest,
             };
