@@ -5,6 +5,7 @@ import { CICCDBuild } from './interfaces';
 initializeApp(
     {
         credential: applicationDefault(),
+        projectId: process.env.GCP_PROJECT,
     }
 );
 

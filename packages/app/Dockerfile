@@ -23,8 +23,8 @@ ARG ISSUE_REGEX
 ARG GITHUB_TOKEN=foobar
 
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app ./
+COPY packages/app/ ./packages/app
 
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
 ENV NEXT_PUBLIC_REPO_REGEX=$REPO_REGEX

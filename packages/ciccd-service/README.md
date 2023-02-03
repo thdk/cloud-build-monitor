@@ -21,6 +21,34 @@ repo             |     x      | The name of the github repo
 startTime        |            | Time in seconds since 1/1/1970   
 status           |     x      | success, failure, cancelled, queued, timeout
 
+## Test the service locally during development
+
+Create an `.env` file
+
+```txt
+GITHUB_TOKEN=
+```
+
+Authenticate with gcloud and set gcp project
+
+```sh
+gcloud auth application-default login
+gcloud config set project YOUR_GCP_PROJECT
+```
+
+Next run the service locally
+```sh
+yarn build
+yarn dev
+```
+
+Finally, edit the file in `./tests/pub-sub-message.json` with the data you would like to test and trigger your service:
+
+```sh
+cd ./tests
+./trigger.sh # must be ran from within the 'tests' folder!
+```
+
 ## Manually publish messages to the ciccd-builds topic
 
 The service account that will publish the messages must be added to the `ciccd-builds-publisher` terraform variable.

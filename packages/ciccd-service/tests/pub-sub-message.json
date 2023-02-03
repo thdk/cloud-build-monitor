@@ -2,12 +2,12 @@
     "message": {
         "attributes": {
             "name": "test-local",
-            "commitSha": "d519204d641ce3924223d929a2fba5c51885bdef",
-            "branchName": "foobar",
+            "commitSha": "6d9b460cdea00b0932a3aa2131c932cb64fd8610",
+            "branchName": "main",
             "repo": "cloud-build-monitor",
             "githubRepoOwner": "thdk",
-            "id": "99e538ed-f651-41c8-b928-305c3bb78112",
-            "status": "success",
+            "id": "99e538ed-f651-41c8-b928-305c3bb781245",
+            "status": "failure",
             "origin": "google-cloud"
         },
         "data": "SGVsbG8gQ2xvdWQgUHViL1N1YiEgSGVyZSBpcyBteSBtZXNzYWdlIQ==",

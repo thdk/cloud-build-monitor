@@ -6,4 +6,4 @@ curl -d "@pub-sub-message.json" -X POST \
   -H "Ce-Source: true" \
   -H "Ce-Id: true" \
   -H "Content-Type: application/json" \
-  http://localhost:8081
+  http://localhost:8080

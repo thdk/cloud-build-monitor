@@ -5,6 +5,7 @@ import { ChatNotification, ChatNotificationFirestoreData, ChatWebhook, CICCDBuil
 initializeApp(
     {
         credential: applicationDefault(),
+        projectId: process.env.GCP_PROJECT,
     }
 );
 

@@ -15,4 +15,6 @@ COPY packages/notification-service/ ./
 
 RUN yarn build
 
+ENV PORT=8080
+
 CMD yarn start

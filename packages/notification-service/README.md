@@ -14,7 +14,7 @@ These messages are usually sent by the [forward-service](../forward-service/READ
 
 ## Run locally
 
-Add a `.local.env` file containing your github token.
+Add a `.env` file containing your github token.
 
 ```
 GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxx
@@ -30,4 +30,4 @@ yarn dev
 
 Edit the file in `./tests/pub-sub-message.json` with the data you would like to test.
 
-Now run `./test/trigger.sh` from the `./tests` folder.
+Now run `trigger.sh` from the `./tests` folder.
