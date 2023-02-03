@@ -34,6 +34,8 @@ export const ChatWebhooksScreen = () => {
             saveChatWebhookUrl(
                 {
                     url,
+                    // save the name as well so it can be used for logging when sending notifications,
+                    name: webhook.name,
                 },
                 id,
             );
@@ -51,6 +53,7 @@ export const ChatWebhooksScreen = () => {
                 saveChatWebhookUrl(
                     {
                         url,
+                        name: webhook.name,
                     },
                     webhook.id,
                 );

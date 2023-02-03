@@ -5,4 +5,5 @@ export type ChatWebhook = {
 
 export type ChatWebhookUrl = {
     readonly url: string;
+    readonly name: string;
 }
