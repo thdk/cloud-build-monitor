@@ -1,10 +1,13 @@
-import { collection, FirestoreDataConverter, getDocs, getFirestore, orderBy, query, QueryDocumentSnapshot } from "firebase/firestore";
+import { collection, deleteField, FirestoreDataConverter, getDocs, getFirestore, orderBy, query, QueryDocumentSnapshot } from "firebase/firestore";
 import { ChatNotification } from "../../../collections/chat-notifications/types";
 
 export const CHAT_NOTIFICATION_COLLECTION = 'chat-notifications';
 
 export const chatNotificationConverter: FirestoreDataConverter<ChatNotification> = {
-    toFirestore: (appData) => {
+    toFirestore: ({
+        notifyFix = deleteField(),
+        ...appData
+    }) => {
         delete (appData as any).id;
 
         if (appData.threadKey === undefined) delete appData.threadKey;
@@ -25,6 +28,7 @@ export const chatNotificationConverter: FirestoreDataConverter<ChatNotification>
         return {
             ...appData,
             ...caseInsensitiveName,
+            notifyFix,
         };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<ChatNotification>) => {

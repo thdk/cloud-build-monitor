@@ -39,6 +39,10 @@ const handleCloudBuildPubSubMessage = async ({
     throw new Error("'id' is missing in message attributes");
   }
 
+  if (!origin) {
+    throw new Error("'origin' is missing in message attributes");
+  }
+
   if (!repo || !githubRepoOwner || !commitSha) {
     console.log('Build was not triggered from a github repo.');
     return;
@@ -50,15 +54,15 @@ const handleCloudBuildPubSubMessage = async ({
     owner: githubRepoOwner,
   }).catch((e) => {
     console.error(e);
-    throw e;
+    return undefined
   });
 
   await Promise.all([
     addOrUpdateCICCDBuild({
       branchName,
       commitSha,
-      commitAuthor: commit.author.name,
-      commitSubject: commit.message.split('\n')[0],
+      commitAuthor: commit?.author.name || "unknown",
+      commitSubject: commit?.message.split('\n')[0] || "n/a",
       name,
       origin,
       repo,
@@ -73,7 +77,11 @@ const handleCloudBuildPubSubMessage = async ({
       finishTime: finishTime
         ? new Date(finishTime)
         : null,
-    }).catch((e) => {
+    })
+    .then(() => {
+      console.log("Succesfully saved new ciccd build record into firestore builds collection.")
+    })
+    .catch((e) => {
       console.error("Failed to insert build status in firestore databse");
       console.error(e);
       throw e;

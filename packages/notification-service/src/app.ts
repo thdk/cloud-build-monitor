@@ -89,7 +89,15 @@ const handleCiccdBuildPubSubMessage = async ({
   } = commit || { author: {} };
 
   const sendNotification = () => {
-    return getChatNotifications(trigger, status, branchName)
+    return getChatNotifications(
+      trigger,
+      status,
+      branchName,
+      commitSha,
+      githubRepoOwner,
+      repo,
+      id,
+    )
       .then((notifications) => {
         console.log(`Sending out ${notifications.length} notifications`);
         return Promise.all(

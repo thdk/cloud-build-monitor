@@ -1,6 +1,7 @@
 export interface CICCDBuild {
     readonly name: string;
-    readonly status: string;
+    // todo: add more valid status to status type
+    readonly status: "success" | "failure";
     readonly origin: string;
     readonly commitSha: string;
     readonly commitAuthor: string;

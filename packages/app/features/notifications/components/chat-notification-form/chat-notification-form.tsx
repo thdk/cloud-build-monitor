@@ -22,6 +22,13 @@ const threadOptions = [
     { label: 'Trigger', value: 'trigger' },
 ];
 
+const notifyFixOptions = [
+    {
+        label: "Also notify for 'success' if previous build had status 'failure'",
+        value: "add",
+    },
+];
+
 export function ChatNotificationForm({
     notification,
     form,
@@ -173,6 +180,16 @@ export function ChatNotificationForm({
             >
                 <Checkbox.Group
                     options={statusOptions}
+                />
+            </Form.Item>
+
+            <Form.Item
+                label="Extra status rules"
+                name="notifyFix"
+            >
+                <Select
+                    allowClear
+                    options={notifyFixOptions}
                 />
             </Form.Item>
 
