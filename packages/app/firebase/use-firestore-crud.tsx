@@ -52,7 +52,9 @@ export function useFirestoreCrud<T>({
 
     useEffect(
         () => {
-            setFirestoreError(error);
+            if (error) {
+                setFirestoreError(error);
+            }
         },
         [
             error,
@@ -61,7 +63,10 @@ export function useFirestoreCrud<T>({
 
     useEffect(
         () => {
-            console.error(firestoreError);
+            if (
+                firestoreError) {
+                console.error(firestoreError);
+            }
         },
         [
             firestoreError,
