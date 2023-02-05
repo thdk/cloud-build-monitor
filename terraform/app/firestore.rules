@@ -21,6 +21,11 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    match /jira-updates/{update} {
+      allow read: if true;
+      allow write: if true;
+    }
+
     match /chat-webhooks/{webhook} {
       allow read: if true;
       allow write: if true;
