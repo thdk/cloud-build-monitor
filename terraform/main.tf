@@ -48,12 +48,12 @@ module "ciccd-service" {
 }
 
 module "notification-service" {
-  source                  = "./notification-service"
-  project                 = var.project
-  region                  = var.region
-  repo_branch_pattern     = var.repo_branch_pattern
-  repo_owner              = var.repo_owner
-  repo_name               = var.repo_name
+  source              = "./notification-service"
+  project             = var.project
+  region              = var.region
+  repo_branch_pattern = var.repo_branch_pattern
+  repo_owner          = var.repo_owner
+  repo_name           = var.repo_name
   service_account_builder = {
     email = google_service_account.builder.email
     name  = google_service_account.builder.name
@@ -62,6 +62,11 @@ module "notification-service" {
     email = google_service_account.invoker.email
     name  = google_service_account.invoker.name
   }
+
+  github-token-secret-id  = google_secret_manager_secret.secrets["github-token"].secret_id
+  jira-user-secret-id     = google_secret_manager_secret.secrets["jira-user"].secret_id
+  jira-password-secret-id = google_secret_manager_secret.secrets["jira-password"].secret_id
+  jira-host               = var.jira_host
 
   depends_on = [
     module.ciccd-service,

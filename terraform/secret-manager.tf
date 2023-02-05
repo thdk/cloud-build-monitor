@@ -24,6 +24,8 @@ locals {
   ])
   notification_service_secrets = toset([
     "github-token",
+    "jira-user",
+    "jira-password",
   ])
 }
 

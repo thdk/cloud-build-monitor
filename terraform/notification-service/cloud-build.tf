@@ -4,11 +4,6 @@ locals {
     "notification-service", 
   ]
 }
-
-data "google_secret_manager_secret" "github-token" {
-    secret_id = "github-token"
-}
-
 resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
   for_each = toset(local.services)
   provider = google-beta
@@ -57,8 +52,16 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
         var.region,
         "--service-account",
         google_service_account.run-service-account.email,
+        "--set-env-vars",
+        join(",", [
+          "JIRA_HOST=${var.jira-host}",
+        ]),
         "--update-secrets",
-        "GITHUB_TOKEN=${data.google_secret_manager_secret.github-token.secret_id}:latest"
+        join(",", [
+          "GITHUB_TOKEN=${var.github-token-secret-id}:latest",
+          "JIRA_USER=${var.jira-user-secret-id}:latest",
+          "JIRA_PASSWORD=${var.jira-password-secret-id}:latest",
+        ]),
       ]
     }
     artifacts {
