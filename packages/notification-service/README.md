@@ -7,7 +7,8 @@ These messages are usually sent by the [forward-service](../forward-service/READ
 ## notification services
 
 - google chat: done
-- jira: planned
+- jira comments: done
+- jira status updates: planned
 - github checks: planned
 - github comments: planned
 - email (using sendgrid api): planned
@@ -18,6 +19,11 @@ Add a `.env` file containing your github token.
 
 ```
 GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxx
+
+## jira server
+JIRA_USER=
+JIRA_PASSWORD=
+JIRA_HOST=jira-server.your-domain.com
 ```
 
 Next build and start the server:

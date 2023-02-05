@@ -31,7 +31,7 @@ See the [sample CICCD console](https://ciccd-console.ew.r.appspot.com/)
   
   optional: converts 'cloud-builds' pub sub messages sent by Google Cloud Build to CICCD messages
 
-- [report-service](packages/ciccd-service/README.md)
+- [notification-service](packages/notification-service/README.md)
 
   optional: sends build report emails when configured and adds commit status checks to github
 

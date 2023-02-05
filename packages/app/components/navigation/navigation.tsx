@@ -24,6 +24,10 @@ const items: MenuProps['items'] = [
             {
                 label: "Chat alerts",
                 key: "/config/build-notifications"
+            },
+            {
+                label: "Jira updates",
+                key: "/config/jira-updates"
             }
         ]
     },
