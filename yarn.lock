@@ -2047,6 +2047,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jira-client@npm:^7.1.6":
+  version: 7.1.6
+  resolution: "@types/jira-client@npm:7.1.6"
+  dependencies:
+    "@types/node": "*"
+    "@types/request": "*"
+  checksum: bd1954ff8e05685fd0283bc9da0ae4ea04232120ec424d81f4db5845bd6c2081e8abf0139efe8b61b9244a38716f89b0d02bf0d2bafdf9aabaf458f085135363
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -5611,6 +5621,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jira-client@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "jira-client@npm:8.2.2"
+  dependencies:
+    "@babel/runtime": ^7.6.0
+    postman-request: ^2.88.1-postman.30
+  checksum: 042f31c7729aa6e7c440222df22524a76b8f205f9616d3d15087a5fedfd171975c1cd71dd287b8d0a55d4821a79256de16ed6a6621b36e83d97203e62c3a8567
+  languageName: node
+  linkType: hard
+
 "jose@npm:^2.0.5":
   version: 2.0.5
   resolution: "jose@npm:2.0.5"
@@ -6565,11 +6585,13 @@ __metadata:
   dependencies:
     "@google-cloud/pubsub": ^2.18.4
     "@octokit/rest": ^19.0.5
+    "@types/jira-client": ^7.1.6
     "@types/mustache": ^4.2.2
     concurrently: ^7.1.0
     dotenv: ^16.0.1
     express: ^4.18.1
     firebase-admin: ^10.0.1
+    jira-client: ^8.2.2
     mustache: ^4.2.0
     nodemon: ^2.0.16
     typescript: ^4.5.4

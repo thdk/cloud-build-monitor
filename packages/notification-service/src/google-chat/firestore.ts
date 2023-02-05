@@ -1,15 +1,6 @@
-import { initializeApp, applicationDefault, } from 'firebase-admin/app';
-import { getFirestore, QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { db } from '../common/init-firebase';
 import { ChatNotification, ChatNotificationFirestoreData, ChatWebhook, CICCDBuild } from './interfaces';
-
-initializeApp(
-    {
-        credential: applicationDefault(),
-        projectId: process.env.GCP_PROJECT,
-    }
-);
-
-const db = getFirestore();
 
 const chatNotificationConverter: FirebaseFirestore.FirestoreDataConverter<ChatNotification> = {
     toFirestore: (v: ChatNotification) => v,

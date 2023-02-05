@@ -2,7 +2,8 @@
     "message": {
         "attributes": {
             "name": "test-local",
-            "commitSha": "149a8f7135c53f0c28420ece7c50742050969ae8",
+            "commitSha": "149a8f7135c53f0c28420ece7c50742050969ae7",
+            "commitSubject": "CICCD-1234",
             "branchName": "main",
             "repo": "cloud-build-monitor",
             "githubRepoOwner": "thdk",
