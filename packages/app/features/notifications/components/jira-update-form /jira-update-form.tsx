@@ -36,7 +36,7 @@ export function JiraUpdateForm({
             );
         }
     };
-    
+
     useEffect(() => {
         if (data) {
             form.setFieldsValue(
@@ -110,7 +110,6 @@ export function JiraUpdateForm({
                 <Input />
             </Form.Item>
 
-
             <Form.Item
                 label="Branch filter"
                 name="branchFilterRegex"
@@ -126,6 +125,22 @@ export function JiraUpdateForm({
                 <Checkbox.Group
                     options={statusOptions}
                 />
+            </Form.Item>
+
+            <Form.Item
+                label="Issue regex"
+                name="issueRegex"
+                help="Leave blank to use default: '[A-Z][A-Z0-9]+-[0-9]+'"
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Transition issue"
+                name="transition"
+                help="Name of Jira transition. Note: Current status => name of transition => New status"
+            >
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -162,8 +177,6 @@ export function JiraUpdateForm({
                     rows={6}
                 />
             </Form.Item>
-
-
 
         </Form>
     )

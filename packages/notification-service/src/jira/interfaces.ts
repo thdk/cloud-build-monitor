@@ -21,7 +21,7 @@ export interface JiraUpdate {
     readonly message: string;
     readonly issueRegex: string;
     readonly branchFilterRegex?: string;
-    readonly transitionToStatus?: string | number;
+    readonly transition?: string;
 }
 
 export interface JiraUpdateFirestoreData extends Omit<JiraUpdate, "issueRegex"> {

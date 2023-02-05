@@ -1,10 +1,11 @@
-import { collection, FirestoreDataConverter, getDocs, getFirestore, orderBy, query, QueryDocumentSnapshot } from "firebase/firestore";
+import { collection, deleteField, FirestoreDataConverter, getDocs, getFirestore, orderBy, query, QueryDocumentSnapshot } from "firebase/firestore";
 import { JiraUpdate } from "../../../collections/jira-updates/types";
 
 export const JIRA_UPDATES_COLLECTION = 'jira-updates';
 
 export const jiraUpdateConverter: FirestoreDataConverter<JiraUpdate> = {
     toFirestore: ({
+        issueRegex,
         ...appData
     }) => {
         delete (appData as any).id;
@@ -26,6 +27,7 @@ export const jiraUpdateConverter: FirestoreDataConverter<JiraUpdate> = {
         return {
             ...appData,
             ...caseInsensitiveName,
+            issueRegex: !issueRegex ? deleteField() : issueRegex,
         };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<JiraUpdate>) => {

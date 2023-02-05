@@ -8,7 +8,7 @@ These messages are usually sent by the [forward-service](../forward-service/READ
 
 - google chat: done
 - jira comments: done
-- jira status updates: planned
+- jira transition issue to new status: done
 - github checks: planned
 - github comments: planned
 - email (using sendgrid api): planned

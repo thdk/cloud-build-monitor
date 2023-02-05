@@ -3,6 +3,7 @@ import { addBuildStatusInfo } from "../common/message-templates";
 import { getJiraUpdates } from "./firestore";
 import { CICCDBuild } from "./interfaces";
 import { jiraApi } from "./jira-api";
+import { transitionIssueTo } from "./jira-helper";
 
 export const jira = async ({
     id,
@@ -42,8 +43,8 @@ export const jira = async ({
             message,
             issueRegex,
             name,
+            transition
         }) => {
-
             const issueIdRegex = new RegExp(issueRegex);
             const issueIds = issueIdRegex.exec(commitMessage);
 
@@ -55,22 +56,28 @@ export const jira = async ({
             console.log(`Sending jira updates for ${name} to jira issues ${issueIds.join(", ")}`);
             console.log(`Found issue ids: ${issueIds?.join(', ')}`);
 
-            return issueIds.map((issueId) => jiraApi?.addComment(
-                issueId,
-                addBuildStatusInfo(
-                    message,
-                    {
-                        id,
-                        trigger,
-                        sha: commitSha,
-                        branch: branchName,
-                        status,
-                        logUrl,
-                        repo: `${githubRepoOwner}/${repo}`,
-                        commitAuthor: commitAuthor || null,
-                    }
-                )
-            ));
+
+            return issueIds.map(async (issueId) => {
+                // add comment to jira issue
+                await jiraApi?.addComment(
+                    issueId,
+                    addBuildStatusInfo(
+                        message,
+                        {
+                            id,
+                            trigger,
+                            sha: commitSha,
+                            branch: branchName,
+                            status,
+                            logUrl,
+                            repo: `${githubRepoOwner}/${repo}`,
+                            commitAuthor: commitAuthor || null,
+                        }
+                    )
+                );
+
+                transition && await transitionIssueTo(issueId, transition);
+            });
         })
     )
 };

@@ -8,4 +8,6 @@ export interface JiraUpdate {
     id: string;
     statuses: BuildStatus[];
     name?: string;
+    transition?: string;
+    issueRegex?: string;
 }
