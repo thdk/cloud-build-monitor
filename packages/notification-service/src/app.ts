@@ -1,4 +1,5 @@
 import express from "express";
+import { getCommitInfo } from "./common/git";
 import { googleChat } from "./google-chat";
 import { jira } from "./jira";
 
@@ -27,9 +28,33 @@ app.post('/', async (req, res) => {
 
   const pubSubMessage = req.body.message.attributes;
 
-  console.log({pubSubMessage})
-  await googleChat(pubSubMessage);
-  await jira(pubSubMessage);
+  console.log({ pubSubMessage })
+
+  const {
+    commitSha,
+    repo,
+    githubRepoOwner,
+    status,
+  } = pubSubMessage;
+
+  if (status === "working" || status === "queued") {
+    console.log(`Skipping checking for notifications for status: ${status}`);
+    return;
+  }
+
+  const commit = await getCommitInfo({
+    owner: githubRepoOwner,
+    repo,
+    sha: commitSha,
+  }).catch((error) => {
+    console.error(error);
+    return undefined;
+  });
+
+  await Promise.all([
+    googleChat(pubSubMessage, commit),
+    jira(pubSubMessage, commit),
+  ]);
 
   res.status(204).send();
 });

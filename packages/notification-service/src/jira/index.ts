@@ -5,27 +5,21 @@ import { CICCDBuild } from "./interfaces";
 import { jiraApi } from "./jira-api";
 import { transitionIssueTo } from "./jira-helper";
 
-export const jira = async ({
-    id,
-    logUrl,
-    commitSha,
-    repo,
-    githubRepoOwner,
-    commitSubject,
-    commitAuthor,
-    name: trigger,
-    status,
-    branchName,
-}: CICCDBuild) => {
-    const commit = await getCommitInfo({
-        owner: githubRepoOwner,
+export const jira = async (
+    {
+        id,
+        logUrl,
+        commitSha,
         repo,
-        sha: commitSha,
-    }).catch((error) => {
-        console.error(error);
-        return undefined;
-    });
-
+        githubRepoOwner,
+        commitSubject,
+        commitAuthor,
+        name: trigger,
+        status,
+        branchName,
+    }: CICCDBuild,
+    commit: Awaited<ReturnType<typeof getCommitInfo>> | undefined,
+) => {
     const commitMessage = commit?.message || commitSubject;
 
     const updates = await getJiraUpdates(

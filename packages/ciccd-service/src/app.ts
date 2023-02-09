@@ -48,6 +48,11 @@ const handleCloudBuildPubSubMessage = async ({
     return;
   }
 
+  if (status === "queued") {
+    console.log(`Skipping checking for notifications for status: ${status}`);
+    return;
+  }
+
   const commit = await getCommitInfo({
     sha: commitSha,
     repo,

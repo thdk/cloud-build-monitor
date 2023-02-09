@@ -10,8 +10,9 @@ const statusOptions = [
     { label: 'Failure', value: 'failure' },
     { label: 'Timeout', value: 'timeout' },
     { label: 'Cancelled', value: 'cancelled' },
-    { label: 'Working', value: 'working' },
-    { label: 'Queued', value: 'queued' },
+    // notifications are not fetched for queued and working status to reduce github api calls (rate limit 5000 / hour)
+    // { label: 'Working', value: 'working' },
+    // { label: 'Queued', value: 'queued' },
 ];
 
 const threadOptions = [

@@ -61,16 +61,19 @@ const sendGoogleChat = async (
   return resp;
 }
 
-export const googleChat = async ({
-  id,
-  name: trigger,
-  status,
-  commitSha,
-  branchName,
-  repo,
-  githubRepoOwner,
-  logUrl = null,
-}: CICCDBuild) => {
+export const googleChat = async (
+  {
+    id,
+    name: trigger,
+    status,
+    commitSha,
+    branchName,
+    repo,
+    githubRepoOwner,
+    logUrl = null,
+  }: CICCDBuild,
+  commit: Awaited<ReturnType<typeof getCommitInfo>> | undefined,
+) => {
 
   if (!id) {
     throw new Error("'id' is missing in message attributes");
@@ -97,15 +100,6 @@ export const googleChat = async ({
     )
       .then(async (notifications) => {
         console.log(`Sending out ${notifications.length} notifications`);
-
-        const commit = await getCommitInfo({
-          sha: commitSha,
-          owner: githubRepoOwner,
-          repo,
-        }).catch(() => {
-          console.error(`Failed to fetch git commit: ${githubRepoOwner}/${repo}@${commitSha}`);
-          return undefined;
-        });
 
         const {
           author: {
