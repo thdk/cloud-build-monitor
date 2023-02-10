@@ -1,4 +1,4 @@
-FROM node:18-alpine as dependencies
+FROM node:18-alpine as base
 
 WORKDIR /workspace
 
@@ -7,14 +7,32 @@ COPY package*.json .yarnrc.yml yarn.lock ./
 
 COPY packages/notification-service/package.json packages/notification-service/package.json
 
-RUN yarn workspaces focus notification-service
-
 WORKDIR /workspace/packages/notification-service
+
+RUN yarn workspaces focus
 
 COPY packages/notification-service/ ./
 
-RUN yarn build
+FROM node:18-alpine as test
+COPY --from=base . .
+
+RUN yarn workspace notification-service test
+
+FROM node:18-alpine as build-and-clean
+
+COPY --from=base /workspace /workspace
+
+WORKDIR /workspace
+
+RUN yarn workspace notification-service build
+
+RUN yarn workspaces focus --production notification-service
+RUN rm -r .yarn
+
+FROM node:18-alpine as runner
+COPY --from=build-and-clean /workspace /workspace
+WORKDIR /workspace/packages/notification-service
 
 ENV PORT=8080
 
-CMD yarn start
+CMD node dist/index.js
