@@ -13,8 +13,37 @@ export const addBuildStatusInfo = (
         commitAuthor: string | null;
       },
 ) => {
+/*
+ * Template:
+ *Shown.
+ *{{#success}}
+ *  Great job!
+ *{{/success}}
+ *{{#failure}}
+ *  Fail!
+ *{{/failure}}
+ *
+ *Hash:
+ *{
+ *  "success": true
+ *}
+ *
+ *Output:
+ *Shown.
+ *  Great job!
+ */
+
+    const extra = {
+        // allow to show some mustache template blocks only for failure / success
+        success: data.status === "success",
+        failure: data.status === "failure",
+    }
+
     return Mustache.render(
         template,
-        data,
+        {
+            ...data,
+            ...extra,
+        },
     );
 }

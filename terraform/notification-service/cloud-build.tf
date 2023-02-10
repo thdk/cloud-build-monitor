@@ -38,6 +38,15 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
 
     step {
       name = "gcr.io/cloud-builders/docker"
+      entrypoint = "bash"
+      args = [
+        "-c",
+        "docker build --target test -f packages/${each.key}/Dockerfile ."
+        ]
+    }
+
+    step {
+      name = "gcr.io/cloud-builders/docker"
       args = ["push", "${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA"]
     }
     step {

@@ -14,9 +14,12 @@ RUN yarn workspaces focus
 COPY packages/notification-service/ ./
 
 FROM node:18-alpine as test
-COPY --from=base . .
 
-RUN yarn workspace notification-service test
+COPY --from=base /workspace /workspace
+
+WORKDIR /workspace
+
+RUN yarn workspace notification-service run test
 
 FROM node:18-alpine as build-and-clean
 

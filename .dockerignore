@@ -1,4 +1,4 @@
-**/node_modules
+**/node_1modules
 **/dist
 .yarn/cache
 .git

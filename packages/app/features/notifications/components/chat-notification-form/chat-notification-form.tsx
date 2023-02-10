@@ -242,6 +242,11 @@ export function ChatNotificationForm({
                             <li>{"{{{sha}}}"}: git commit sha</li>
                             <li>{"{{{commitAuthor}}}"}: git commit author</li>
                         </ul>
+                        <p>You can use the following sections:</p>
+                        <ul>
+                            <li>{"{{#success}}This is only shown on success{{/success}}"}</li>
+                            <li>{"{{#failure}}This is only shown on failure{{/failure}}"}</li>
+                        </ul>
                         <a
                             href="https://developers.google.com/chat/api/guides/message-formats/text"
                         >
