@@ -5,15 +5,18 @@ export const JIRA_UPDATES_COLLECTION = 'jira-updates';
 
 export const jiraUpdateConverter: FirestoreDataConverter<JiraUpdate> = {
     toFirestore: ({
-        issueRegex,
+        id,
         ...appData
     }) => {
-        delete (appData as any).id;
+
+        if (id && appData.issueRegex === undefined) appData.issueRegex = deleteField();
+        if (!id && appData.issueRegex == undefined) delete appData.issueRegex;
 
         if (appData.branchFilterRegex === undefined) delete appData.branchFilterRegex;
         if (appData.description === undefined) delete appData.description;
         if (appData.statuses === undefined) delete appData.statuses;
         if (appData.name === undefined) delete appData.name;
+        if (appData.transition === undefined) delete appData.transition;
 
         const caseInsensitiveName = appData.name
             ? {
@@ -27,7 +30,6 @@ export const jiraUpdateConverter: FirestoreDataConverter<JiraUpdate> = {
         return {
             ...appData,
             ...caseInsensitiveName,
-            issueRegex: !issueRegex ? deleteField() : issueRegex,
         };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<JiraUpdate>) => {
