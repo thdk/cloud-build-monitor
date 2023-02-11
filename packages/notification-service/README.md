@@ -33,8 +33,6 @@ For google chat and jira comments the notification service allows you to use [mu
 
 {{commitAuthor}}
 
-
-
 ### Success and failure sections
 
 Example template:
@@ -54,6 +52,21 @@ And for a a failed build:
 Hi. You failed!
 ```
 
+
+### Lowercase
+
+```
+{{#lowercase}}{{{branch}}}{{/lowercase}}
+```
+Given branch `feat/PROJECT-1234` will print `feat/project-1234`.
+
+### IssueId
+
+Currently only supported for **jira-update** notifications.
+```
+{{#issueId}}{{{branch}}}{{/issueId}}
+```
+Given branch `feat/PROJECT-1234-exp` and using default issue id regex `[A-Z][A-Z0-9]+-[0-9]+` will print `PROJECT-1234`.
 
 ## Run locally
 

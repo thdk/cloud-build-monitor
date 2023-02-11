@@ -12,6 +12,11 @@ export const addBuildStatusInfo = (
         repo: string,
         commitAuthor: string | null;
       },
+      {
+        issueRegex,
+      }: {
+        issueRegex?: string;
+      } = {}
 ) => {
 /*
  * Template:
@@ -37,6 +42,18 @@ export const addBuildStatusInfo = (
         // allow to show some mustache template blocks only for failure / success
         success: data.status === "success",
         failure: data.status === "failure",
+        issueId: () => (text: string, render: (template: string) => string) => {
+            if (!issueRegex) {
+                return render(text);
+            }
+
+            const regex = new RegExp(issueRegex);
+
+            return regex.exec(render(text));
+        },
+        lowercase: () => (text: string, render: (template: string) => string) => {
+            return render(text).toLowerCase();
+        }
     }
 
     return Mustache.render(

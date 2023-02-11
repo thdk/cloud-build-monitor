@@ -10,6 +10,7 @@ const buildStatusInfo: Parameters<typeof addBuildStatusInfo>[1] = {
     status: "success",
     trigger: "build",
 };
+
 describe("addBuildStatusInfo", () => {
     it("add build status info into a template containing mustache tags", () => {
         const result = addBuildStatusInfo(
@@ -45,5 +46,40 @@ describe("addBuildStatusInfo", () => {
                 Hooray
             `
         );
+    });
+
+    describe("issueRegex lambda", () => {
+        it("strips out the issue id using a given issue regex", () => {
+            const result = addBuildStatusInfo(
+                "{{#issueId}}{{branch}}{{/issueId}}",
+                {
+                    ...buildStatusInfo,
+                    branch: "feat/PROJECT-1234-1",
+                },
+                {
+                    issueRegex: "[A-Z][A-Z0-9]+-[0-9]+",
+                },
+            );
+    
+            expect(result).toBe(
+                "PROJECT-1234",
+            );
+        });
+        it("it can be wrapped with 'lowercase' lambda", () => {
+            const result = addBuildStatusInfo(
+                "http://{{#lowercase}}{{#issueId}}{{branch}}{{/issueId}}{{/lowercase}}-my-app-ew.a.run.app",
+                {
+                    ...buildStatusInfo,
+                    branch: "feat/PROJECT-1234-1",
+                },
+                {
+                    issueRegex: "[A-Z][A-Z0-9]+-[0-9]+",
+                },
+            );
+    
+            expect(result).toBe(
+                "http://project-1234-my-app-ew.a.run.app",
+            );
+        });
     });
 });

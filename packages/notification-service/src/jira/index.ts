@@ -66,7 +66,10 @@ export const jira = async (
                             logUrl,
                             repo: `${githubRepoOwner}/${repo}`,
                             commitAuthor: commitAuthor || null,
-                        }
+                        },
+                        {
+                            issueRegex,
+                        },
                     )
                 );
 
