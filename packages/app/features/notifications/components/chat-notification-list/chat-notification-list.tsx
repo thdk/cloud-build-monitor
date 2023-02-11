@@ -3,6 +3,7 @@ import { ColumnType } from "antd/lib/table";
 import { BuildStatus, ChatNotification } from "../../../../collections/chat-notifications/types";
 import { useChatNotifications } from "../../hooks/use-chat-notifications";
 import antdStyles from "../../../../styles/antd.module.css";
+import { MessageDisplay } from "../message-display";
 
 const columns: ColumnType<ChatNotification>[] = [
     {
@@ -35,7 +36,7 @@ const columns: ColumnType<ChatNotification>[] = [
     {
         title: 'Message',
         dataIndex: 'message',
-        render: (text: string) => <code style={{ display: "block", alignContent: "center" }}>{text}</code>,
+        render: MessageDisplay,
         width: 500,
         responsive: [
             'lg',

@@ -4,6 +4,7 @@ import { BuildStatus } from "../../../../collections/chat-notifications/types";
 import antdStyles from "../../../../styles/antd.module.css";
 import { useJiraUpdates } from "../../hooks/use-jira-updates";
 import { JiraUpdate } from "../../../../collections/jira-updates/types";
+import { MessageDisplay } from "../message-display";
 
 const columns: ColumnType<JiraUpdate>[] = [
     {
@@ -36,7 +37,7 @@ const columns: ColumnType<JiraUpdate>[] = [
     {
         title: 'Message',
         dataIndex: 'message',
-        render: (text: string) => <code style={{ display: "block", alignContent: "center" }}>{text}</code>,
+        render: MessageDisplay,
         width: 500,
         responsive: [
             'lg',
