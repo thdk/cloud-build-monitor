@@ -11,7 +11,7 @@
 
 ### Create new GCP project
 
-- create a new GCP project
+- create a new GCP project (referred in the manual as CICCD_GCP_PROJECT)
 - add a billing account
 - connect your fork/clone of this github repository from the [cloud build repos page](https://console.cloud.google.com/cloud-build/repos) 
   - enable Cloud Build api if you didn't do it yet
@@ -24,11 +24,11 @@
 ```sh
 gcloud auth login
 gcloud auth application-default login
-gcloud config set project YOUR-GCP_PROJECT
+gcloud config set project CICCD_GCP_PROJECT
 ```
 ### Create a service account that will be used to create all required resources
 
-The service account that will be used is: `terraform@PROJECT_ID.iam.gserviceaccount.com`,
+The service account that will be used is: `terraform@CICCD_GCP_PROJECT.iam.gserviceaccount.com`,
 
 ```sh
 gcloud iam service-accounts create terraform
@@ -52,8 +52,8 @@ You must create this service account manually and give it the following permissi
 | Service Account User | roles/iam.serviceAccountUser | Allow to 'act as' other service accounts |
 
 ```sh
-gcloud projects add-iam-policy-binding YOUR_GCP_PROJECT \
-    --member="serviceAccount:terraform@YOUR_GCP_PROJECT.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding CICCD_GCP_PROJECT \
+    --member="serviceAccount:terraform@CICCD_GCP_PROJECT.iam.gserviceaccount.com" \
     --role="roles/serviceusage.serviceUsageAdmin"
 ```
 
@@ -88,15 +88,15 @@ Give the Service Account Token Creator role to the service account that is used 
 ```sh
 # Allow the service account used by env0 to create access token for the terraform service account
 gcloud iam service-accounts add-iam-policy-binding \
-  terraform@[GCP_PROJECT].iam.gserviceaccount.com \
-  --member='serviceAccount:terraform-cicd@[GCP_PROJECT].iam.gserviceaccount.com' \
+  terraform@[CICCD_GCP_PROJECT].iam.gserviceaccount.com \
+  --member='serviceAccount:terraform-cicd@[CICCD_GCP_PROJECT].iam.gserviceaccount.com' \
   --role='roles/iam.serviceAccountTokenCreator'
 ```
 
 Give the service account access to the gcp bucket containing terraform state:
 
 ```
-gsutil iam ch serviceAccount:terraform-cicd@[GCP_PROJECT].iam.gserviceaccount.com:roles/storage.admin gs://[GCP_STATE_BUCKET]
+gsutil iam ch serviceAccount:terraform-cicd@[CICCD_GCP_PROJECT].iam.gserviceaccount.com:roles/storage.admin gs://[GCP_STATE_BUCKET]
 ```
 
 
@@ -110,7 +110,7 @@ Give a user or group the Service Account Token Creator role. Either on project l
 ```sh
 # Allow users in the dev ops group to create access token for the terraform service account
 gcloud iam service-accounts add-iam-policy-binding \
-  terraform@[GCP-PROJECT].iam.gserviceaccount.com \
+  terraform@[CICCD_GCP_PROJECT].iam.gserviceaccount.com \
   --member='group:dev-ops@example.com' \
   --role='roles/iam.serviceAccountTokenCreator'
 
@@ -168,7 +168,15 @@ jira_host = "jira.domain.com"
 issue_regex = "[A-Z][A-Z0-9]+-[0-9]+"
 ```
 
-### Guarantee cloud-builds topics exist
+### cloud_build_projects
+
+This sections contains the requirements for each of the projects that you have listed in the `cloud_builds_projects` variable of your configuration file.
+
+Alternatively, you can add the [terraform module from here](./../terraform/ciccd-external/README.md) to each of these projects instead of applying the requirements manually. 
+
+![](./../terraform/ciccd-external/pubsub.drawio.svg)
+
+#### Guarantee cloud-builds topics exist
 
 Each project listed the `cloud_builds_project` variable should have a `cloud-builds` pub sub topic.
 If it does not exist yet, you must manually create it.
@@ -177,6 +185,18 @@ If it does not exist yet, you must manually create it.
 # To create a topic `cloud-builds` for the current project:
 gcloud pubsub topics create cloud-builds
 ```
+
+#### Give the cloud build viewer role to the service account of the forward service
+
+Give the `roles/cloudbuild.builds.viewer` to forward-service-runtime@CICCD_GCP_PROJECT.iam.gserviceaccount.com
+
+#### Allow terraform to create pub sub subscription in your GCP project
+
+Terraform will need to create a pub sub subscription on the *cloud-builds* topic for each of the projects listed in `cloud_builds_project` variable.
+
+You should give the role `roles/pubsub.subscriber` on the topic `projects/CICCD_GCP_PROJECT/topics/cloud-builds` to `terraform@[GCP-PROJECT].iam.gserviceaccount.com`
+
+
 ### Let terraform create the required resources
 
 ```sh
