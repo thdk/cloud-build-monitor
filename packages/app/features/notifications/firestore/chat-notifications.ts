@@ -5,10 +5,11 @@ export const CHAT_NOTIFICATION_COLLECTION = 'chat-notifications';
 
 export const chatNotificationConverter: FirestoreDataConverter<ChatNotification> = {
     toFirestore: ({
-        notifyFix = deleteField(),
+        id,
         ...appData
     }) => {
-        delete (appData as any).id;
+        if (id && !appData.notifyFix) appData.notifyFix = deleteField();
+        if (!id && !appData.notifyFix) delete appData.notifyFix;
 
         if (appData.threadKey === undefined) delete appData.threadKey;
         if (appData.branchFilterRegex === undefined) delete appData.branchFilterRegex;
@@ -28,7 +29,6 @@ export const chatNotificationConverter: FirestoreDataConverter<ChatNotification>
         return {
             ...appData,
             ...caseInsensitiveName,
-            notifyFix,
         };
     },
     fromFirestore: (docData: QueryDocumentSnapshot<ChatNotification>) => {
