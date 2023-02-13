@@ -9,8 +9,8 @@ export const jiraUpdateConverter: FirestoreDataConverter<JiraUpdate> = {
         ...appData
     }) => {
 
-        if (id && appData.issueRegex === undefined) appData.issueRegex = deleteField();
-        if (!id && appData.issueRegex == undefined) delete appData.issueRegex;
+        if (id && !appData.issueRegex) appData.issueRegex = deleteField();
+        if (!id && !appData.issueRegex) delete appData.issueRegex;
 
         if (appData.branchFilterRegex === undefined) delete appData.branchFilterRegex;
         if (appData.description === undefined) delete appData.description;
