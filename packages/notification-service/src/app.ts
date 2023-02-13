@@ -39,6 +39,7 @@ app.post('/', async (req, res) => {
 
   if (status === "working" || status === "queued") {
     console.log(`Skipping checking for notifications for status: ${status}`);
+    res.status(204).send();
     return;
   }
 
