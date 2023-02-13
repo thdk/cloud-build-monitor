@@ -84,6 +84,10 @@ resource "google_pubsub_subscription" "dead-letter-subscription" {
 
   retain_acked_messages = false
 
+  expiration_policy {
+    ttl = "" // never expire
+  }
+
   ack_deadline_seconds = 20
 
   retry_policy {

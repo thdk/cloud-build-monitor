@@ -89,6 +89,10 @@ resource "google_pubsub_subscription" "dead-letter-subscription" {
 
   retain_acked_messages = false
 
+  expiration_policy {
+    ttl = "" // never expire
+  }
+
   ack_deadline_seconds = 20
   retry_policy {
     minimum_backoff = "10s"
@@ -106,6 +110,10 @@ resource "google_pubsub_subscription" "cloud-build" {
   topic    = "projects/${each.key}/topics/cloud-builds"
 
   ack_deadline_seconds = 600
+
+  expiration_policy {
+    ttl = "" // never expire
+  }
   push_config {
     push_endpoint = google_cloud_run_service.forward-service.status[0].url
     oidc_token {

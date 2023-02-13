@@ -82,6 +82,10 @@ resource "google_pubsub_subscription" "dead-letter-subscription" {
 
   ack_deadline_seconds = 20
 
+  expiration_policy {
+    ttl = "" // never expire
+  }
+
   retry_policy {
     minimum_backoff = "10s"
     maximum_backoff = "600s"
@@ -97,6 +101,10 @@ resource "google_pubsub_subscription" "ciccd-build-notification-service" {
 
   ack_deadline_seconds    = 600
   enable_message_ordering = true
+
+  expiration_policy {
+    ttl = "" // never expire
+  }
   push_config {
     push_endpoint = google_cloud_run_service.notification-service.status[0].url
     oidc_token {
