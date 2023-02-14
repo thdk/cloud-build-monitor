@@ -21,6 +21,12 @@ WORKDIR /workspace
 
 RUN yarn workspace notification-service run test
 
+FROM node:18-alpine as dev
+WORKDIR /workspace
+COPY --from=base /workspace ./
+RUN yarn workspace notification-service run build
+CMD yarn workspace notification-service run dev
+
 FROM node:18-alpine as build-and-clean
 
 COPY --from=base /workspace /workspace
