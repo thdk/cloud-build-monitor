@@ -32,7 +32,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
       entrypoint = "bash"
       args = [
         "-c",
-        "docker build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile ."
+        "docker buildx build -t ${var.region}-docker.pkg.dev/${var.project}/docker-repository/${each.key}:$COMMIT_SHA -f packages/${each.key}/Dockerfile ."
         ]
     }
 
@@ -41,7 +41,7 @@ resource "google_cloudbuild_trigger" "cloud-run-service-triggers" {
       entrypoint = "bash"
       args = [
         "-c",
-        "docker build --target test -f packages/${each.key}/Dockerfile ."
+        "docker buildx build --target test -f packages/${each.key}/Dockerfile ."
         ]
     }
 
