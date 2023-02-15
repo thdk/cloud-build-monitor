@@ -7,6 +7,10 @@ services:
       # these must be provided by setting a .env file in the root folder
       args:
         - GITHUB_TOKEN=${GITHUB_TOKEN}
+      target: dev
+    
+    volumes:
+      - .:/app
     
     env_file: ./packages/app/.env
     environment:

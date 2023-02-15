@@ -34,6 +34,13 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn workspace app build
 
+# DEV
+
+FROM node:18-alpine AS dev
+WORKDIR /app
+COPY --from=builder /app ./
+CMD yarn workspace app dev
+
 # RUN
 
 FROM node:18-alpine AS runner

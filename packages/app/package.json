@@ -6,7 +6,6 @@
     "build": "next build && cp -r ./public ./.next/standalone/packages/app/public && mkdir -p ./.next/standalone/packages/app/.next && cp -r ./.next/static ./.next/standalone/packages/app/.next/static",
     "start": "next start -p 8080",
     "lint": "next lint",
-    "deploy": "gcloud --quiet app deploy",
     "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
