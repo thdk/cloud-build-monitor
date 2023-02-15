@@ -22,6 +22,7 @@ services:
     build:
       context: ./
       dockerfile: packages/ciccd-service/Dockerfile
+      target: dev
     
     env_file: ./.env
     environment:
@@ -32,6 +33,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
+    - .:/app
     - ${HOME}/.config/gcloud:/root/.config/gcloud
   
   notification-service:

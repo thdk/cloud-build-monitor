@@ -12,6 +12,12 @@ WORKDIR /app
 COPY --from=base /app ./
 RUN yarn workspace ciccd-service run test
 
+FROM node:18-alpine as dev
+WORKDIR /app
+COPY --from=base /app ./
+RUN yarn workspace ciccd-service run build
+CMD yarn workspace ciccd-service run dev
+
 FROM node:18-alpine as build-and-clean
 WORKDIR /app
 COPY --from=base /app ./
