@@ -144,14 +144,24 @@ export async function getPreviousBuild({
     repo: string;
     repoOwner: string;
 }) {
+    const buildQuery = (query: FirebaseFirestore.Query) => {
+        const baseQuery = query
+            .where('name', '==', trigger)
+            .orderBy('created', 'desc')
+            .limit(2);
+
+        return (repo && repoOwner)
+            ? baseQuery
+                .where('repo', '==', repo)
+                .where('githubRepoOwner', '==', repoOwner)
+            : baseQuery;
+    };
+
     // rebuild triggered for same commit sha?
-    const recentBuildsWithSameSha = await db.collection('builds')
-        .where('commitSha', '==', commitSha)
-        .where('name', '==', trigger)
-        .where('repo', '==', repo)
-        .where('githubRepoOwner', '==', repoOwner)
-        .orderBy('created', 'desc')
-        .limit(2)
+    const recentBuildsWithSameSha = await buildQuery(
+        db.collection('builds')
+            .where('commitSha', '==', commitSha)
+    )
         .get()
         .catch((error) => {
             console.error("Failed to get recents builds with same commit sha.");
@@ -172,13 +182,10 @@ export async function getPreviousBuild({
     }
 
     // last build on same branch?
-    const recentBuildsWithSameBranch = await db.collection('builds')
-        .where('branchName', '==', branch)
-        .where('name', '==', trigger)
-        .where('repo', '==', repo)
-        .where('githubRepoOwner', '==', repoOwner)
-        .orderBy('created', 'desc')
-        .limit(2)
+    const recentBuildsWithSameBranch = await buildQuery(
+        db.collection('builds')
+            .where('branchName', '==', branch)
+    )
         .get()
         .catch((error) => {
             console.error("Failed to get recents builds with same branch name.");

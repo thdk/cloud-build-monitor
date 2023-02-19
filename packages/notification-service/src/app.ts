@@ -43,14 +43,20 @@ app.post('/', async (req, res) => {
     return;
   }
 
-  const commit = await getCommitInfo({
-    owner: githubRepoOwner,
-    repo,
-    sha: commitSha,
-  }).catch((error) => {
-    console.error(error);
-    return undefined;
-  });
+  const commit = (githubRepoOwner && repo && commitSha)
+    ? await getCommitInfo(
+      {
+        owner: githubRepoOwner,
+        repo,
+        sha: commitSha,
+      }
+    ).catch(
+      (error) => {
+        console.error(error);
+        return undefined;
+      }
+    )
+    : undefined;
 
   await Promise.all([
     googleChat(pubSubMessage, commit),
