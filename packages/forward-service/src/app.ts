@@ -36,7 +36,7 @@ const handleCloudBuildPubSubMessage = async ({
   }
 
   if (typeof data !== "string") {
-      return;
+    return;
   }
 
   // https://cloud.google.com/build/docs/api/reference/rest/v1/projects.builds
@@ -48,15 +48,20 @@ const handleCloudBuildPubSubMessage = async ({
       source,
       build,
     }) => {
+      if (!trigger) {
+        // do not forward pub sub messages for builds that are triggered from command line
+        // TODO: investigate how we can pass a custom trigger name when builds are manually invoked from command line (or by other tools)
+        return;
+      }
 
       return pubSubClient.topic("ciccd-builds").publishMessage({
         attributes: {
           origin: "cloud-build",
-          name: trigger?.name || "n/a",
+          name: trigger.name || "n/a",
           status: status.toLowerCase(),
           commitSha: source.commitSha,
-          repo: trigger?.github?.name || source.repo || "",
-          githubRepoOwner: trigger?.github?.owner || "",
+          repo: trigger.github?.name || source.repo || "",
+          githubRepoOwner: trigger.github?.owner || "",
           branchName: source.branchName,
           id: buildId,
           logUrl: build.logUrl || "",
