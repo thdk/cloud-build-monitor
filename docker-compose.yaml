@@ -14,6 +14,7 @@ services:
     
     env_file: ./packages/app/.env
     environment:
+      - DOCKER_BUILDKIT=1
       - GITHUB_TOKEN
       - JIRA_USER
       - JIRA_PASSWORD
@@ -30,6 +31,7 @@ services:
     
     env_file: ./.env
     environment:
+      - DOCKER_BUILDKIT=1
       - GITHUB_TOKEN
       - GCP_PROJECT
       - PORT=8080
@@ -49,6 +51,7 @@ services:
     
     env_file: ./.env
     environment:
+      - DOCKER_BUILDKIT=1
       - GITHUB_TOKEN
       - GCP_PROJECT
       - PORT=8081
