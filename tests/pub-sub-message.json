@@ -2,8 +2,8 @@
     "message": {
         "attributes": {
             "name": "test-local",
-            "commitSha": "149a8f7135c53f0c28420ece7c50742050969ae7",
-            "commitSubject": "CRE-1234",
+            "commitSha": "0ce164e04f5e51a1e4715f9de6ece1d53be7b649",
+            "commitSubject": "PROJECT-1234",
             "branchName": "main",
             "repo": "cloud-build-monitor",
             "githubRepoOwner": "thdk",

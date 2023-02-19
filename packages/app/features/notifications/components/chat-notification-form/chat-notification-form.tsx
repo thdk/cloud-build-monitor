@@ -241,6 +241,7 @@ export function ChatNotificationForm({
                             <li>{"{{{branch}}}"}: if applicable, the git branch name which was used to run the build from</li>
                             <li>{"{{{sha}}}"}: git commit sha</li>
                             <li>{"{{{commitAuthor}}}"}: git commit author</li>
+                            <li>{"{{{commitMessage}}}"}: git commit message</li>
                         </ul>
                         <p>You can use the following sections:</p>
                         <ul>

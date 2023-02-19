@@ -11,6 +11,7 @@ export const addBuildStatusInfo = (
         logUrl: string | null;
         repo: string,
         commitAuthor: string | null;
+        commitMessage: string | null;
       },
       {
         issueRegex,

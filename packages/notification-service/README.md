@@ -33,6 +33,8 @@ For google chat and jira comments the notification service allows you to use [mu
 
 {{commitAuthor}}
 
+{{commitMessage}}
+
 ### Success and failure sections
 
 Example template:

@@ -104,7 +104,8 @@ export const googleChat = async (
         const {
           author: {
             name: commitAuthor,
-          }
+          },
+          message: commitMessage,
         } = commit || { author: {} };
 
         return Promise.all(
@@ -147,6 +148,7 @@ export const googleChat = async (
                     logUrl,
                     repo: `${githubRepoOwner}/${repo}`,
                     commitAuthor: commitAuthor || null,
+                    commitMessage: commitMessage || null,
                   },
                 ),
                 url,
